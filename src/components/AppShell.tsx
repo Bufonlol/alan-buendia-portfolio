@@ -16,6 +16,8 @@ import Preloader from "@/components/Preloader";
 import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import EasterEggs from "@/components/EasterEggs";
+import GrainOverlay from "@/components/GrainOverlay";
+import AvailableBadge from "@/components/AvailableBadge";
 
 type AppContextType = {
   /** true once the preloader has finished — entrance animations key off this */
@@ -174,10 +176,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <LangProvider>
       <AppContext.Provider value={{ ready, lenis, navigate }}>
+        <GrainOverlay />
         <Preloader onDone={handleLoaderDone} />
         <Cursor />
         <Navbar />
         <EasterEggs />
+        <AvailableBadge />
         <div id="page-root">{children}</div>
       {/* Route transition curtain */}
       <div

@@ -107,13 +107,16 @@ export default function Contact() {
         </h2>
 
         <div className="mt-10 flex flex-col gap-8 md:mt-14 md:flex-row md:items-center md:gap-12">
-          <a
-            href={`mailto:${SITE.email}`}
-            className="contact-fade link-line font-serif text-[clamp(1.3rem,3vw,2.2rem)] italic text-paper"
-            style={{ opacity: 0 }}
-          >
-            {SITE.email}
-          </a>
+          <div className="contact-fade" style={{ opacity: 0 }}>
+            <Magnetic strength={0.25}>
+              <a
+                href={`mailto:${SITE.email}`}
+                className="link-line font-serif text-[clamp(1.3rem,3vw,2.2rem)] italic text-paper"
+              >
+                {SITE.email}
+              </a>
+            </Magnetic>
+          </div>
           <div className="contact-fade" style={{ opacity: 0 }}>
             <Magnetic>
               <button
