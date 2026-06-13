@@ -47,11 +47,11 @@ export const ARCHIVE: ArchiveEntry[] = [
   {
     index: "04",
     title: { es: "Dental Family", en: "Dental Family" },
-    year: "2024",
+    year: "2026",
     type: { es: "Cliente", en: "Client" },
-    stack: "React · Node.js",
+    stack: "React · Node.js · N8N",
     color: "#C5A891",
-    external: "https://dentalfamily.mx",
+    href: "/projects/dental-family",
     image: "/projects/dental-family/home.png",
   },
   {

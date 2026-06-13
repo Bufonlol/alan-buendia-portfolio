@@ -67,19 +67,6 @@ export const EXPERIENCE: {
   highlight: L;
 }[] = [
   {
-    company: "Waldo's",
-    role: { es: "Frontend Developer", en: "Frontend Developer" }, // EDIT ME — exact title
-    period: { es: "2025 — Presente", en: "2025 — Present" },
-    summary: {
-      es: "Construyendo herramientas internas e interfaces de operación retail para una de las cadenas de tiendas de descuento más grandes de México. Frontend donde el downtime se mide en ventas perdidas.",
-      en: "Building internal tools and retail-operations interfaces for one of México's largest discount store chains. Frontend work where downtime is measured in lost sales.",
-    },
-    highlight: {
-      es: "Sistemas retail usados en cientos de tiendas",
-      en: "Retail systems used across hundreds of stores",
-    },
-  },
-  {
     company: "Independiente",
     role: {
       es: "Desarrollador Full-Stack Freelance",
@@ -87,24 +74,24 @@ export const EXPERIENCE: {
     },
     period: { es: "2022 — Presente", en: "2022 — Present" },
     summary: {
-      es: "Aplicaciones web de ciclo completo para clientes reales y PYMEs mexicanas — requerimientos, diseño, desarrollo, despliegue y soporte. Frontends en React, backends en Java y Node.",
-      en: "Full-cycle web applications for real clients and Mexican PYMEs — requirements, design, development, deployment and support. React frontends, Java and Node backends.",
+      es: "Aplicaciones web de ciclo completo para clientes reales y PYMEs mexicanas — requerimientos, diseño, desarrollo, despliegue y soporte. ERPs, plataformas de reservas, dashboards operativos y sistemas QR en producción.",
+      en: "Full-cycle web applications for real clients and Mexican PYMEs — requirements, design, development, deployment and support. ERPs, booking platforms, operational dashboards and QR systems shipped to production.",
     },
     highlight: {
-      es: "ERP, plataforma dental y encuestas en producción",
-      en: "ERP, clinic platform & survey systems shipped to production",
+      es: "ERP joyería, Dental Family y encuestas en producción",
+      en: "Jewelry ERP, Dental Family & survey systems in production",
     },
   },
   {
-    company: "UTCV — Kybernet.MX",
+    company: "Kybernet.MX",
     role: {
-      es: "Proyecto de Tesis · Frontend Lead",
-      en: "Thesis Project · Frontend Lead",
+      es: "Project Lead · Tesis UTCV",
+      en: "Project Lead · UTCV Thesis",
     },
-    period: { es: "2024", en: "2024" },
+    period: { es: "2025 — 2026", en: "2025 — 2026" },
     summary: {
-      es: "Diseñé y construí Kybernet.MX: un SaaS multiempresa para registrar y gestionar distintos giros de negocio con reglas personalizables por vertical. React + Supabase.",
-      en: "Designed and built Kybernet.MX: a multi-tenant SaaS for registering and managing different business types under customizable rules per vertical. React + Supabase.",
+      es: "Proyecto de tesis universitario para administrar múltiples tipos de negocio mediante reglas configurables. Arquitectura frontend, componentes reutilizables y optimización de rendimiento: carga promedio de 4.2s a 1.1s.",
+      en: "University thesis project to manage multiple business types via configurable rules. Frontend architecture, reusable components and performance optimization: average load from 4.2s to 1.1s.",
     },
     highlight: {
       es: "Carga promedio de 4.2s a 1.1s",

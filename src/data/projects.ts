@@ -20,6 +20,7 @@ export type Project = {
   learnings: L[];
   live?: string;
   repo?: string;
+  external?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -217,8 +218,97 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    slug: "kybernet",
+    slug: "dental-family",
     index: "03",
+    title: { es: "Dental Family", en: "Dental Family" },
+    tagline: {
+      es: "Citas médicas sin llamadas telefónicas.",
+      en: "Medical appointments without phone calls.",
+    },
+    year: "2026",
+    role: { es: "Desarrollador Full-Stack", en: "Full-Stack Developer" },
+    status: { es: "En producción", en: "In production" },
+    color: "#C5A891",
+    tags: ["React", "TypeScript", "Node.js", "N8N"],
+    cardImage: "/projects/dental-family/home.png",
+    problem: {
+      es: "Una clínica dental gestionaba sus citas por teléfono y WhatsApp manual — la agenda era un cuaderno, los recordatorios dependían de que alguien se acordara y los pacientes no tenían forma de ver o cancelar sus citas sin llamar. Las citas perdidas costaban tiempo y dinero sin que nadie supiera exactamente cuánto.",
+      en: "A dental clinic managed appointments by phone and manual WhatsApp — the schedule was a notebook, reminders depended on someone remembering, and patients had no way to view or cancel without calling. No-shows were costing time and money without anyone knowing exactly how much.",
+    },
+    research: {
+      es: "Trabajé directamente con la recepcionista y el dentista para mapear el flujo real de una cita: reserva, confirmación, recordatorio, llegada. El hallazgo clave: el 80% del trabajo de recepción era reactivo (contestar llamadas, mandar mensajes manualmente). El objetivo no era reemplazar a la recepcionista, sino eliminar las tareas repetitivas para que pudiera enfocarse en los pacientes presentes.",
+      en: "I worked directly with the receptionist and dentist to map the real flow of an appointment: booking, confirmation, reminder, arrival. The key finding: 80% of reception work was reactive (answering calls, sending messages manually). The goal wasn't to replace the receptionist — it was to eliminate repetitive tasks so she could focus on patients in the room.",
+    },
+    solution: [
+      {
+        es: "Reservas online 24/7 — el paciente elige fecha, hora y servicio sin llamar a la clínica",
+        en: "24/7 online bookings — patients pick date, time and service without calling the clinic",
+      },
+      {
+        es: "Agente de IA conectado a WhatsApp vía N8N — confirma citas automáticamente en el canal que el paciente ya usa",
+        en: "AI agent connected to WhatsApp via N8N — automatically confirms appointments on the channel patients already use",
+      },
+      {
+        es: "Recordatorios automáticos 24h antes — reducción de no-shows sin intervención manual",
+        en: "Automatic reminders 24h before — no-show reduction with zero manual effort",
+      },
+      {
+        es: "Historial médico digital por paciente — notas, tratamientos y documentos accesibles desde el panel",
+        en: "Digital medical history per patient — notes, treatments and documents accessible from the dashboard",
+      },
+      {
+        es: "Panel de gestión para el equipo: vista de agenda, historial de pacientes y control de citas",
+        en: "Management dashboard for the team: schedule view, patient history and appointment control",
+      },
+    ],
+    stack: ["React", "TypeScript", "Node.js", "N8N", "PostgreSQL"],
+    screens: [
+      {
+        caption: { es: "Landing y reserva online", en: "Landing & online booking" },
+        image: "/projects/dental-family/home.png",
+      },
+      {
+        caption: { es: "Flujo de reserva de cita", en: "Appointment booking flow" },
+        image: "/projects/dental-family/booking.png",
+      },
+      {
+        caption: { es: "Panel de gestión", en: "Management panel" },
+        image: "/projects/dental-family/panel.png",
+      },
+    ],
+    results: [
+      {
+        metric: { es: "24/7", en: "24/7" },
+        label: { es: "Reservas sin llamadas", en: "Bookings without calls" },
+      },
+      {
+        metric: { es: "IA", en: "AI" },
+        label: { es: "Confirmaciones por WhatsApp", en: "WhatsApp confirmations" },
+      },
+      {
+        metric: { es: "0", en: "0" },
+        label: { es: "Recordatorios manuales", en: "Manual reminders" },
+      },
+    ],
+    learnings: [
+      {
+        es: "Los flujos automatizados solo funcionan si el canal es el que el usuario ya usa — WhatsApp ganó sobre cualquier email.",
+        en: "Automated flows only work if the channel is one the user already uses — WhatsApp beat any email approach.",
+      },
+      {
+        es: "El panel interno y el frontend del paciente tienen necesidades completamente distintas — intentar servirlas con un solo diseño es un error.",
+        en: "The internal panel and patient-facing frontend have completely different needs — trying to serve them with one design is a mistake.",
+      },
+      {
+        es: "Los agentes de IA en producción necesitan fallbacks claros — cuando el agente no sabe, debe escalar a humano gracefully.",
+        en: "AI agents in production need clear fallbacks — when the agent doesn't know, it must escalate to a human gracefully.",
+      },
+    ],
+    external: "https://dentalfamily.mx",
+  },
+  {
+    slug: "kybernet",
+    index: "04",
     title: { es: "Kybernet.MX", en: "Kybernet.MX" },
     tagline: {
       es: "Una plataforma, cualquier tipo de negocio.",
