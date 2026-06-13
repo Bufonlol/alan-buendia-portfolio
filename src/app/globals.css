@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f3efe6;
+  --color-paper-soft: #ece7da;
+  --color-ink: #181511;
+  --color-ink-soft: #2c2820;
+  --color-accent: #dd4a12;
+  --color-muted: #8b8474;
+  --color-line: rgba(24, 21, 17, 0.14);
+  --color-line-paper: rgba(243, 239, 230, 0.18);
+}
+
+@theme inline {
+  --font-display: var(--font-anton);
+  --font-sans: var(--font-archivo);
+  --font-serif: var(--font-instrument);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink) var(--color-paper);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+/* Custom cursor active → hide the native one */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none !important;
+  }
+}
+
+@layer components {
+  /* Tiny tracked caps label used everywhere */
+  .u-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Display headline base */
+  .display {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+
+  /* Underline sweep for links */
+  .link-line {
+    position: relative;
+    display: inline-block;
+  }
+  .link-line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.15em;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+  .link-line:hover::after,
+  .link-line:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+  }
+
+  /* Stack section rows — ink fill rises on hover */
+  .stack-row {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .stack-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition: transform 0.45s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+  .stack-row:hover::before {
+    transform: scaleY(1);
+    transform-origin: top center;
+  }
+  .stack-row > * {
+    transition: color 0.35s ease, transform 0.45s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+  .stack-row:hover > * {
+    color: var(--color-paper);
+  }
+  .stack-row:hover .stack-name {
+    transform: translateX(1.5rem);
+  }
+  .stack-row:hover .stack-meta {
+    color: var(--color-accent);
+  }
+}
+
+/* Film grain overlay */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 9999;
+  pointer-events: none;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  animation: grain-shift 0.9s steps(4) infinite;
+}
+
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 1%); }
+  50% { transform: translate(1%, -1.5%); }
+  75% { transform: translate(-1%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.55); opacity: 0.6; }
+}
+
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    animation: none;
+  }
+  /* stop all looping CSS animations (pulse dots, eq bars, stamp spin, bounce) —
+     !important also overrides the inline animation shorthands */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

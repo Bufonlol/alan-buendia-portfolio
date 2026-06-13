@@ -1,0 +1,59 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F7F1E8"/>
+      <stop offset="1" stop-color="#EFE6D4"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(170 140) rotate(21) scale(180 180)">
+      <stop offset="0" stop-color="#DD4A12" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#DD4A12" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1040 120) rotate(35) scale(190 190)">
+      <stop offset="0" stop-color="#3B6BD6" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#3B6BD6" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M 72 0 H 0 V 72" fill="none" stroke="#181511" stroke-opacity=".10" stroke-width="1"/>
+    </pattern>
+    <filter id="blur" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glowA)"/>
+  <rect width="1200" height="630" fill="url(#glowB)"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity=".55"/>
+
+  <circle cx="920" cy="142" r="124" fill="#3B6BD6" fill-opacity=".08" filter="url(#blur)"/>
+  <circle cx="182" cy="134" r="116" fill="#DD4A12" fill-opacity=".08" filter="url(#blur)"/>
+
+  <text x="54" y="78" fill="#7A7468" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="3" text-transform="uppercase">Portfolio / Portafolio</text>
+  <circle cx="42" cy="70" r="7" fill="#DD4A12"/>
+  <circle cx="42" cy="70" r="20" fill="#DD4A12" fill-opacity=".08"/>
+
+  <text x="54" y="216" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="98" font-weight="800" letter-spacing="-5">Interfaces that feel</text>
+  <text x="54" y="308" fill="#DD4A12" font-family="Arial, Helvetica, sans-serif" font-size="98" font-weight="800" letter-spacing="-5">inevitable</text>
+
+  <text x="58" y="372" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="30">Fast, accessible, and a little bit playful.</text>
+  <text x="58" y="412" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="30" font-style="italic" fill-opacity=".84">Rápidas, accesibles y con personalidad.</text>
+
+  <g transform="translate(54 452)">
+    <rect x="0" y="0" width="126" height="42" rx="21" fill="#FFFFFF" fill-opacity=".42" stroke="#181511" stroke-opacity=".14"/>
+    <text x="63" y="27" text-anchor="middle" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing=".8">React</text>
+    <rect x="142" y="0" width="144" height="42" rx="21" fill="#FFFFFF" fill-opacity=".42" stroke="#181511" stroke-opacity=".14"/>
+    <text x="214" y="27" text-anchor="middle" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing=".8">TypeScript</text>
+    <rect x="300" y="0" width="94" height="42" rx="21" fill="#FFFFFF" fill-opacity=".42" stroke="#181511" stroke-opacity=".14"/>
+    <text x="347" y="27" text-anchor="middle" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing=".8">GSAP</text>
+    <rect x="408" y="0" width="117" height="42" rx="21" fill="#FFFFFF" fill-opacity=".42" stroke="#181511" stroke-opacity=".14"/>
+    <text x="466.5" y="27" text-anchor="middle" fill="#181511" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing=".8">Three.js</text>
+  </g>
+
+  <text x="54" y="589" fill="#7A7468" font-family="Arial, Helvetica, sans-serif" font-size="22">Orizaba, Veracruz · México</text>
+  <g transform="translate(916 532)">
+    <rect x="0" y="0" width="230" height="52" rx="26" fill="#181511"/>
+    <text x="115" y="33" text-anchor="middle" fill="#F7F1E8" font-family="Arial, Helvetica, sans-serif" font-size="20" letter-spacing="1.2">alan-buendia.dev</text>
+  </g>
+
+  <text x="1032" y="612" fill="#181511" fill-opacity=".05" font-family="Arial, Helvetica, sans-serif" font-size="240" font-weight="800" letter-spacing="-20">AB</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#171511"/>
+      <stop offset="1" stop-color="#0F0E0C"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(282 168) rotate(26) scale(190 190)">
+      <stop offset="0" stop-color="#DD4A12" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#DD4A12" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(955 210) rotate(-18) scale(230 230)">
+      <stop offset="0" stop-color="#3B6BD6" stop-opacity=".20"/>
+      <stop offset="1" stop-color="#3B6BD6" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M 54 0 H 0 V 54" fill="none" stroke="#F4EFE5" stroke-opacity=".07" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity=".55"/>
+
+  <text x="54" y="74" fill="#D6D0C7" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="3">Insert coin / Arcade</text>
+  <rect x="54" y="94" width="96" height="6" rx="3" fill="#DD4A12"/>
+
+  <text x="54" y="204" fill="#F4EFE5" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="-4">Arcade</text>
+  <text x="54" y="286" fill="#DD4A12" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="800" letter-spacing="-4">Buendía Breaker</text>
+
+  <text x="56" y="360" fill="#F4EFE5" font-family="Arial, Helvetica, sans-serif" font-size="30">Built from scratch in canvas.</text>
+  <text x="56" y="398" fill="#F4EFE5" font-family="Arial, Helvetica, sans-serif" font-size="30" font-style="italic" fill-opacity=".84">Hecho desde cero en canvas.</text>
+
+  <g transform="translate(682 120)">
+    <rect x="0" y="0" width="406" height="382" rx="28" fill="#0F0E0C" stroke="#F4EFE5" stroke-opacity=".16"/>
+    <rect x="24" y="24" width="358" height="86" rx="12" fill="#171511" stroke="#F4EFE5" stroke-opacity=".10"/>
+    <circle cx="68" cy="66" r="16" fill="#DD4A12"/>
+    <circle cx="118" cy="66" r="16" fill="#3B6BD6"/>
+    <circle cx="168" cy="66" r="16" fill="#3E6B5C"/>
+    <rect x="24" y="132" width="358" height="196" rx="14" fill="#181511"/>
+    <g transform="translate(42 150)">
+      <rect x="0" y="0" width="42" height="18" rx="4" fill="#DD4A12"/>
+      <rect x="50" y="0" width="42" height="18" rx="4" fill="#3B6BD6"/>
+      <rect x="100" y="0" width="42" height="18" rx="4" fill="#3E6B5C"/>
+      <rect x="150" y="0" width="42" height="18" rx="4" fill="#A8842C"/>
+      <rect x="200" y="0" width="42" height="18" rx="4" fill="#4A5A8A"/>
+      <rect x="250" y="0" width="42" height="18" rx="4" fill="#7A3E8F"/>
+      <rect x="300" y="0" width="42" height="18" rx="4" fill="#DD4A12"/>
+      <rect x="0" y="28" width="42" height="18" rx="4" fill="#DD4A12"/>
+      <rect x="50" y="28" width="42" height="18" rx="4" fill="#3B6BD6"/>
+      <rect x="100" y="28" width="42" height="18" rx="4" fill="#3E6B5C"/>
+      <rect x="150" y="28" width="42" height="18" rx="4" fill="#A8842C"/>
+      <rect x="200" y="28" width="42" height="18" rx="4" fill="#4A5A8A"/>
+      <rect x="250" y="28" width="42" height="18" rx="4" fill="#7A3E8F"/>
+      <rect x="300" y="28" width="42" height="18" rx="4" fill="#DD4A12"/>
+    </g>
+    <rect x="24" y="340" width="358" height="18" rx="9" fill="#F4EFE5" fill-opacity=".10"/>
+  </g>
+
+  <text x="960" y="582" fill="#F4EFE5" fill-opacity=".05" font-family="Arial, Helvetica, sans-serif" font-size="232" font-weight="800" letter-spacing="-18">AB</text>
+</svg>
