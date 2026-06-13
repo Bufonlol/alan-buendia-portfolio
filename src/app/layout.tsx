@@ -42,14 +42,12 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     locale: "es_MX",
     type: "website",
-    images: [`${SITE.url}/og-home.png`],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
     description:
       "Interfaces that feel inevitable / interfaces que se sienten inevitables. React, TypeScript, GSAP & Three.js.",
-    images: [`${SITE.url}/og-home.png`],
   },
   robots: {
     index: true,

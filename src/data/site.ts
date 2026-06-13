@@ -30,7 +30,7 @@ export const SITE = {
     en: "Available for work",
   } satisfies L,
   cvUrl: "/alan-buendia-cv.pdf",
-  url: "https://alan-portfolio-psi.vercel.app",
+  url: "https://alanbuendia.dev",
 };
 
 export const NAV_LINKS: { index: string; label: L; href: string }[] = [
