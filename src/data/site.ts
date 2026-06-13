@@ -145,6 +145,49 @@ export const FUN = {
   ] satisfies { name: L; note: L }[],
 };
 
+export const STATS: { value: string; label: L }[] = [
+  { value: "3", label: { es: "años lanzando", en: "years shipping" } },
+  { value: "10", label: { es: "proyectos entregados", en: "projects shipped" } },
+  { value: "4", label: { es: "clientes activos", en: "active clients" } },
+  { value: "B2", label: { es: "inglés técnico", en: "English level" } },
+];
+
+export const PROCESS: { step: string; name: L; desc: L }[] = [
+  {
+    step: "01",
+    name: { es: "Escuchar", en: "Listen" },
+    desc: {
+      es: "Entiendo el negocio antes de tocar código. Las mejores soluciones salen de hacer las preguntas correctas, no de asumir requerimientos.",
+      en: "I understand the business before touching code. The best solutions come from asking the right questions, not assuming requirements.",
+    },
+  },
+  {
+    step: "02",
+    name: { es: "Construir", en: "Build" },
+    desc: {
+      es: "Ciclos cortos de feedback. Muestro avances reales — para que el cliente use el sistema desde las primeras semanas, no al final.",
+      en: "Short feedback cycles. I show real progress — so clients can use the system from the first few weeks, not at the end.",
+    },
+  },
+  {
+    step: "03",
+    name: { es: "Lanzar", en: "Ship" },
+    desc: {
+      es: "Despliegue, documentación y soporte continuo. Cuando algo sale a producción, sigo disponible — el trabajo real empieza ahí.",
+      en: "Deployment, docs and ongoing support. When something ships, I stay available — because the real work starts there.",
+    },
+  },
+];
+
+export const TESTIMONIAL = {
+  quote: {
+    es: "Alan entregó el sistema exactamente como lo platicamos — en tiempo y funcionando desde el primer día. Ahora sé cómo están mis tres sucursales sin tener que estar presente.",
+    en: "Alan delivered the system exactly as we discussed — on time and working from day one. Now I know how all three of my locations are doing without having to be there.",
+  },
+  author: { es: "Dueño, Restaurante de Mariscos", en: "Owner, Seafood Restaurant" },
+  project: { es: "Encuestas Restaurante · 3 sucursales", en: "Restaurant Surveys · 3 branches" },
+};
+
 export const MARQUEE_ITEMS: L[] = [
   { es: "Disponible para trabajar", en: "Available for work" },
   { es: "Frontend Developer", en: "Frontend Developer" },
