@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
+import Stats from "@/components/home/Stats";
 import Stack from "@/components/home/Stack";
+import Process from "@/components/home/Process";
 import Experience from "@/components/home/Experience";
+import Testimonial from "@/components/home/Testimonial";
 import About from "@/components/home/About";
 import Fun from "@/components/home/Fun";
 import Contact from "@/components/home/Contact";
@@ -42,8 +45,11 @@ export default function Home() {
       <Hero />
       <Marquee items={MARQUEE_ITEMS} />
       <FeaturedProjects />
+      <Stats />
       <Stack />
+      <Process />
       <Experience />
+      <Testimonial />
       <About />
       <Fun />
       <Marquee items={MARQUEE_CONTACT} baseSeconds={16} />

@@ -11,6 +11,7 @@ import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { PROJECTS } from "@/data/projects";
 import ProjectVisual from "@/components/ProjectVisual";
+import TiltCard from "@/components/TiltCard";
 
 export default function FeaturedProjects() {
   const { navigate } = useApp();
@@ -128,23 +129,23 @@ export default function FeaturedProjects() {
             </h2>
             <p className="mt-6 max-w-[24rem] font-serif text-xl italic text-ink-soft">
               {t({
-                es: "seis sistemas para negocios reales — arrastra hacia un lado o simplemente sigue scrolleando.",
-                en: "six systems for real businesses — drag sideways or just keep scrolling.",
+                es: `${PROJECTS.length} sistemas para negocios reales — arrastra hacia un lado o simplemente sigue scrolleando.`,
+                en: `${PROJECTS.length} systems for real businesses — drag sideways or just keep scrolling.`,
               })}
             </p>
             <p className="u-label mt-8 text-muted">2024 — 2026</p>
           </div>
 
           {PROJECTS.map((p) => (
+            <TiltCard key={p.slug} className="group w-[82vw] shrink-0 md:w-[56vw] lg:w-[44vw]">
             <a
-              key={p.slug}
               href={`/projects/${p.slug}`}
               data-cursor="view"
               onClick={(e) => {
                 e.preventDefault();
                 navigate(`/projects/${p.slug}`);
               }}
-              className="group w-[82vw] shrink-0 md:w-[56vw] lg:w-[44vw]"
+              className="block"
             >
               <ProjectVisual
                 project={p}
@@ -171,6 +172,7 @@ export default function FeaturedProjects() {
                 </span>
               </div>
             </a>
+            </TiltCard>
           ))}
 
           {/* outro panel */}

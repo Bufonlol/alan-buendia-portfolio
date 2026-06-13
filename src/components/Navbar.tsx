@@ -51,6 +51,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const barRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const logoClicks = useRef<{ n: number; t: number }>({ n: 0, t: 0 });
   const time = useLocalTime();
@@ -64,6 +65,21 @@ export default function Navbar() {
       { y: 0, autoAlpha: 1, duration: 0.9, delay: 0.9, ease: "power3.out" }
     );
   }, [ready]);
+
+  /* Scroll progress bar */
+  useGSAP(() => {
+    if (!progressRef.current) return;
+    gsap.to(progressRef.current, {
+      scaleX: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+  }, []);
 
   /* Menu open/close timeline */
   useGSAP(
@@ -144,6 +160,9 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Scroll progress line */}
+      <div className="fixed inset-x-0 top-0 z-[100] h-[2px] origin-left scale-x-0 bg-accent" ref={progressRef} />
+
       <header
         ref={barRef}
         className="pointer-events-none fixed inset-x-0 top-0 z-[90] mix-blend-difference"
