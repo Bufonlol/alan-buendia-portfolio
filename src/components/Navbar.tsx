@@ -236,12 +236,6 @@ export default function Navbar() {
             </a>
           </div>
           <div className="menu-meta u-label flex items-center gap-6">
-            <a href={SITE.socials.github} target="_blank" rel="noreferrer" className="link-line">
-              GitHub ↗
-            </a>
-            <a href={SITE.socials.linkedin} target="_blank" rel="noreferrer" className="link-line">
-              LinkedIn ↗
-            </a>
             <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">
               CV ↘
             </a>

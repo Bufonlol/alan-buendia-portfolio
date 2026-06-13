@@ -41,11 +41,11 @@ export default function Fun() {
         title={t({ es: "Segundo jugador", en: "Player two" })}
       />
       <div ref={gridRef} className="mt-14 grid gap-5 md:grid-cols-12">
-        {/* currently playing */}
+        {/* currently training */}
         <div className={`${cardBase} -rotate-[1.2deg] md:col-span-5`}>
           <div className="flex items-center justify-between">
             <span className="u-label text-muted">
-              {t({ es: "Jugando ahora", en: "Currently playing" })}
+              {t({ es: "Entrenando ahora", en: "Currently training" })}
             </span>
             <span className="flex h-4 items-end gap-[3px]" aria-hidden="true">
               {[0, 1, 2].map((i) => (
@@ -61,32 +61,32 @@ export default function Fun() {
             </span>
           </div>
           <p className="display mt-6 text-[clamp(1.8rem,3.5vw,2.8rem)] leading-none">
-            {FUN.currentlyPlaying.title}
+            {FUN.currentlyTraining.title}
           </p>
           <p className="u-label mt-4 text-muted">
-            {FUN.currentlyPlaying.platform} — {t(FUN.currentlyPlaying.note)}
+            {t(FUN.currentlyTraining.gym)} — {t(FUN.currentlyTraining.note)}
           </p>
         </div>
 
-        {/* favorite games */}
+        {/* martial arts */}
         <div className={`${cardBase} rotate-[0.8deg] md:col-span-7`}>
           <span className="u-label text-muted">
-            {t({ es: "Juegos favoritos", en: "Favorite games" })}
+            {t({ es: "Artes marciales", en: "Martial arts" })}
           </span>
           <div className="mt-6 flex flex-wrap gap-3">
-            {FUN.favoriteGames.map((g) => (
+            {FUN.martialArts.map((a) => (
               <span
-                key={g}
+                key={a}
                 className="pill u-label transition-colors duration-300 hover:border-accent hover:text-accent"
               >
-                {g}
+                {a}
               </span>
             ))}
           </div>
           <p className="mt-6 font-serif italic text-ink-soft">
             {t({
-              es: "el game feel son curvas de easing con mejor marketing.",
-              en: "game feel is just easing curves with better marketing.",
+              es: "el jiu jitsu te enseña que el tamaño es solo una variable más.",
+              en: "jiu jitsu teaches you that size is just one more variable.",
             })}
           </p>
         </div>

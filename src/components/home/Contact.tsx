@@ -132,22 +132,6 @@ export default function Contact() {
           className="contact-fade u-label mt-12 flex flex-wrap gap-8"
           style={{ opacity: 0 }}
         >
-          <a
-            href={SITE.socials.github}
-            target="_blank"
-            rel="noreferrer"
-            className="link-line"
-          >
-            GitHub ↗
-          </a>
-          <a
-            href={SITE.socials.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="link-line"
-          >
-            LinkedIn ↗
-          </a>
           <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">
             {t({ es: "Descargar CV ↘", en: "Download CV ↘" })}
           </a>

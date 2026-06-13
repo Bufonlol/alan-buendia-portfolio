@@ -31,10 +31,6 @@ export const SITE = {
   } satisfies L,
   cvUrl: "/alan-buendia-cv.pdf",
   url: "https://alan-portfolio-psi.vercel.app",
-  socials: {
-    github: "https://github.com/alanbuendia", // EDIT ME — real GitHub profile
-    linkedin: "https://www.linkedin.com/in/alan-buendia", // EDIT ME — real LinkedIn profile
-  },
 };
 
 export const NAV_LINKS: { index: string; label: L; href: string }[] = [
@@ -131,20 +127,12 @@ export const ABOUT = {
 };
 
 export const FUN = {
-  currentlyPlaying: {
-    title: "Hollow Knight: Silksong", // EDIT ME — what are you actually playing?
-    platform: "PC",
-    note: { es: "manden ayuda", en: "send help" } satisfies L,
+  currentlyTraining: {
+    title: "Jiu Jitsu",
+    gym: { es: "En el tatami", en: "On the mat" } satisfies L,
+    note: { es: "favorita de todas", en: "my favorite of all" } satisfies L,
   },
-  favoriteGames: [
-    // EDIT ME — your real top games
-    "Hollow Knight",
-    "Hades",
-    "Celeste",
-    "Resident Evil 4",
-    "Zelda: TOTK",
-    "Stardew Valley",
-  ],
+  martialArts: ["MMA", "Boxeo", "Muay Thai", "Jiu Jitsu"],
   interests: [
     {
       name: { es: "Ciberseguridad", en: "Cybersecurity" },
@@ -158,13 +146,6 @@ export const FUN = {
       note: {
         es: "Las curvas de easing son un rasgo de personalidad. Timelines de GSAP como lenguaje del amor.",
         en: "Easing curves are a personality trait. GSAP timelines as a love language.",
-      },
-    },
-    {
-      name: { es: "Diseño de juegos", en: "Game Design" },
-      note: {
-        es: "Estudiar por qué los juegos se sienten bien — y robárselo para la web.",
-        en: "Studying why games feel good — then stealing it for the web.",
       },
     },
     {
