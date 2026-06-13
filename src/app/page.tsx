@@ -5,7 +5,6 @@ import Stats from "@/components/home/Stats";
 import Stack from "@/components/home/Stack";
 import Process from "@/components/home/Process";
 import Experience from "@/components/home/Experience";
-import Testimonial from "@/components/home/Testimonial";
 import About from "@/components/home/About";
 import Fun from "@/components/home/Fun";
 import Contact from "@/components/home/Contact";
@@ -49,8 +48,7 @@ export default function Home() {
       <Stack />
       <Process />
       <Experience />
-      <Testimonial />
-      <About />
+<About />
       <Fun />
       <Marquee items={MARQUEE_CONTACT} baseSeconds={16} />
       <Contact />
