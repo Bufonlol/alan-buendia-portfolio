@@ -1,16 +1,5 @@
 import type { L } from "@/lib/i18n";
 
-/**
- * ─────────────────────────────────────────────────────────────
- *  CASE STUDIES — one object per project, fully data-driven and
- *  bilingual ({ es, en } on every visible string). Drop real
- *  screenshots into /public/projects/<slug>/ and list them in
- *  `screens`; add a `video` path to replace the demo placeholder.
- *  NOTE: keep `title` free of accented characters — the hero
- *  animation masks clip diacritics.
- * ─────────────────────────────────────────────────────────────
- */
-
 export type Project = {
   slug: string;
   index: string;
@@ -19,16 +8,14 @@ export type Project = {
   year: string;
   role: L;
   status: L;
-  color: string; // per-project tint used in visuals
+  color: string;
   tags: string[];
-  /** hero/card artwork — omit to use the stylized placeholder */
   cardImage?: string;
   problem: L;
   research: L;
   solution: L[];
   stack: string[];
   screens: { caption: L; image?: string; fit?: "cover" | "contain" }[];
-  video?: string;
   results: { metric: L; label: L }[];
   learnings: L[];
   live?: string;
@@ -132,93 +119,9 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    slug: "pulmoalert",
-    index: "02",
-    title: { es: "PulmoAlert", en: "PulmoAlert" },
-    tagline: {
-      es: "Alertas tempranas para la salud respiratoria.",
-      en: "Early warnings for respiratory health.",
-    },
-    year: "2024",
-    role: { es: "Desarrollador Frontend", en: "Frontend Developer" },
-    status: { es: "Piloto", en: "Pilot" },
-    color: "#3E6B5C",
-    tags: ["Angular", "TypeScript", "Spring Boot", "MySQL"],
-    problem: {
-      es: "Los pacientes respiratorios se deterioran en silencio entre consultas. Para cuando los síntomas alarman lo suficiente como para ir al médico, la ventana de intervención temprana suele haberse cerrado. Los clínicos no tenían señal continua — solo lo que el paciente recordara en la siguiente cita.",
-      en: "Respiratory patients deteriorate quietly between checkups. By the time symptoms are alarming enough to visit a doctor, the window for early intervention has often closed. Clinicians had no continuous signal — only whatever the patient remembered at the next appointment.",
-    },
-    research: {
-      es: "Trabajando con compañeros de ciencias de la salud, mapeé cómo ocurre el triaje en realidad: los clínicos no quieren datos crudos, quieren saber quién necesita atención hoy. Eso reencuadró el producto: de una app de registro a un sistema de alertas — el paciente registra en segundos, el sistema vigila la tendencia y el dashboard solo muestra los casos que van a la deriva.",
-      en: "Working with health-sciences peers, I mapped how triage actually happens: clinicians don't want raw data, they want to know who needs attention today. That reframed the product from a logging app into an alerting system — patients log in seconds, the system watches the trend, and the dashboard surfaces only the cases that are drifting.",
-    },
-    solution: [
-      {
-        es: "Check-in diario hecho para gente enferma: síntomas + SpO₂ registrados en menos de 30 segundos",
-        en: "Daily check-in built for sick people: symptoms + SpO₂ logged in under 30 seconds",
-      },
-      {
-        es: "Motor de riesgo con tres niveles — estable, vigilancia, alerta — basado en tendencia, no en lecturas sueltas",
-        en: "Risk engine with three tiers — stable, watch, alert — based on trend, not single readings",
-      },
-      {
-        es: "Dashboard clínico ordenado por quién necesita atención primero, no por orden alfabético",
-        en: "Clinician dashboard sorted by who needs attention first, not by alphabet",
-      },
-      {
-        es: "Lenguaje visual de semáforo usable por pacientes de cualquier edad sin capacitación",
-        en: "Traffic-light visual language usable by patients of any age without training",
-      },
-      {
-        es: "Pipeline de notificaciones para que un nivel 'alerta' nunca pase la noche sin verse",
-        en: "Notification pipeline so an 'alert' tier never sits unseen overnight",
-      },
-    ],
-    stack: ["Angular", "TypeScript", "Spring Boot", "Java", "MySQL"],
-    screens: [
-      { caption: { es: "Check-in diario de 30 segundos", en: "30-second daily check-in" } },
-      { caption: { es: "Vista de tendencia del paciente", en: "Patient trend view" } },
-      { caption: { es: "Dashboard de triaje clínico", en: "Clinician triage dashboard" } },
-    ],
-    results: [
-      {
-        metric: { es: "30s", en: "30s" },
-        label: { es: "Check-in diario promedio", en: "Average daily check-in" },
-      },
-      {
-        metric: { es: "3", en: "3" },
-        label: {
-          es: "Niveles de riesgo, cero capacitación",
-          en: "Risk tiers, zero training needed",
-        },
-      },
-      {
-        metric: { es: "24/7", en: "24/7" },
-        label: {
-          es: "Monitoreo de tendencia entre visitas",
-          en: "Trend monitoring between visits",
-        },
-      },
-    ],
-    learnings: [
-      {
-        es: "Diseñar para usuarios enfermos lo cambia todo: objetivos más grandes, menos pasos, colores más calmados.",
-        en: "Designing for unwell users changes everything: bigger targets, fewer steps, calmer colors.",
-      },
-      {
-        es: "La fatiga de alertas es un problema de diseño — si todo es urgente, nada lo es.",
-        en: "Alert fatigue is a design problem — if everything is urgent, nothing is.",
-      },
-      {
-        es: "La visualización de datos de salud debe ser honesta primero y bonita después.",
-        en: "Health data visualization must be honest first and pretty second.",
-      },
-    ],
-  },
-  {
     slug: "inventory-management",
-    index: "03",
-    title: { es: "Sistema de Inventario", en: "Inventory System" },
+    index: "02",
+    title: { es: "POS Joyería", en: "Jewelry POS" },
     tagline: {
       es: "Una sola fuente de verdad para una joyería multisucursal.",
       en: "One source of truth for a multi-branch jewelry chain.",
@@ -246,6 +149,10 @@ export const PROJECTS: Project[] = [
         en: "Dynamic pricing engine tied to the live gold spot price — every product reprices automatically",
       },
       {
+        es: "Punto de venta completo con carrito, descuentos y recibos PDF generados del lado del servidor",
+        en: "Full point-of-sale with cart, discounts and server-side PDF receipts",
+      },
+      {
         es: "Módulo de transferencias entre sucursales donde cada movimiento registra usuario, hora, origen y destino",
         en: "Branch-to-branch transfer module where every movement records user, time, origin and destination",
       },
@@ -254,12 +161,8 @@ export const PROJECTS: Project[] = [
         en: "Role-based views: admin, branch manager and sales staff each get a focused interface",
       },
       {
-        es: "Flujo de ventas completo con recibos PDF generados del lado del servidor y documentos de transferencia",
-        en: "Complete sales flow with server-side PDF receipts and transfer documents",
-      },
-      {
-        es: "Esquema MySQL normalizado para productos, variantes, sucursales y transacciones",
-        en: "Normalized MySQL schema for products, variants, branches and transactions",
+        es: "Catálogo de clientes con historial de compras y generación de QR por cliente",
+        en: "Client catalog with purchase history and per-client QR generation",
       },
     ],
     stack: ["React", "TypeScript", "Laravel", "MySQL"],
@@ -314,194 +217,8 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    slug: "supplier-platform",
-    index: "04",
-    title: { es: "Plataforma de Proveedores", en: "Supplier Platform" },
-    tagline: {
-      es: "Compras sin el caos de WhatsApp.",
-      en: "Procurement without the WhatsApp chaos.",
-    },
-    year: "2025",
-    role: { es: "Desarrollador Full-Stack", en: "Full-Stack Developer" },
-    status: { es: "En desarrollo", en: "In development" },
-    color: "#4A5A8A",
-    tags: ["React", "TypeScript", "Spring Boot", "PostgreSQL"],
-    problem: {
-      es: "Los negocios pequeños le piden a sus proveedores a través de un pantano de chats de WhatsApp, llamadas y PDFs reenviados. Las listas de precios caducan el día que se envían, las cotizaciones se pierden entre conversaciones y nadie puede responder la pregunta más simple: ¿qué pedimos el mes pasado y cuánto costó?",
-      en: "Small businesses order from suppliers through a swamp of WhatsApp chats, phone calls and forwarded PDFs. Price lists are stale the day they're sent, quotes get lost between conversations, and nobody can answer the simplest question: what did we order last month and what did it cost?",
-    },
-    research: {
-      es: "Mapeé el ciclo completo comprador–proveedor con negocios locales para los que ya había construido sistemas. El hallazgo: ninguno de los dos lados quería 'un marketplace' — querían sus relaciones existentes, menos el caos. Así que la plataforma digitaliza la relación misma: catálogos, cotizaciones, pedidos e historial entre partes que ya se tienen confianza.",
-      en: "I mapped the full buyer–supplier loop with local businesses I'd already built systems for. The insight: neither side wanted 'a marketplace' — they wanted their existing relationships, minus the chaos. So the platform digitizes the relationship itself: catalogs, quotes, orders and history between parties that already trust each other.",
-    },
-    solution: [
-      {
-        es: "Catálogos de proveedor con listas de precios versionadas — los PDFs caducos reemplazados por una fuente de verdad viva",
-        en: "Supplier catalogs with versioned price lists — stale PDFs replaced by a living source of truth",
-      },
-      {
-        es: "Flujo de cotización (RFQ): compara respuestas de proveedores lado a lado en vez de scrollear chats",
-        en: "Request-for-quote flow: compare supplier responses side by side instead of scrolling chats",
-      },
-      {
-        es: "Seguimiento de pedidos con una línea de tiempo visible para ambos lados — solicitado, confirmado, enviado, entregado",
-        en: "Order tracking with a status timeline both sides can see — requested, confirmed, shipped, delivered",
-      },
-      {
-        es: "Notificaciones por WhatsApp vía N8N para que los proveedores no tengan que aprender un hábito nuevo el día uno",
-        en: "WhatsApp notifications via N8N so suppliers don't need to learn a new habit on day one",
-      },
-      {
-        es: "Historial de pedidos y analítica de gasto que por fin responden '¿cuánto nos costó esto el trimestre pasado?'",
-        en: "Order history and spend analytics that finally answer 'what did this cost us last quarter?'",
-      },
-    ],
-    stack: ["React", "TypeScript", "Spring Boot", "PostgreSQL", "Docker", "N8N"],
-    screens: [
-      {
-        caption: {
-          es: "Catálogo de proveedor versionado",
-          en: "Versioned supplier catalog",
-        },
-      },
-      { caption: { es: "Comparación de cotizaciones", en: "Quote comparison" } },
-      {
-        caption: {
-          es: "Línea de tiempo del pedido",
-          en: "Order status timeline",
-        },
-      },
-    ],
-    results: [
-      {
-        metric: { es: "1", en: "1" },
-        label: {
-          es: "Canal en vez de chats dispersos",
-          en: "Channel instead of scattered chats",
-        },
-      },
-      {
-        metric: { es: "RFQ", en: "RFQ" },
-        label: {
-          es: "Cotizaciones comparadas lado a lado",
-          en: "Quotes compared side by side",
-        },
-      },
-      {
-        metric: { es: "Auto", en: "Auto" },
-        label: {
-          es: "Actualizaciones por WhatsApp",
-          en: "WhatsApp status updates",
-        },
-      },
-    ],
-    learnings: [
-      {
-        es: "Encontrar a los usuarios en las herramientas que ya usan (WhatsApp) le gana a forzar un hábito nuevo.",
-        en: "Meeting users on the tools they already use (WhatsApp) beats forcing a new habit.",
-      },
-      {
-        es: "El modelado multi-tenant es 10 veces más fácil de hacer bien el día uno que de retrofitear.",
-        en: "Multi-tenant data modeling is 10x easier to get right on day one than to retrofit.",
-      },
-      {
-        es: "Las tablas son una disciplina de UX en sí mismas — orden, densidad y escaneabilidad deciden la adopción.",
-        en: "Tables are a UX discipline of their own — sorting, density and scanability decide adoption.",
-      },
-    ],
-  },
-  {
-    slug: "ai-security",
-    index: "05",
-    title: { es: "Lab de Seguridad IA", en: "AI Security Lab" },
-    tagline: {
-      es: "Triaje de phishing explicable para equipos pequeños.",
-      en: "Explainable phishing triage for small teams.",
-    },
-    year: "2026",
-    role: { es: "I+D · Solo", en: "R&D · Solo" },
-    status: { es: "Investigación", en: "Research" },
-    color: "#7A3E8F",
-    tags: ["React", "TypeScript", "FastAPI", "LLM"],
-    problem: {
-      es: "A los negocios pequeños mexicanos los phishean constantemente y no tienen equipo de seguridad que haga triaje. Los filtros genéricos no cachan las estafas localizadas — avisos falsos del SAT, suplantación de bancos, fraudes de paquetería — y los empleados reenvían correos sospechosos a quien 'le sabe a las computadoras'. Los veredictos llegan tarde o nunca.",
-      en: "Small Mexican businesses get phished constantly and have no security team to triage it. Generic spam filters miss localized scams — fake SAT notices, bank impersonations, parcel fraud — and employees forward suspicious emails to whoever 'knows computers'. Verdicts arrive late or never.",
-    },
-    research: {
-      es: "Reuní un corpus de muestras reales de phishing dirigidas a negocios mexicanos y probé heurísticas (análisis de URLs, discrepancia de remitente, lenguaje de urgencia) contra clasificación con LLMs. Ninguno gana solo: las heurísticas son rápidas pero frágiles, los LLMs son flexibles pero necesitan barandales. La pregunta de diseño se volvió la confianza — un veredicto que nadie entiende es un veredicto sobre el que nadie actúa.",
-      en: "I collected a corpus of real phishing samples targeting MX businesses and tested heuristics (URL analysis, sender mismatch, urgency language) against LLM classification. Neither wins alone: heuristics are fast but brittle, LLMs are flexible but need guardrails. The design question became trust — a verdict nobody understands is a verdict nobody acts on.",
-    },
-    solution: [
-      {
-        es: "Pega o reenvía un correo sospechoso — el pipeline lo califica en segundos",
-        en: "Paste or forward a suspicious email — the pipeline scores it in seconds",
-      },
-      {
-        es: "Análisis híbrido: señales deterministas (links, headers, remitente) + clasificación de intención con LLM",
-        en: "Hybrid analysis: deterministic signals (links, headers, sender) + LLM intent classification",
-      },
-      {
-        es: "Veredictos explicables: cada bandera muestra la evidencia exacta que la disparó, en lenguaje claro",
-        en: "Explainable verdicts: every flag shows the exact evidence that triggered it, in plain language",
-      },
-      {
-        es: "Vista de campañas que agrupa intentos relacionados para detectar estafas repetidas como un solo ataque",
-        en: "Campaign view that clusters related attempts so repeated scams are spotted as one attack",
-      },
-      {
-        es: "Ciclo de retroalimentación — los veredictos corregidos se vuelven casos de evaluación para la siguiente iteración del modelo",
-        en: "Feedback loop — corrected verdicts become evaluation cases for the next model iteration",
-      },
-    ],
-    stack: ["React", "TypeScript", "FastAPI", "PostgreSQL", "Docker"],
-    screens: [
-      {
-        caption: {
-          es: "Veredicto con desglose de evidencia",
-          en: "Verdict with evidence breakdown",
-        },
-      },
-      { caption: { es: "Agrupación de campañas", en: "Campaign clustering" } },
-      { caption: { es: "Pipeline de análisis", en: "Analysis pipeline" } },
-    ],
-    results: [
-      {
-        metric: { es: "<5s", en: "<5s" },
-        label: { es: "De pegar al veredicto", en: "From paste to verdict" },
-      },
-      {
-        metric: { es: "MX", en: "MX" },
-        label: {
-          es: "Consciente de estafas locales",
-          en: "Localized scam awareness",
-        },
-      },
-      {
-        metric: { es: "100%", en: "100%" },
-        label: {
-          es: "Veredictos con evidencia visible",
-          en: "Verdicts with visible evidence",
-        },
-      },
-    ],
-    learnings: [
-      {
-        es: "La explicabilidad es el producto — puntuaciones de confianza sin evidencia son puras vibras.",
-        en: "Explainability is the product — confidence scores without evidence are just vibes.",
-      },
-      {
-        es: "Evals antes que features: no puedes mejorar un clasificador que no puedes medir.",
-        en: "Evals before features: you can't improve a classifier you can't measure.",
-      },
-      {
-        es: "La UX de seguridad es persuasión: la acción segura siempre debe ser la acción fácil.",
-        en: "Security UX is persuasion: the safe action must always be the easy action.",
-      },
-    ],
-  },
-  {
     slug: "kybernet",
-    index: "06",
+    index: "03",
     title: { es: "Kybernet.MX", en: "Kybernet.MX" },
     tagline: {
       es: "Una plataforma, cualquier tipo de negocio.",
@@ -515,6 +232,7 @@ export const PROJECTS: Project[] = [
     status: { es: "Tesis · UTCV", en: "Thesis · UTCV" },
     color: "#5440A8",
     tags: ["React", "TypeScript", "Supabase"],
+    cardImage: "/projects/kybernet/login.png",
     problem: {
       es: "Las herramientas de gestión empresarial genéricas asumen una sola vertical — una barbería, una tienda y un taller terminan forzados en el mismo flujo. Los negocios pequeños mexicanos acaban pagando software que no le queda a nadie. La pregunta de tesis: ¿puede una plataforma registrar y gestionar distintos giros de negocio con reglas que se adaptan por vertical?",
       en: "Off-the-shelf business management tools assume one vertical — a barbershop, a store and a workshop all get forced into the same flow. Small Mexican businesses end up paying for software that fits nobody. The thesis question: can one platform register and manage different business types under rules that adapt per vertical?",

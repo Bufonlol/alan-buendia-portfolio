@@ -149,7 +149,6 @@ export default function FeaturedProjects() {
               <ProjectVisual
                 project={p}
                 image={p.cardImage}
-                hoverVideo
                 className="aspect-[16/10] w-full [container-type:inline-size] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[0.985]"
               />
               <div className="mt-4 flex items-baseline justify-between gap-4 border-t border-line pt-4">

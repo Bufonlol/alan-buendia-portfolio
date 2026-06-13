@@ -259,38 +259,7 @@ export default function CaseStudy({
           </div>
         </Block>
 
-        <Block index="06" label={t({ es: "En movimiento", en: "In motion" })}>
-          <Reveal>
-            {project.video ? (
-              <video
-                src={project.video}
-                controls
-                playsInline
-                className="aspect-video w-full bg-paper-soft"
-              />
-            ) : (
-              <div
-                data-cursor="play"
-                className="relative flex aspect-video w-full items-center justify-center overflow-hidden bg-paper-soft"
-              >
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(150deg, ${project.color}26, transparent 70%)`,
-                  }}
-                />
-                <span className="pill u-label bg-paper text-muted">
-                  {t({
-                    es: "▶ video demo — en producción",
-                    en: "▶ demo reel — in production",
-                  })}
-                </span>
-              </div>
-            )}
-          </Reveal>
-        </Block>
-
-        <Block index="07" label={t({ es: "Resultados", en: "Results" })}>
+        <Block index="06" label={t({ es: "Resultados", en: "Results" })}>
           <div className="grid gap-8 sm:grid-cols-3">
             {project.results.map((r) => (
               <Metric key={r.label.en} metric={t(r.metric)} label={t(r.label)} />
@@ -298,7 +267,7 @@ export default function CaseStudy({
           </div>
         </Block>
 
-        <Block index="08" label={t({ es: "Aprendizajes", en: "Learnings" })}>
+        <Block index="07" label={t({ es: "Aprendizajes", en: "Learnings" })}>
           <ol className="flex max-w-[42rem] flex-col gap-6">
             {project.learnings.map((l, i) => (
               <Reveal key={i} delay={i * 0.05}>

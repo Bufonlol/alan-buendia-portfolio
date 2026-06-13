@@ -1,44 +1,25 @@
 "use client";
 
-import { useRef } from "react";
 import { useLang } from "@/lib/i18n";
 import type { Project } from "@/data/projects";
 
-/**
- * Stylized project artwork used in cards, banners and screen slots.
- * Works as a designed placeholder until real screenshots/videos are
- * dropped into the project data — if `project.video` exists it plays
- * on hover, if an `image` is passed it renders that instead.
- */
 export default function ProjectVisual({
   project,
   image,
   caption,
   className = "",
-  hoverVideo = false,
   fit = "cover",
 }: {
   project: Project;
   image?: string;
   caption?: string;
   className?: string;
-  hoverVideo?: boolean;
   fit?: "cover" | "contain";
 }) {
   const { t } = useLang();
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <div
-      className={`relative overflow-hidden bg-paper-soft ${className}`}
-      onMouseEnter={() => hoverVideo && videoRef.current?.play().catch(() => {})}
-      onMouseLeave={() => {
-        if (videoRef.current) {
-          videoRef.current.pause();
-          videoRef.current.currentTime = 0;
-        }
-      }}
-    >
+    <div className={`relative overflow-hidden bg-paper-soft ${className}`}>
       {/* tinted wash + blueprint grid */}
       <div
         className="absolute inset-0"
@@ -108,16 +89,6 @@ export default function ProjectVisual({
         </>
       )}
 
-      {project.video && hoverVideo && (
-        <video
-          ref={videoRef}
-          src={project.video}
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        />
-      )}
     </div>
   );
 }
