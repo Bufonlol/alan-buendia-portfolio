@@ -70,7 +70,7 @@ export default function Marquee({
                 <span className="display px-6 text-[clamp(1.6rem,3.5vw,2.8rem)]">
                   {t(item)}
                 </span>
-                <span className="text-accent text-[clamp(1rem,2vw,1.6rem)]">✳</span>
+                <span className="text-accent text-[clamp(1rem,2vw,1.6rem)]">◆</span>
               </span>
             ))}
           </div>

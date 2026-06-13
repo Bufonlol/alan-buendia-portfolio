@@ -122,7 +122,7 @@ export default function Hero() {
             className="hero-line display -mt-[0.15em] block overflow-hidden pt-[0.15em] text-right text-[clamp(3.4rem,15.5vw,14rem)] leading-[0.85]"
             style={{ opacity: 0 }}
           >
-            BUENDÍA<span className="text-accent">✳</span>
+            BUENDÍA<span className="text-accent">◆</span>
           </span>
         </h1>
       </div>

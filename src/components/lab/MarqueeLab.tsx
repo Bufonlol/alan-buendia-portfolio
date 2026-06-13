@@ -95,7 +95,7 @@ export default function MarqueeLab() {
                   >
                     {w}
                   </span>
-                  <span className="text-accent">✳</span>
+                  <span className="text-accent">◆</span>
                 </span>
               ))}
             </span>

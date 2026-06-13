@@ -124,7 +124,7 @@ export default function FeaturedProjects() {
               {t({ es: "Proyectos", en: "Selected" })}
               <br />
               {t({ es: "selectos", en: "projects" })}
-              <span className="text-accent">✳</span>
+              <span className="text-accent">◆</span>
             </h2>
             <p className="mt-6 max-w-[24rem] font-serif text-xl italic text-ink-soft">
               {t({
@@ -214,8 +214,8 @@ export default function FeaturedProjects() {
                 className="link-line w-fit uppercase"
               >
                 {t({
-                  es: "O pierde el tiempo en el arcade ✳",
-                  en: "Or waste time in the arcade ✳",
+                  es: "O pierde el tiempo en el arcade ◆",
+                  en: "Or waste time in the arcade ◆",
                 })}
               </a>
             </div>

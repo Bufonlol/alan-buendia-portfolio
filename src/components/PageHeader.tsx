@@ -78,7 +78,7 @@ export default function PageHeader({
         style={{ opacity: 0 }}
       >
         {t(title)}
-        {accent && <span className="text-accent">✳</span>}
+        {accent && <span className="text-accent">◆</span>}
       </h1>
       {blurbContent && (
         <p

@@ -186,7 +186,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         aria-hidden="true"
       >
         <span className="display text-paper/20 text-[clamp(3rem,10vw,8rem)]">
-          AB<span className="text-accent">✳</span>
+          AB<span className="text-accent">◆</span>
         </span>
       </div>
         <div className="grain" aria-hidden="true" />

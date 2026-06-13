@@ -103,7 +103,7 @@ export default function Contact() {
           {t({ es: "Construyamos", en: "Let's build" })}
           <br />
           {t({ es: "juntos", en: "together" })}
-          <span className="text-accent">✳</span>
+          <span className="text-accent">◆</span>
         </h2>
 
         <div className="mt-10 flex flex-col gap-8 md:mt-14 md:flex-row md:items-center md:gap-12">

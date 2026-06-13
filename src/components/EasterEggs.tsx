@@ -10,7 +10,7 @@ const KONAMI = [
   "b", "a",
 ];
 
-const GLYPHS = ["✳", "◆", "●", "▲", "✦", "★"];
+const GLYPHS = ["◆", "◆", "●", "▲", "✦", "★"];
 
 export default function EasterEggs() {
   const { t } = useLang();

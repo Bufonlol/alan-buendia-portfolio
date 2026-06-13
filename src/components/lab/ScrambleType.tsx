@@ -9,7 +9,7 @@ const WORDS: [string, string][] = [
   ["CODE", "CÓDIGO"],
 ];
 
-const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ✳";
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ◆";
 
 /**
  * Bilingual type switch — hover a word and it decodes from English

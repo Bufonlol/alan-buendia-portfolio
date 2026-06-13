@@ -155,7 +155,7 @@ export default function Navbar() {
             className="display pointer-events-auto text-xl tracking-wide"
             aria-label={t({ es: "Inicio", en: "Home" })}
           >
-            AB<span className="text-accent">✳</span>
+            AB<span className="text-accent">◆</span>
           </button>
           <div className="u-label hidden gap-8 opacity-70 md:flex">
             <span>{SITE.locationShort}</span>

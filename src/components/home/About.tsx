@@ -77,7 +77,7 @@ export default function About() {
                 </text>
               </svg>
               <span className="display absolute inset-0 flex items-center justify-center text-3xl text-accent">
-                ✳
+                ◆
               </span>
             </div>
           </Reveal>

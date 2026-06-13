@@ -297,7 +297,7 @@ export default function BreakoutGame() {
       small: t({ es: "¿fue la culpa del skill issue? haz clic para reintentar", en: "skill issue? click to retry" }),
     },
     win: {
-      big: t({ es: "¡Ganaste! ✳", en: "You win ✳" }),
+      big: t({ es: "¡Ganaste! ◆", en: "You win ◆" }),
       small: t({
         es: "ahora imagina esta energía en tu proyecto — haz clic para volver a jugar",
         en: "now imagine this energy on your project — click to replay",
@@ -321,7 +321,7 @@ export default function BreakoutGame() {
         <span className="flex gap-1" aria-label={t({ es: `${lives} vidas`, en: `${lives} lives` })}>
           {[0, 1, 2].map((i) => (
             <span key={i} className={i < lives ? "text-accent" : "text-line"}>
-              ✳
+              ◆
             </span>
           ))}
         </span>

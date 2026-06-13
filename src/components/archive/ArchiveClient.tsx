@@ -156,8 +156,8 @@ export default function ArchiveClient() {
       </ul>
 
       <p className="u-label mt-6 pb-20 text-muted">{t({
-        es: "✳ las filas con preview muestran su interfaz real — pasa el cursor.",
-        en: "✳ rows with a preview show their real interface — hover around.",
+        es: "◆ las filas con preview muestran su interfaz real — pasa el cursor.",
+        en: "◆ rows with a preview show their real interface — hover around.",
       })}</p>
 
       {/* floating preview */}

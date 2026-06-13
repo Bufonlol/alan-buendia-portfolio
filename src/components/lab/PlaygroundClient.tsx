@@ -73,7 +73,7 @@ export default function PlaygroundClient() {
           className="display mt-8 text-[clamp(3.4rem,14vw,13rem)] leading-[0.88]"
           style={{ opacity: 0 }}
         >
-          Play<span className="text-accent">✳</span>ground
+          Play<span className="text-accent">◆</span>ground
         </h1>
         <p
           className="lab-fade mt-6 max-w-[36rem] font-serif text-xl italic text-ink-soft md:text-2xl"

@@ -35,8 +35,8 @@ export default function ArcadeClient() {
 
       <p className="u-label pb-20 text-center text-muted">
         {t({
-          es: "más máquinas en construcción ✳ ¿tienes una idea de juego? reto aceptado",
-          en: "more cabinets under construction ✳ got a game idea? challenge accepted",
+          es: "más máquinas en construcción ◆ ¿tienes una idea de juego? reto aceptado",
+          en: "more cabinets under construction ◆ got a game idea? challenge accepted",
         })}
       </p>
 

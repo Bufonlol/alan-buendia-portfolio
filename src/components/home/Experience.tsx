@@ -82,7 +82,7 @@ export default function Experience() {
                   {t(job.summary)}
                 </p>
                 <p className="pill u-label mt-5 text-muted">
-                  <span className="text-accent">✳</span> {t(job.highlight)}
+                  <span className="text-accent">◆</span> {t(job.highlight)}
                 </p>
               </Reveal>
             </li>
