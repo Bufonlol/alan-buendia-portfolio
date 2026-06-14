@@ -97,7 +97,7 @@ export default function Contact() {
         </p>
         <h2
           ref={titleRef}
-          className="display text-[clamp(3.4rem,12.5vw,11.5rem)] leading-[0.88]"
+          className="display text-[clamp(2.4rem,10.5vw,11.5rem)] leading-[0.92]"
           style={{ opacity: 0 }}
         >
           {t({ es: "Construyamos", en: "Let's build" })}
