@@ -70,8 +70,8 @@ export default function About() {
                 <text className="u-label fill-ink" style={{ fontSize: "9.5px" }}>
                   <textPath href="#stamp-circle">
                     {t({
-                      es: "Frontend Developer · Orizaba MX · Desde 2022 ·",
-                      en: "Frontend Developer · Orizaba MX · Est. 2022 ·",
+                      es: "Frontend Engineer · Orizaba MX · Desde 2022 ·",
+                      en: "Frontend Engineer · Orizaba MX · Est. 2022 ·",
                     })}
                   </textPath>
                 </text>

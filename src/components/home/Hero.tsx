@@ -111,8 +111,8 @@ export default function Hero() {
           <span className="hero-fade flex items-baseline gap-[3vw] pl-[2vw]" style={{ opacity: 0 }}>
             <span className="max-w-[16rem] font-serif italic text-[clamp(1.1rem,2.4vw,1.8rem)] leading-tight text-ink-soft">
               {t({
-                es: "— frontend developer construyendo interfaces que se sienten inevitables",
-                en: "— frontend developer building interfaces that feel inevitable",
+                es: "— frontend engineer construyendo interfaces que se sienten inevitables",
+                en: "— frontend engineer building interfaces that feel inevitable",
               })}
             </span>
           </span>

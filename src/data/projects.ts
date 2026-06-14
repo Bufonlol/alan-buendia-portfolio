@@ -304,6 +304,7 @@ export const PROJECTS: Project[] = [
         en: "AI agents in production need clear fallbacks — when the agent doesn't know, it must escalate to a human gracefully.",
       },
     ],
+    live: "https://dentalfamily.mx",
     external: "https://dentalfamily.mx",
   },
   {

@@ -258,6 +258,9 @@ export default function Navbar() {
             <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">
               CV ↘
             </a>
+            <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">
+              GitHub ↗
+            </a>
             <LangToggle className="border-l border-line-paper pl-6" />
           </div>
           <div className="menu-meta u-label text-paper/40">

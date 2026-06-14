@@ -14,14 +14,15 @@ export const SITE = {
   heroFirst: "ALAN",
   heroSecond: "BUENDÍA",
   role: {
-    es: "Frontend Developer",
-    en: "Frontend Developer",
+    es: "Frontend Engineer",
+    en: "Frontend Engineer",
   } satisfies L,
   tagline: {
     es: "interfaces que se sienten inevitables",
     en: "interfaces that feel inevitable",
   } satisfies L,
   email: "alan.buendia.dev@gmail.com",
+  github: "https://github.com/Bufonlol",
   location: "Orizaba, Veracruz — México",
   locationShort: "Orizaba, MX",
   coords: "18.85°N — 97.10°W",
@@ -46,14 +47,14 @@ export const NAV_LINKS: { index: string; label: L; href: string }[] = [
 
 export const STACK: { name: string; meta: L }[] = [
   { name: "React", meta: { es: "Frontend", en: "Frontend" } },
-  { name: "Angular", meta: { es: "Frontend", en: "Frontend" } },
+  { name: "Next.js", meta: { es: "Framework", en: "Framework" } },
   { name: "TypeScript", meta: { es: "Lenguaje", en: "Language" } },
-  { name: "JavaScript", meta: { es: "Lenguaje", en: "Language" } },
+  { name: "Node.js", meta: { es: "Backend", en: "Backend" } },
+  { name: "Laravel", meta: { es: "Backend", en: "Backend" } },
   { name: "Spring Boot", meta: { es: "Backend", en: "Backend" } },
-  { name: "Java", meta: { es: "Backend", en: "Backend" } },
   { name: "PostgreSQL", meta: { es: "Base de datos", en: "Database" } },
   { name: "MySQL", meta: { es: "Base de datos", en: "Database" } },
-  { name: "Docker", meta: { es: "DevOps", en: "DevOps" } },
+  { name: "Supabase", meta: { es: "Base de datos", en: "Database" } },
   { name: "Git", meta: { es: "Flujo de trabajo", en: "Workflow" } },
   { name: "GSAP", meta: { es: "Animación", en: "Motion" } },
   { name: "Three.js", meta: { es: "3D / WebGL", en: "3D / WebGL" } },
@@ -103,8 +104,8 @@ export const EXPERIENCE: {
 export const ABOUT = {
   // Keep it under 5 lines — that's the rule.
   paragraph: {
-    es: "Soy Alan — frontend developer de Orizaba, México. Llevo 3+ años lanzando sistemas reales para negocios reales: ERPs, clínicas, restaurantes, retail. Me importan las interfaces que se sienten inevitables — rápidas, accesibles y un poco juguetonas. Actualmente vivo en el espacio donde la ingeniería se encuentra con el movimiento.",
-    en: "I'm Alan — a frontend developer from Orizaba, México. For 3+ years I've been shipping real systems for real businesses: ERPs, clinics, restaurants, retail. I care about interfaces that feel inevitable — fast, accessible, and a little bit playful. Currently living in the space where engineering meets motion.",
+    es: "Soy Alan — frontend engineer de Orizaba, México. Llevo 3+ años lanzando sistemas reales para negocios reales: ERPs, clínicas, restaurantes, retail. Me importan las interfaces que se sienten inevitables — rápidas, accesibles y un poco juguetonas. Actualmente vivo en el espacio donde la ingeniería se encuentra con el movimiento.",
+    en: "I'm Alan — a frontend engineer from Orizaba, México. For 3+ years I've been shipping real systems for real businesses: ERPs, clinics, restaurants, retail. I care about interfaces that feel inevitable — fast, accessible, and a little bit playful. Currently living in the space where engineering meets motion.",
   } satisfies L,
   facts: [
     { es: "3+ años lanzando", en: "3+ years shipping" },
@@ -190,7 +191,7 @@ export const TESTIMONIAL = {
 
 export const MARQUEE_ITEMS: L[] = [
   { es: "Disponible para trabajar", en: "Available for work" },
-  { es: "Frontend Developer", en: "Frontend Developer" },
+  { es: "Frontend Engineer", en: "Frontend Engineer" },
   { es: "React", en: "React" },
   { es: "TypeScript", en: "TypeScript" },
   { es: "GSAP", en: "GSAP" },

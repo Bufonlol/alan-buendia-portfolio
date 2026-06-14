@@ -138,6 +138,9 @@ export default function Contact() {
           <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">
             {t({ es: "Descargar CV ↘", en: "Download CV ↘" })}
           </a>
+          <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">
+            GitHub ↗
+          </a>
         </div>
       </div>
 
