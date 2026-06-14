@@ -10,7 +10,7 @@ import {
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Lenis from "lenis";
-import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, ScrollTrigger, prefersReducedMotion, isFinePointer } from "@/lib/gsap";
 import { LangProvider } from "@/lib/i18n";
 import Preloader from "@/components/Preloader";
 import Cursor from "@/components/Cursor";
@@ -48,8 +48,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   /* ───────────── Lenis smooth scroll, wired into GSAP's ticker ───────────── */
   useEffect(() => {
-    if (prefersReducedMotion()) return;
-    const instance = new Lenis({ duration: 1.1, smoothWheel: true });
+    // Touch devices have hardware-accelerated native scroll — Lenis on mobile
+    // intercepts touch events through JS and causes jank. Skip it entirely.
+    if (prefersReducedMotion() || !isFinePointer()) return;
+    const instance = new Lenis({ duration: 0.9, smoothWheel: true });
     instance.on("scroll", ScrollTrigger.update);
     const raf = (time: number) => instance.raf(time * 1000);
     gsap.ticker.add(raf);

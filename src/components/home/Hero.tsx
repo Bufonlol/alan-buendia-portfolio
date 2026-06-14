@@ -139,7 +139,7 @@ export default function Hero() {
             {t({ es: "para explorar", en: "to explore" })}
           </span>
         </div>
-        <span className="hero-fade u-label text-right text-muted" style={{ opacity: 0 }}>
+        <span className="hero-fade u-label hidden text-right text-muted sm:block" style={{ opacity: 0 }}>
           React · TypeScript
           <br />
           GSAP · Three.js

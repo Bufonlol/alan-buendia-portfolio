@@ -153,7 +153,10 @@ export default function Contact() {
           })}
         </span>
         <button
-          onClick={() => lenis?.scrollTo(0, { duration: 1.6 })}
+          onClick={() => {
+            if (lenis) lenis.scrollTo(0, { duration: 1.6 });
+            else window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           className="u-label link-line text-left text-paper md:text-right"
         >
           {t({ es: "Volver arriba ↑", en: "Back to top ↑" })}

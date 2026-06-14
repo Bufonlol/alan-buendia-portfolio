@@ -162,6 +162,13 @@ body {
   50% { transform: scaleY(1); }
 }
 
+/* Remove grain on mobile — it creates a compositor layer that hurts scroll perf */
+@media (max-width: 767px) {
+  .grain {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .grain {
     animation: none;
