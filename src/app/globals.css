@@ -17,6 +17,12 @@
   --font-serif: var(--font-instrument);
 }
 
+@property --gradient-pos {
+  syntax: '<percentage>';
+  initial-value: -30%;
+  inherits: false;
+}
+
 html {
   scrollbar-width: thin;
   scrollbar-color: var(--color-ink) var(--color-paper);
@@ -124,6 +130,66 @@ body {
   .stack-row:hover .stack-meta {
     color: var(--color-accent);
   }
+
+  /* === Stat card spotlight (Aceternity UI-inspired) === */
+  .stat-item {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .stat-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(221, 74, 18, 0.09) 0%,
+      transparent 75%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .stat-item:hover::before { opacity: 1; }
+
+  /* Number glow on stat hover (React Bits / cult-ui inspired) */
+  .stat-item p[data-count] {
+    transition: text-shadow 0.4s ease;
+  }
+  .stat-item:hover p[data-count] {
+    text-shadow:
+      0 0 20px rgba(221, 74, 18, 0.45),
+      0 0 55px rgba(221, 74, 18, 0.18);
+  }
+
+  /* === Dot grid background (Aceternity UI-inspired) === */
+  .dot-grid {
+    background-image: radial-gradient(
+      circle, rgba(24, 21, 17, 0.16) 1px, transparent 1px
+    );
+    background-size: 26px 26px;
+  }
+
+  /* === Gradient sweep on section headings (Magic UI-inspired) === */
+  .heading-sweep {
+    background: linear-gradient(
+      90deg,
+      var(--color-ink) 0%,
+      var(--color-ink) calc(var(--gradient-pos) - 12%),
+      var(--color-accent) var(--gradient-pos),
+      var(--color-ink) calc(var(--gradient-pos) + 12%),
+      var(--color-ink) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: heading-sweep-anim 2.4s cubic-bezier(0.4, 0, 0.2, 1) 1 forwards;
+    animation-play-state: paused;
+  }
+  .heading-sweep.is-visible {
+    animation-play-state: running;
+  }
 }
 
 /* Film grain overlay */
@@ -162,6 +228,28 @@ body {
   50% { transform: scaleY(1); }
 }
 
+@keyframes heading-sweep-anim {
+  from { --gradient-pos: -30%; }
+  to   { --gradient-pos: 130%; }
+}
+
+/* Permanent subtle glow on ◆ accent glyphs inside headings (cult-ui inspired) */
+h1 .text-accent,
+h2 .text-accent {
+  text-shadow: 0 0 14px rgba(221, 74, 18, 0.28);
+}
+
+/* CTA button orange glow on hover — outside @layer so it wins over Tailwind utilities */
+.btn-accent-glow {
+  transition: transform 0.3s ease, box-shadow 0.4s ease;
+}
+.btn-accent-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(221, 74, 18, 0.25),
+    0 8px 28px rgba(221, 74, 18, 0.38),
+    0 0 60px rgba(221, 74, 18, 0.12);
+}
+
 /* Remove grain on mobile — it creates a compositor layer that hurts scroll perf */
 @media (max-width: 767px) {
   .grain {
@@ -171,6 +259,13 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .grain {
+    animation: none;
+  }
+  .heading-sweep {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: inherit;
     animation: none;
   }
   /* stop all looping CSS animations (pulse dots, eq bars, stamp spin, bounce) —

@@ -30,13 +30,20 @@ export default function Process() {
   );
 
   return (
-    <section className="px-5 py-28 md:px-8 md:py-36">
-      <SectionHeader
-        index="03"
-        label={t({ es: "Cómo trabajo", en: "How I work" })}
-        title={t({ es: "El proceso", en: "The process" })}
+    <section className="relative overflow-hidden px-5 py-28 md:px-8 md:py-36">
+      <div
+        aria-hidden="true"
+        className="dot-grid pointer-events-none absolute inset-0 z-0 opacity-50 [mask-image:radial-gradient(ellipse_85%_65%_at_50%_50%,black_30%,transparent_100%)]"
       />
-      <div ref={ref} className="mt-16 divide-y divide-line">
+      <div className="relative z-10">
+        <SectionHeader
+          index="03"
+          label={t({ es: "Cómo trabajo", en: "How I work" })}
+          title={t({ es: "El proceso", en: "The process" })}
+          sweep
+        />
+      </div>
+      <div ref={ref} className="relative z-10 mt-16 divide-y divide-line">
         {PROCESS.map((p) => (
           <div
             key={p.step}

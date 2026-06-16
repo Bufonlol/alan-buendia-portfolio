@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STATS } from "@/data/site";
 
@@ -30,16 +30,22 @@ export default function Stats() {
         const to = parseFloat(el.dataset.count!);
         const suffix = el.dataset.suffix ?? "";
         if (isNaN(to)) return;
-        const obj = { n: 0 };
-        gsap.to(obj, {
-          n: to,
-          duration: 1.8,
-          ease: "power2.out",
-          onUpdate: () => {
-            el.textContent = (Number.isInteger(to) ? Math.round(obj.n) : obj.n.toFixed(1)) + suffix;
-          },
-          scrollTrigger: { trigger: el, start: "top 85%", once: true },
-        });
+        const final = (Number.isInteger(to) ? String(to) : to.toFixed(1)) + suffix;
+        if (prefersReducedMotion()) {
+          el.textContent = final;
+        } else {
+          gsap.to(el, {
+            scrambleText: {
+              text: final,
+              chars: "0123456789",
+              revealDelay: 0.3,
+              speed: 0.4,
+            },
+            duration: 1.6,
+            ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 85%", once: true },
+          });
+        }
       });
     },
     { scope: ref }
@@ -56,7 +62,19 @@ export default function Stats() {
         {STATS.map((s) => {
           const { num, suffix } = parse(s.value);
           return (
-            <div key={s.label.en} className="stat-item">
+            <div
+              key={s.label.en}
+              className="stat-item"
+              onMouseMove={(e) => {
+                const r = e.currentTarget.getBoundingClientRect();
+                e.currentTarget.style.setProperty("--mouse-x", ((e.clientX - r.left) / r.width * 100) + "%");
+                e.currentTarget.style.setProperty("--mouse-y", ((e.clientY - r.top) / r.height * 100) + "%");
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.setProperty("--mouse-x", "50%");
+                e.currentTarget.style.setProperty("--mouse-y", "50%");
+              }}
+            >
               <p
                 className="display text-[clamp(3rem,6.5vw,5.5rem)] leading-none text-accent"
                 data-count={num ?? undefined}

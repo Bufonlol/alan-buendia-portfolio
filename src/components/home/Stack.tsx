@@ -40,6 +40,7 @@ export default function Stack() {
         index="02"
         label="Stack"
         title={t({ es: "Con esto construyo", en: "Tools I think in" })}
+        sweep
       />
       <ul ref={listRef} className="mt-14 border-b border-line">
         {STACK.map((item, i) => (
