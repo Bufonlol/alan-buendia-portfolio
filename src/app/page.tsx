@@ -3,6 +3,7 @@ import Hero from "@/components/home/Hero";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
 import Stats from "@/components/home/Stats";
 import Stack from "@/components/home/Stack";
+import Toolkit from "@/components/home/Toolkit";
 import Process from "@/components/home/Process";
 import Experience from "@/components/home/Experience";
 import About from "@/components/home/About";
@@ -46,6 +47,7 @@ export default function Home() {
       <FeaturedProjects />
       <Stats />
       <Stack />
+      <Toolkit />
       <Process />
       <Experience />
 <About />

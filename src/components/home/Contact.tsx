@@ -75,7 +75,11 @@ export default function Contact() {
       id="contact"
       className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-ink px-5 pb-6 pt-28 text-paper md:px-8"
     >
-      <div className="flex items-center justify-between">
+      {/* Aceternity grid + Magic UI retro grid backgrounds */}
+      <div className="bg-grid-paper pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
+      <div className="retro-grid pointer-events-none absolute inset-x-0 bottom-0 h-1/2" aria-hidden="true" />
+
+      <div className="relative z-10 flex items-center justify-between">
         <span className="u-label flex items-center gap-2 text-paper/70">
           <span
             className="inline-block h-2 w-2 rounded-full bg-accent"

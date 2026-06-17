@@ -57,8 +57,9 @@ export default function Stats() {
   };
 
   return (
-    <section className="border-y border-line px-5 py-16 md:px-8 md:py-20">
-      <div ref={ref} className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
+    <section className="relative overflow-hidden border-y border-line px-5 py-16 md:px-8 md:py-20">
+      <div className="dot-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
+      <div ref={ref} className="relative z-10 grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
         {STATS.map((s) => {
           const { num, suffix } = parse(s.value);
           return (

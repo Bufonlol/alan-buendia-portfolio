@@ -37,7 +37,9 @@ export default function About() {
   );
 
   return (
-    <section id="about" className="px-5 py-28 md:px-8 md:py-40">
+    <section id="about" className="relative overflow-hidden px-5 py-28 md:px-8 md:py-40">
+      <div className="bg-grid pointer-events-none absolute inset-0 opacity-70" aria-hidden="true" />
+      <div className="relative z-10">
       <SectionHeader
         index="04"
         label={t({ es: "Sobre mí", en: "About" })}
@@ -92,6 +94,7 @@ export default function About() {
             </div>
           </Reveal>
         </div>
+      </div>
       </div>
     </section>
   );
