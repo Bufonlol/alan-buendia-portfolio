@@ -6,6 +6,7 @@ import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import HeroCanvas from "@/components/home/HeroCanvas";
+import Meteors from "@/components/Meteors";
 
 export default function Hero() {
   const { ready } = useApp();
@@ -81,6 +82,7 @@ export default function Hero() {
       className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden px-5 pb-7 pt-24 md:px-8"
     >
       <HeroCanvas />
+      <Meteors count={16} />
 
       {/* top meta row */}
       <div className="hero-fade relative z-10 flex items-center justify-between" style={{ opacity: 0 }}>

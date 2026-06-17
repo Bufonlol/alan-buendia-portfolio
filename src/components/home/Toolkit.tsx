@@ -56,10 +56,11 @@ export default function Toolkit() {
           ref={gridRef}
           className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {UI_LIBRARIES.map((lib) => (
+          {UI_LIBRARIES.map((lib, i) => (
             <div
               key={lib.name}
-              className="lib-card spotlight-card flex flex-col gap-3 rounded-2xl border border-line bg-paper/40 p-6 backdrop-blur-sm"
+              className="lib-card spotlight-card border-beam flex flex-col gap-3 rounded-2xl border border-line bg-paper/40 p-6 backdrop-blur-sm"
+              style={{ ["--beam-delay" as string]: `${i * -0.8}s` }}
               onMouseMove={(e) => {
                 const r = e.currentTarget.getBoundingClientRect();
                 e.currentTarget.style.setProperty("--mouse-x", ((e.clientX - r.left) / r.width) * 100 + "%");

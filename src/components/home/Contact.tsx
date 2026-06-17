@@ -125,7 +125,8 @@ export default function Contact() {
             <Magnetic>
               <button
                 onClick={copyEmail}
-                className="btn-accent-glow u-label rounded-full bg-accent px-8 py-4 text-paper hover:scale-105"
+                className="btn-accent-glow border-beam u-label rounded-full bg-accent px-8 py-4 text-paper hover:scale-105"
+                style={{ ["--beam-color" as string]: "rgba(243, 239, 230, 0.9)" }}
               >
                 {copied
                   ? t({ es: "Copiado ✓", en: "Copied ✓" })

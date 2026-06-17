@@ -23,6 +23,12 @@
   inherits: false;
 }
 
+@property --beam-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 html {
   scrollbar-width: thin;
   scrollbar-color: var(--color-ink) var(--color-paper);
@@ -279,6 +285,56 @@ body {
     transform: translateY(-3px);
   }
 
+  /* === Border beam (Magic UI-inspired) — a light arc travels the border === */
+  .border-beam {
+    position: relative;
+  }
+  .border-beam::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0deg,
+      transparent 300deg,
+      var(--beam-color, var(--color-accent)) 335deg,
+      var(--beam-color, var(--color-accent)) 345deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: border-beam-spin 5s linear infinite;
+    animation-delay: var(--beam-delay, 0s);
+  }
+
+  /* === Meteors (Magic UI-inspired) === */
+  .meteor {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 6px 1px rgba(221, 74, 18, 0.5);
+    transform: rotate(215deg);
+    animation: meteor-fall linear infinite;
+  }
+  .meteor::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 60px;
+    height: 1px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, var(--color-accent), transparent);
+  }
+
   /* === Gradient sweep on section headings (Magic UI-inspired) === */
   .heading-sweep {
     background: linear-gradient(
@@ -356,6 +412,16 @@ body {
   100% { transform: translate(-10%, -8%) scale(0.95); }
 }
 
+@keyframes border-beam-spin {
+  to { --beam-angle: 360deg; }
+}
+
+@keyframes meteor-fall {
+  0% { transform: rotate(215deg) translateX(0); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: rotate(215deg) translateX(-600px); opacity: 0; }
+}
+
 /* Permanent subtle glow on ◆ accent glyphs inside headings (cult-ui inspired) */
 h1 .text-accent,
 h2 .text-accent {
@@ -380,8 +446,14 @@ h2 .text-accent {
   }
   /* aurora blur + retro-grid perspective are expensive — drop them on small screens */
   .aurora,
-  .retro-grid {
+  .retro-grid,
+  .meteors {
     display: none;
+  }
+  /* keep the static border but stop the per-frame conic repaint on mobile */
+  .border-beam::after {
+    animation: none;
+    opacity: 0.5;
   }
 }
 

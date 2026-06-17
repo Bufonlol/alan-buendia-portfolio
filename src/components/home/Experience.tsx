@@ -1,37 +1,13 @@
 "use client";
 
-import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { EXPERIENCE } from "@/data/site";
 import SectionHeader from "@/components/SectionHeader";
 import Reveal from "@/components/Reveal";
+import TracingBeam from "@/components/TracingBeam";
 
 export default function Experience() {
   const { t } = useLang();
-  const lineWrapRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (!lineRef.current || !lineWrapRef.current) return;
-      gsap.fromTo(
-        lineRef.current,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: lineWrapRef.current,
-            start: "top 75%",
-            end: "bottom 60%",
-            scrub: true,
-          },
-        }
-      );
-    },
-    { scope: lineWrapRef }
-  );
 
   return (
     <section
@@ -54,14 +30,8 @@ export default function Experience() {
         </Reveal>
       </div>
 
-      <div ref={lineWrapRef} className="relative pl-8 md:pl-12">
-        {/* growing timeline spine */}
-        <div className="absolute bottom-0 left-0 top-0 w-px bg-line">
-          <div
-            ref={lineRef}
-            className="h-full w-px origin-top scale-y-0 bg-accent"
-          />
-        </div>
+      <div className="relative pl-8 md:pl-12">
+        <TracingBeam />
 
         <ol className="flex flex-col gap-16">
           {EXPERIENCE.map((job, i) => (
