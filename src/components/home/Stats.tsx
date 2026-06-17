@@ -63,19 +63,7 @@ export default function Stats() {
         {STATS.map((s) => {
           const { num, suffix } = parse(s.value);
           return (
-            <div
-              key={s.label.en}
-              className="stat-item"
-              onMouseMove={(e) => {
-                const r = e.currentTarget.getBoundingClientRect();
-                e.currentTarget.style.setProperty("--mouse-x", ((e.clientX - r.left) / r.width * 100) + "%");
-                e.currentTarget.style.setProperty("--mouse-y", ((e.clientY - r.top) / r.height * 100) + "%");
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.setProperty("--mouse-x", "50%");
-                e.currentTarget.style.setProperty("--mouse-y", "50%");
-              }}
-            >
+            <div key={s.label.en} className="stat-item">
               <p
                 className="display text-[clamp(3rem,6.5vw,5.5rem)] leading-none text-accent"
                 data-count={num ?? undefined}

@@ -131,27 +131,36 @@ body {
     color: var(--color-accent);
   }
 
-  /* === Stat card spotlight (Aceternity UI-inspired) === */
+  /* === Stat soft bloom on hover (Aceternity UI-inspired) ===
+     A circular, fully-faded glow behind the number — no overflow clip,
+     so it never shows a hard rectangular edge near the element bounds. */
   .stat-item {
     position: relative;
     isolation: isolate;
-    overflow: hidden;
   }
   .stat-item::before {
     content: "";
     position: absolute;
-    inset: 0;
+    left: 50%;
+    top: 42%;
+    width: 240px;
+    height: 240px;
     z-index: -1;
+    border-radius: 50%;
     background: radial-gradient(
-      circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(221, 74, 18, 0.09) 0%,
-      transparent 75%
+      circle,
+      rgba(221, 74, 18, 0.14) 0%,
+      transparent 65%
     );
+    transform: translate(-50%, -50%) scale(0.8);
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
   }
-  .stat-item:hover::before { opacity: 1; }
+  .stat-item:hover::before {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 
   /* Number glow on stat hover (React Bits / cult-ui inspired) */
   .stat-item p[data-count] {
