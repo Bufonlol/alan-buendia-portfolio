@@ -395,6 +395,104 @@ export const PROJECTS: Project[] = [
       },
     ],
   },
+  {
+    slug: "folio",
+    index: "05",
+    title: { es: "Folio", en: "Folio" },
+    tagline: {
+      es: "Un sistema de diseño para el software que cuida los números.",
+      en: "A design system for software you trust with the numbers.",
+    },
+    year: "2026",
+    role: {
+      es: "Diseño de sistemas · Autoiniciado",
+      en: "Design Systems · Self-initiated",
+    },
+    status: { es: "Publicado en npm", en: "Published on npm" },
+    color: "#2D4A7C",
+    tags: ["React", "Design System", "npm"],
+    cardImage: "/projects/folio/cover.webp",
+    problem: {
+      es: "Después de construir cuatro herramientas internas — POS, dashboards, paneles de administración — me di cuenta de que reconstruía los mismos botones, tablas y formularios desde cero en cada proyecto. Y las librerías de componentes que existían estaban hechas para sitios de marketing: colores brillantes, esquinas muy redondeadas, sombras y dark-mode por default. Ninguna encajaba en el software denso de oficinista, donde le confías la pantalla a números reales. Cada proyecto derivaba en su propia dirección.",
+      en: "After building four internal tools — a POS, dashboards, admin panels — I realized I was rebuilding the same buttons, tables and forms from scratch every time. And the component libraries out there were built for marketing sites: bright colors, heavy rounding, drop shadows, dark-mode-first. None of them fit dense oficinista software, where you trust the screen with real numbers. Every project drifted in its own direction.",
+    },
+    research: {
+      es: "En vez de abrir Figma, escribí un brief de marca: ¿cómo se ve de verdad el software al que le confías los números? La respuesta era sobrio, light-first, legible y denso — la profundidad sale de líneas de 1px, no de cajas ni sombras; un solo azul tinta usado con cuentagotas; IBM Plex partido en tres roles estrictos; y deliberadamente sin modo oscuro. Estudié herramientas administrativas corporativas para derivar los tokens en vez de inventarlos.",
+      en: "Instead of opening Figma, I wrote a brand brief: what does software you trust with the numbers actually look like? The answer was sober, light-first, legible and dense — depth comes from 1px lines, not boxes or shadows; one ink-blue accent used with an eyedropper; IBM Plex split into three strict roles; and deliberately no dark mode. I studied corporate admin tools to derive the tokens rather than invent them.",
+    },
+    solution: [
+      {
+        es: "Paleta sobria light-first: lienzo blanco real, tres grises y una sola línea de 1px cargan toda la estructura — nunca cajas ni sombras duras",
+        en: "Sober light-first palette: a real white canvas, three grays and a single 1px line carry all the structure — never boxes or hard shadows",
+      },
+      {
+        es: "Un único azul tinta (#2D4A7C) usado con cuentagotas — botón primario, nav activo, focus ring, fila seleccionada — nunca como decoración",
+        en: "One ink-blue accent (#2D4A7C) used with an eyedropper — primary button, active nav, focus ring, selected row — never as decoration",
+      },
+      {
+        es: "IBM Plex en tres roles estrictos: serif para títulos, sans para la UI, mono con cifras tabulares para cada número, ID y fecha",
+        en: "IBM Plex in three strict roles: serif for titles, sans for UI, mono with tabular figures for every number, ID and date",
+      },
+      {
+        es: "~50 componentes entre core, formularios, navegación, datos, feedback y overlays — cada overlay se monta por portal en <body> y cierra con Escape / click afuera",
+        en: "~50 components across core, forms, navigation, data, feedback and overlays — every overlay portals to <body> and closes on Escape / outside-click",
+      },
+      {
+        es: "Toda la animación sobre una sola curva expo, solo transform/opacity, detrás de prefers-reduced-motion — sin rebotes ni resortes",
+        en: "All motion on one expo curve, transform/opacity only, gated behind prefers-reduced-motion — no bounces, no springs",
+      },
+      {
+        es: "Publicado como paquete npm (@alanbuendia/folio) con un único styles.css de entrada, tipos de TypeScript y un prototipo navegable hecho enteramente con sus propios componentes",
+        en: "Shipped as an npm package (@alanbuendia/folio) with a single styles.css entry, TypeScript types and a click-through prototype built entirely from its own components",
+      },
+    ],
+    stack: ["React", "Vite", "CSS Tokens", "IBM Plex", "Lucide"],
+    screens: [
+      {
+        caption: { es: "Landing — docs site", en: "Landing — docs site" },
+        image: "/projects/folio/landing.png",
+      },
+      {
+        caption: { es: "Docs — índice de componentes", en: "Docs — component index" },
+        image: "/projects/folio/overview.png",
+      },
+      {
+        caption: { es: "Folio Console — dashboard en vivo", en: "Folio Console — live dashboard" },
+        image: "/projects/folio/dashboard.png",
+      },
+    ],
+    results: [
+      {
+        metric: { es: "~50", en: "~50" },
+        label: { es: "Componentes en la librería", en: "Components in the library" },
+      },
+      {
+        metric: { es: "npm", en: "npm" },
+        label: { es: "Publicado y versionado", en: "Published & versioned" },
+      },
+      {
+        metric: { es: "0", en: "0" },
+        label: { es: "Modo oscuro — por diseño", en: "Dark mode — by design" },
+      },
+    ],
+    learnings: [
+      {
+        es: "Un sistema de diseño es un producto: necesita versionado, docs y una sola ruta de instalación, o nadie (ni tú mismo) lo adopta.",
+        en: "A design system is a product: it needs versioning, docs and a single install path, or nobody (including you) adopts it.",
+      },
+      {
+        es: "Las restricciones son la feature — prohibir sombras y modo oscuro hizo cada pantalla consistente y más rápida de construir.",
+        en: "Constraints are the feature — banning shadows and dark mode made every screen consistent and faster to build.",
+      },
+      {
+        es: "Primero los tokens, luego los componentes: una vez que color, tipo y espaciado viven en variables CSS, los componentes casi se escriben solos.",
+        en: "Tokens first, components second: once color, type and spacing live in CSS variables, the components almost write themselves.",
+      },
+    ],
+    live: "https://folio-lac-chi.vercel.app/",
+    repo: "https://github.com/Bufonlol/folio",
+    external: "https://www.npmjs.com/package/@alanbuendia/folio",
+  },
 ];
 
 export const getProject = (slug: string) =>

@@ -56,6 +56,16 @@ export const ARCHIVE: ArchiveEntry[] = [
   },
   {
     index: "05",
+    title: { es: "Folio", en: "Folio" },
+    year: "2026",
+    type: { es: "Personal · npm", en: "Self-initiated · npm" },
+    stack: "React · Design System",
+    color: "#2D4A7C",
+    href: "/projects/folio",
+    image: "/projects/folio/cover.webp",
+  },
+  {
+    index: "06",
     title: { es: "Portfolio v1", en: "Portfolio v1" },
     year: "2025",
     type: { es: "Personal", en: "Self-initiated" },
