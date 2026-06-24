@@ -411,7 +411,7 @@ export const PROJECTS: Project[] = [
     status: { es: "Publicado en npm", en: "Published on npm" },
     color: "#2D4A7C",
     tags: ["React", "Design System", "npm"],
-    cardImage: "/projects/folio/cover.webp",
+    cardImage: "/projects/folio/overview.png",
     problem: {
       es: "Después de construir cuatro herramientas internas — POS, dashboards, paneles de administración — me di cuenta de que reconstruía los mismos botones, tablas y formularios desde cero en cada proyecto. Y las librerías de componentes que existían estaban hechas para sitios de marketing: colores brillantes, esquinas muy redondeadas, sombras y dark-mode por default. Ninguna encajaba en el software denso de oficinista, donde le confías la pantalla a números reales. Cada proyecto derivaba en su propia dirección.",
       en: "After building four internal tools — a POS, dashboards, admin panels — I realized I was rebuilding the same buttons, tables and forms from scratch every time. And the component libraries out there were built for marketing sites: bright colors, heavy rounding, drop shadows, dark-mode-first. None of them fit dense oficinista software, where you trust the screen with real numbers. Every project drifted in its own direction.",
