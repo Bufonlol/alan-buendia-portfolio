@@ -493,6 +493,108 @@ export const PROJECTS: Project[] = [
     repo: "https://github.com/Bufonlol/folio",
     external: "https://www.npmjs.com/package/@alanbuendia/folio",
   },
+  {
+    slug: "cota",
+    index: "06",
+    title: { es: "Cota", en: "Cota" },
+    tagline: {
+      es: "Cotiza. Muestra en 3D. Cierra la venta.",
+      en: "Quote it. Show it in 3D. Close the sale.",
+    },
+    year: "2026",
+    role: { es: "Desarrollador Full-Stack", en: "Full-Stack Developer" },
+    status: { es: "Demo en vivo", en: "Live demo" },
+    color: "#D99A1E",
+    tags: ["Next.js", "React Three Fiber", "Three.js", "Supabase"],
+    cardImage: "/projects/cota/cota2.png",
+    problem: {
+      es: "Los talleres de cancelería y herrería cotizan ventanas y puertas de aluminio a mano: el cliente describe lo que quiere, el maestro hace cuentas en una libreta — perfil, vidrio, herrajes, merma, mano de obra — y entrega un precio que el cliente no puede visualizar. El proceso es lento, propenso a error y no hay forma de que el cliente vea cómo se verá la pieza antes de pagar. Cada cotización es un acto de fe de ambos lados.",
+      en: "Aluminum window-and-door workshops (cancelería) quote by hand: the client describes what they want, the master runs numbers in a notebook — profile, glass, hardware, waste, labor — and hands over a price the client can't picture. The process is slow, error-prone, and there's no way for the client to see what the piece will look like before paying. Every quote is an act of faith on both sides.",
+    },
+    research: {
+      es: "Hablé con quienes cotizan a diario y el patrón era claro: el cálculo del precio no es lo difícil — es repetir el mismo cálculo sin equivocarse, poder mostrarlo y mantener las tarifas al día cuando suben los materiales. Una cotización gana fuerza cuando el cliente la ve. Eso definió tres pilares: un visor 3D en tiempo real que arma la pieza mientras la diseñas, un motor de precios transparente (perfil por metro lineal, vidrio por m², herrajes, merma, mano de obra) cubierto por pruebas para que el cálculo nunca falle, y un panel de administración donde el taller edita sus propias tarifas sin tocar código.",
+      en: "I talked to the people who quote every day and the pattern was clear: computing the price isn't the hard part — repeating it without slipping, being able to show it, and keeping rates current as materials rise, is. A quote gains weight the moment the client can see it. That set three pillars: a real-time 3D viewer that builds the piece as you design it, a transparent pricing engine (profile per linear meter, glass per m², hardware, waste, labor) covered by tests so the math never breaks, and an admin panel where the workshop edits its own rates without touching code.",
+    },
+    solution: [
+      {
+        es: "Visor 3D en tiempo real con React Three Fiber — la ventana o puerta se arma y rota en pantalla mientras ajustas medidas, montaje (pared, flotante, exterior) y tipo de apertura (fija, corrediza, abatible, arco…)",
+        en: "Real-time 3D viewer with React Three Fiber — the window or door builds and rotates on screen as you adjust measurements, mounting (wall, floating, exterior) and opening type (fixed, sliding, casement, arch…)",
+      },
+      {
+        es: "Editor de forma libre: arrastra los vértices del marco, teclea la medida exacta de cada lado en cm y verifica la escuadra del vano con las diagonales — clave en obra real",
+        en: "Free-form shape editor: drag the frame vertices, type each side's exact length in cm, and check the opening is square via the diagonals — critical on a real job site",
+      },
+      {
+        es: "Motor de precios cubierto por pruebas (Vitest) — perfil de aluminio por metro lineal, vidrio por m², herrajes, merma, mano de obra, descuento e IVA, recalculado al instante con cada cambio",
+        en: "Pricing engine covered by tests (Vitest) — aluminum profile per linear meter, glass per m², hardware, waste, labor, discount and tax, recomputed instantly on every change",
+      },
+      {
+        es: "Cotizaciones multi-partida con folio, vigencia y marca del taller — preview 2D en alzado (SVG, imprimible), exportable a PDF y enviable por WhatsApp en un toque",
+        en: "Multi-line quotes with folio number, expiry and the workshop's branding — 2D elevation preview (printable SVG), exportable to PDF and sent over WhatsApp in one tap",
+      },
+      {
+        es: "Panel de administración con Supabase Auth: dashboard de cotizaciones recibidas y editor de tarifas — los cambios de precio se reflejan en el cotizador al instante, sin tocar código",
+        en: "Admin panel with Supabase Auth: dashboard of received quotes plus a tariff editor — price changes reflect in the quoter instantly, no code required",
+      },
+      {
+        es: "Seguridad a nivel de base de datos con Row Level Security: catálogo de lectura pública para que el cotizador funcione, pero escritura restringida a administradores en allowlist — defensa en profundidad sobre Server Actions y middleware",
+        en: "Database-level security with Row Level Security: public read on the catalog so the quoter works, but writes restricted to an admin allowlist — defense in depth over Server Actions and middleware",
+      },
+    ],
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "React Three Fiber",
+      "Three.js",
+      "Supabase",
+      "Tailwind CSS",
+    ],
+    screens: [
+      {
+        caption: { es: "Landing — la herramienta", en: "Landing — the tool" },
+        image: "/projects/cota/cota1.png",
+      },
+      {
+        caption: { es: "Editor 3D + desglose de precio", en: "3D editor + price breakdown" },
+        image: "/projects/cota/cota2.png",
+      },
+      {
+        caption: { es: "Cotización lista para enviar", en: "Quote ready to send" },
+        image: "/projects/cota/cota3.png",
+      },
+    ],
+    results: [
+      {
+        metric: { es: "3D", en: "3D" },
+        label: { es: "Vista previa en tiempo real", en: "Real-time preview" },
+      },
+      {
+        metric: { es: "RLS", en: "RLS" },
+        label: { es: "Seguridad a nivel de base de datos", en: "Database-level security" },
+      },
+      {
+        metric: { es: "PDF", en: "PDF" },
+        label: { es: "Cotización + envío por WhatsApp", en: "Quote + WhatsApp delivery" },
+      },
+    ],
+    learnings: [
+      {
+        es: "Ver vende: un visor 3D convierte una cifra abstracta en algo que el cliente entiende y aprueba más rápido.",
+        en: "Seeing sells: a 3D viewer turns an abstract number into something the client understands and approves faster.",
+      },
+      {
+        es: "El motor de precios es el corazón del producto — cubrirlo con pruebas (tipos de ventana, multi-partida, forma libre, descuentos) fue lo que me dejó cambiar tarifas sin miedo a romper una cotización.",
+        en: "The pricing engine is the heart of the product — covering it with tests (window types, multi-line, free-form, discounts) is what let me change rates without fear of breaking a quote.",
+      },
+      {
+        es: "Una herramienta que el taller mantiene solo necesita un panel propio: editor de tarifas + RLS significa que cambian precios sin tocar código y sin poder romper la seguridad.",
+        en: "A tool the workshop maintains itself needs its own panel: a tariff editor + RLS means they change prices without touching code and without being able to break security.",
+      },
+    ],
+    live: "https://cota-rosy.vercel.app/",
+    repo: "https://github.com/Bufonlol/cota-cotizador",
+  },
 ];
 
 export const getProject = (slug: string) =>
