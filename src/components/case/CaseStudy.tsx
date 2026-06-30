@@ -8,6 +8,7 @@ import { PROJECTS, type Project } from "@/data/projects";
 import ProjectVisual from "@/components/ProjectVisual";
 import Reveal from "@/components/Reveal";
 import MiniFooter from "@/components/MiniFooter";
+import { Contours, CropMarks } from "@/components/art/EditorialArt";
 
 function Block({
   index,
@@ -141,8 +142,14 @@ export default function CaseStudy({
   return (
     <main className="px-5 pt-28 md:px-8">
       {/* hero */}
-      <section ref={heroRef}>
-        <div className="case-fade flex items-center justify-between" style={{ opacity: 0 }}>
+      <section ref={heroRef} className="relative overflow-hidden">
+        <Contours
+          className="case-fade pointer-events-none absolute -right-[10%] -top-[18%] z-0 hidden h-[60vh] w-[60vh] opacity-50 md:block"
+          seed={Number(project.index) * 7 + 3}
+          rings={9}
+          accentRing={3}
+        />
+        <div className="case-fade relative z-10 flex items-center justify-between" style={{ opacity: 0 }}>
           <button
             onClick={() => navigate("/#work")}
             className="u-label link-line uppercase"
@@ -161,20 +168,20 @@ export default function CaseStudy({
 
         <h1
           ref={titleRef}
-          className="display mt-10 text-[clamp(3rem,11.5vw,10.5rem)] leading-[0.88]"
+          className="display relative z-10 mt-10 text-[clamp(3rem,11.5vw,10.5rem)] leading-[0.88]"
           style={{ opacity: 0 }}
         >
           {t(project.title)}
         </h1>
         <p
-          className="case-fade mt-6 max-w-[34rem] font-serif text-[clamp(1.2rem,2.4vw,1.8rem)] italic text-ink-soft"
+          className="case-fade relative z-10 mt-6 max-w-[34rem] font-serif text-[clamp(1.2rem,2.4vw,1.8rem)] italic text-ink-soft"
           style={{ opacity: 0 }}
         >
           {t(project.tagline)}
         </p>
 
         <div
-          className="case-fade mt-12 grid grid-cols-2 gap-6 border-t border-line pt-6 md:grid-cols-4"
+          className="case-fade relative z-10 mt-12 grid grid-cols-2 gap-6 border-t border-line pt-6 md:grid-cols-4"
           style={{ opacity: 0 }}
         >
           {[
@@ -192,12 +199,13 @@ export default function CaseStudy({
       </section>
 
       {/* banner */}
-      <div ref={bannerRef} className="mt-14 overflow-hidden">
+      <div ref={bannerRef} className="relative mt-14 overflow-hidden">
         <ProjectVisual
           project={project}
           image={project.cardImage}
           className="h-[48vh] w-full [container-type:inline-size] md:h-[62vh]"
         />
+        <CropMarks size={18} inset={14} opacity={0.55} color="var(--color-paper)" />
       </div>
 
       {/* content blocks */}

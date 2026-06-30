@@ -7,6 +7,13 @@ import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import HeroCanvas from "@/components/home/HeroCanvas";
 import Meteors from "@/components/Meteors";
+import {
+  Contours,
+  HalftoneArc,
+  CropMarks,
+  RegistrationMark,
+  ColorBar,
+} from "@/components/art/EditorialArt";
 
 export default function Hero() {
   const { ready } = useApp();
@@ -81,12 +88,25 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden px-5 pb-7 pt-24 md:px-8"
     >
+      {/* === custom editorial art layer === */}
+      <Contours
+        className="hero-fade absolute -left-[14%] bottom-[6%] z-0 hidden h-[58vh] w-[58vh] opacity-[0.5] md:block"
+        seed={11}
+        rings={10}
+        accentRing={4}
+      />
+      <HalftoneArc
+        className="absolute -bottom-[22%] -right-[8%] z-0 h-[55vh] w-[55vh] opacity-60"
+        seed={5}
+      />
+      <CropMarks className="z-0 hidden md:block" size={20} inset={20} opacity={0.4} />
       <HeroCanvas />
       <Meteors count={16} />
 
       {/* top meta row */}
       <div className="hero-fade relative z-10 flex items-center justify-between" style={{ opacity: 0 }}>
-        <span className="u-label text-muted">
+        <span className="u-label flex items-center gap-3 text-muted">
+          <RegistrationMark size={18} className="hidden sm:block" />
           {t({ es: "Portafolio © 2026", en: "Portfolio © 2026" })}
         </span>
         <span className="u-label hidden text-muted md:block">{SITE.coords}</span>
@@ -141,11 +161,14 @@ export default function Hero() {
             {t({ es: "para explorar", en: "to explore" })}
           </span>
         </div>
-        <span className="hero-fade u-label hidden text-right text-muted sm:block" style={{ opacity: 0 }}>
-          React · TypeScript
-          <br />
-          GSAP · Three.js
-        </span>
+        <div className="hero-fade flex items-center gap-4" style={{ opacity: 0 }}>
+          <ColorBar className="hidden sm:flex" />
+          <span className="u-label hidden text-right text-muted sm:block">
+            React · TypeScript
+            <br />
+            GSAP · Three.js
+          </span>
+        </div>
       </div>
     </section>
   );

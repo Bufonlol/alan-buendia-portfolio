@@ -10,6 +10,7 @@ import About from "@/components/home/About";
 import Fun from "@/components/home/Fun";
 import Contact from "@/components/home/Contact";
 import Marquee from "@/components/Marquee";
+import ArtDivider from "@/components/art/ArtDivider";
 import { SITE } from "@/data/site";
 import { MARQUEE_CONTACT, MARQUEE_ITEMS } from "@/data/site";
 
@@ -46,11 +47,13 @@ export default function Home() {
       <Marquee items={MARQUEE_ITEMS} />
       <FeaturedProjects />
       <Stats />
+      <ArtDivider label={{ es: "Herramientas", en: "Tooling" }} variant="registration" />
       <Stack />
       <Toolkit />
+      <ArtDivider label={{ es: "Cómo trabajo", en: "How I work" }} variant="asterisk" />
       <Process />
       <Experience />
-<About />
+      <About />
       <Fun />
       <Marquee items={MARQUEE_CONTACT} baseSeconds={16} />
       <Contact />
