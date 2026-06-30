@@ -593,7 +593,6 @@ export const PROJECTS: Project[] = [
       },
     ],
     live: "https://cota-rosy.vercel.app/",
-    repo: "https://github.com/Bufonlol/cota-cotizador",
   },
 ];
 

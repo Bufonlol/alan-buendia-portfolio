@@ -235,7 +235,7 @@ export default function CaseStudy({
           <div className="flex flex-wrap gap-3">
             {project.stack.map((t, i) => (
               <Reveal key={t} delay={i * 0.04}>
-                <span className="display border border-line px-5 py-3 text-[clamp(1.2rem,2.4vw,2rem)] transition-colors duration-300 hover:border-accent hover:text-accent">
+                <span className="display inline-flex items-center leading-none border border-line px-5 py-4 text-[clamp(1.2rem,2.4vw,2rem)] transition-colors duration-300 hover:border-accent hover:text-accent">
                   {t}
                 </span>
               </Reveal>
