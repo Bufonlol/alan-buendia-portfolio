@@ -6,6 +6,8 @@ import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import Magnetic from "@/components/Magnetic";
+import Signature from "@/components/art/Signature";
+import StickerBadge from "@/components/StickerBadge";
 
 export default function Contact() {
   const { lenis } = useApp();
@@ -80,16 +82,19 @@ export default function Contact() {
       <div className="retro-grid pointer-events-none absolute inset-x-0 bottom-0 h-1/2" aria-hidden="true" />
 
       <div className="relative z-10 flex items-center justify-between">
-        <span className="u-label flex items-center gap-2 text-paper/70">
+        <StickerBadge rotate={3}>
           <span
-            className="inline-block h-2 w-2 rounded-full bg-accent"
+            className="inline-block h-2 w-2 rounded-full bg-paper"
             style={{ animation: "pulse-dot 2s ease-in-out infinite" }}
           />
           {t(SITE.availability)}
-        </span>
-        <span className="u-label text-paper/40">
-          {t({ es: "06 — Contacto", en: "06 — Contact" })}
-        </span>
+        </StickerBadge>
+        <div className="flex items-center gap-6">
+          <Signature size="text-2xl" shadowColor="var(--color-paper)" />
+          <span className="u-label text-paper/40">
+            {t({ es: "06 — Contacto", en: "06 — Contact" })}
+          </span>
+        </div>
       </div>
 
       <div className="relative z-10">

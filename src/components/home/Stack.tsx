@@ -35,7 +35,8 @@ export default function Stack() {
   );
 
   return (
-    <section id="stack" className="px-5 py-28 md:px-8 md:py-40">
+    <section id="stack" className="relative overflow-hidden px-5 py-28 md:px-8 md:py-40">
+      <div className="aurora" aria-hidden="true" />
       <SectionHeader
         index="02"
         label="Stack"

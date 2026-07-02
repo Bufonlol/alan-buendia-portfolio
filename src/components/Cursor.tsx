@@ -12,12 +12,17 @@ const LABELS: Record<Exclude<Mode, "default">, L> = {
   play: { es: "JUGAR ▶", en: "PLAY ▶" },
 };
 
+const TRAIL_COUNT = 5;
+const trailOpacity = (i: number) => 0.5 - i * 0.09;
+const trailScale = (i: number) => 1 - i * 0.12;
+
 export default function Cursor() {
   const { t } = useLang();
   const [enabled, setEnabled] = useState(false);
   const [mode, setMode] = useState<Mode>("default");
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const trailRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (!isFinePointer() || prefersReducedMotion()) return;
@@ -38,17 +43,34 @@ export default function Cursor() {
     const ringX = gsap.quickTo(ring, "x", { duration: 0.45, ease: "power3.out" });
     const ringY = gsap.quickTo(ring, "y", { duration: 0.45, ease: "power3.out" });
 
+    const trailEls = trailRefs.current.filter((el): el is HTMLDivElement => !!el);
+    gsap.set(trailEls, {
+      xPercent: -50,
+      yPercent: -50,
+      opacity: 0,
+      scale: (i: number) => trailScale(i),
+    });
+    const trailTos = trailEls.map((el, i) => ({
+      x: gsap.quickTo(el, "x", { duration: 0.12 + i * 0.045, ease: "power2.out" }),
+      y: gsap.quickTo(el, "y", { duration: 0.12 + i * 0.045, ease: "power2.out" }),
+    }));
+
     let seen = false;
     const onMove = (e: PointerEvent) => {
       if (!seen) {
         seen = true;
-        gsap.set([dot, ring], { x: e.clientX, y: e.clientY });
+        gsap.set([dot, ring, ...trailEls], { x: e.clientX, y: e.clientY });
         gsap.to([dot, ring], { autoAlpha: 1, duration: 0.25 });
+        gsap.to(trailEls, { opacity: (i: number) => trailOpacity(i), duration: 0.25 });
       }
       dotX(e.clientX);
       dotY(e.clientY);
       ringX(e.clientX);
       ringY(e.clientY);
+      trailTos.forEach(({ x, y }) => {
+        x(e.clientX);
+        y(e.clientY);
+      });
     };
 
     const onOver = (e: Event) => {
@@ -74,8 +96,14 @@ export default function Cursor() {
     };
     const onDown = () => gsap.to([dot, ring], { scale: 0.8, duration: 0.15 });
     const onUp = () => gsap.to([dot, ring], { scale: 1, duration: 0.25 });
-    const onLeave = () => gsap.to([dot, ring], { autoAlpha: 0, duration: 0.2 });
-    const onEnter = () => gsap.to([dot, ring], { autoAlpha: 1, duration: 0.2 });
+    const onLeave = () => {
+      gsap.to([dot, ring], { autoAlpha: 0, duration: 0.2 });
+      gsap.to(trailEls, { opacity: 0, duration: 0.2 });
+    };
+    const onEnter = () => {
+      gsap.to([dot, ring], { autoAlpha: 1, duration: 0.2 });
+      gsap.to(trailEls, { opacity: (i: number) => trailOpacity(i), duration: 0.2 });
+    };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("mouseover", onOver);
@@ -100,13 +128,16 @@ export default function Cursor() {
     if (!enabled) return;
     const ring = ringRef.current;
     const dot = dotRef.current;
+    const trailEls = trailRefs.current.filter((el): el is HTMLDivElement => !!el);
     if (!ring || !dot) return;
     if (mode === "default") {
       gsap.to(ring, { width: 36, height: 36, duration: 0.35, ease: "power3.out" });
       gsap.to(dot, { autoAlpha: 1, duration: 0.2 });
+      gsap.to(trailEls, { opacity: (i: number) => trailOpacity(i), duration: 0.25 });
     } else {
       gsap.to(ring, { width: 92, height: 92, duration: 0.35, ease: "back.out(1.6)" });
       gsap.to(dot, { autoAlpha: 0, duration: 0.2 });
+      gsap.to(trailEls, { opacity: 0, duration: 0.25 });
     }
   }, [mode, enabled]);
 
@@ -114,6 +145,17 @@ export default function Cursor() {
 
   return (
     <>
+      {Array.from({ length: TRAIL_COUNT }).map((_, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            trailRefs.current[i] = el;
+          }}
+          aria-hidden="true"
+          className="pointer-events-none fixed left-0 top-0 z-[298] rounded-full bg-paper mix-blend-difference"
+          style={{ height: 14 - i * 1.5, width: 14 - i * 1.5 }}
+        />
+      ))}
       <div
         ref={dotRef}
         aria-hidden="true"

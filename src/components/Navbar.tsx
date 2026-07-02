@@ -5,6 +5,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { useApp } from "@/components/AppShell";
 import { useLang, type Lang } from "@/lib/i18n";
 import { NAV_LINKS, SITE } from "@/data/site";
+import { isSoundEnabled, setSoundEnabled, tickLink } from "@/lib/sound";
 
 function useLocalTime() {
   const [time, setTime] = useState("--:--");
@@ -42,6 +43,29 @@ function LangToggle({ className = "" }: { className?: string }) {
       <span className="u-label opacity-30">/</span>
       {btn("en")}
     </div>
+  );
+}
+
+function SoundToggle({ className = "" }: { className?: string }) {
+  const { t } = useLang();
+  const [on, setOn] = useState(false);
+  useEffect(() => setOn(isSoundEnabled()), []);
+  const toggle = () => {
+    const next = !on;
+    setSoundEnabled(next);
+    setOn(next);
+  };
+  return (
+    <button
+      onClick={toggle}
+      aria-pressed={on}
+      aria-label={t({ es: "Sonido", en: "Sound" })}
+      className={`u-label pointer-events-auto transition-opacity duration-300 ${
+        on ? "underline underline-offset-4" : "opacity-45 hover:opacity-100"
+      } ${className}`}
+    >
+      {on ? t({ es: "SONIDO ON", en: "SOUND ON" }) : t({ es: "SONIDO OFF", en: "SOUND OFF" })}
+    </button>
   );
 }
 
@@ -140,6 +164,7 @@ export default function Navbar() {
   };
 
   const go = (href: string) => {
+    tickLink();
     toggle(false);
     setTimeout(() => navigate(href), 250);
   };
@@ -154,6 +179,7 @@ export default function Navbar() {
       window.dispatchEvent(new CustomEvent("ab:spin")); // easter egg #2
       return;
     }
+    tickLink();
     if (open) toggle(false);
     setTimeout(() => navigate("/"), open ? 250 : 0);
   };
@@ -181,6 +207,7 @@ export default function Navbar() {
             <span suppressHydrationWarning>{time} CST</span>
           </div>
           <div className="flex items-center gap-6">
+            <SoundToggle />
             <LangToggle />
             <button
               onClick={() => toggle(!open)}
@@ -261,6 +288,7 @@ export default function Navbar() {
             <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">
               GitHub ↗
             </a>
+            <SoundToggle className="border-l border-line-paper pl-6" />
             <LangToggle className="border-l border-line-paper pl-6" />
           </div>
           <div className="menu-meta u-label text-paper/40">

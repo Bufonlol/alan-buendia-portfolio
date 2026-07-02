@@ -7,6 +7,7 @@ import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import HeroCanvas from "@/components/home/HeroCanvas";
 import Meteors from "@/components/Meteors";
+import StickerBadge from "@/components/StickerBadge";
 import {
   Contours,
   HalftoneArc,
@@ -115,13 +116,13 @@ export default function Hero() {
           {t({ es: "Portafolio © 2026", en: "Portfolio © 2026" })}
         </span>
         <span className="u-label hidden text-muted md:block">{SITE.coords}</span>
-        <span className="u-label flex items-center gap-2">
+        <StickerBadge>
           <span
-            className="inline-block h-2 w-2 rounded-full bg-accent"
+            className="inline-block h-2 w-2 rounded-full bg-paper"
             style={{ animation: "pulse-dot 2s ease-in-out infinite" }}
           />
           {t(SITE.availability)}
-        </span>
+        </StickerBadge>
       </div>
 
       {/* giant name */}

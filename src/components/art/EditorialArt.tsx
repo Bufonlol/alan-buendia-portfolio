@@ -98,6 +98,40 @@ export function Contours({
 }
 
 /* ----------------------------------------------------------------------- *
+ * AuroraBlob — same seeded blob geometry as Contours, filled + blurred
+ * instead of stroke-only. A soft gradient-blob backdrop for the collage pass.
+ * ----------------------------------------------------------------------- */
+export function AuroraBlob({
+  className = "",
+  seed = 7,
+  color = "var(--color-accent)",
+  opacity = 0.16,
+}: {
+  className?: string;
+  seed?: number;
+  color?: string;
+  opacity?: number;
+}) {
+  const rand = rng(seed);
+  const d = blobPath(200, 200, 150, 10, 0.35, rand);
+  const id = `aurora-blob-${seed}`;
+  return (
+    <svg
+      viewBox="0 0 400 400"
+      className={`aurora-blob pointer-events-none select-none ${className}`}
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id={id} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="40" />
+        </filter>
+      </defs>
+      <path d={d} fill={color} opacity={opacity} filter={`url(#${id})`} />
+    </svg>
+  );
+}
+
+/* ----------------------------------------------------------------------- *
  * CropMarks — four print crop marks framing a region (editorial proof look).
  * ----------------------------------------------------------------------- */
 export function CropMarks({

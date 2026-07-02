@@ -495,6 +495,23 @@ h2 .text-accent {
     0 0 60px rgba(221, 74, 18, 0.12);
 }
 
+/* === Editorial collage pass: notched-corner cards (clip-path, not border-radius) === */
+.card-notched {
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+}
+.card-notched-sm {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+/* === Editorial collage pass: layered "pegado" shadow depth === */
+.shadow-stack {
+  box-shadow:
+    0 1px 0 rgba(24, 21, 17, 0.9),
+    3px 4px 0 rgba(24, 21, 17, 0.14),
+    7px 9px 0 rgba(24, 21, 17, 0.08),
+    0 16px 32px rgba(24, 21, 17, 0.12);
+}
+
 /* Remove grain on mobile — it creates a compositor layer that hurts scroll perf */
 @media (max-width: 767px) {
   .grain {
@@ -502,6 +519,7 @@ h2 .text-accent {
   }
   /* aurora blur + retro-grid perspective are expensive — drop them on small screens */
   .aurora,
+  .aurora-blob,
   .retro-grid,
   .meteors {
     display: none;

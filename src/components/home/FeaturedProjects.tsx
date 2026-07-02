@@ -12,6 +12,7 @@ import { useLang } from "@/lib/i18n";
 import { PROJECTS } from "@/data/projects";
 import ProjectVisual from "@/components/ProjectVisual";
 import TiltCard from "@/components/TiltCard";
+import { tickLink } from "@/lib/sound";
 
 export default function FeaturedProjects() {
   const { navigate } = useApp();
@@ -125,15 +126,18 @@ export default function FeaturedProjects() {
               href={`/projects/${p.slug}`}
               onClick={(e) => {
                 e.preventDefault();
+                tickLink();
                 navigate(`/projects/${p.slug}`);
               }}
               className="group block"
             >
-              <ProjectVisual
-                project={p}
-                image={p.cardImage}
-                className="aspect-[16/10] w-full [container-type:inline-size]"
-              />
+              <div className="shadow-stack">
+                <ProjectVisual
+                  project={p}
+                  image={p.cardImage}
+                  className="aspect-[16/10] w-full [container-type:inline-size]"
+                />
+              </div>
               <div className="mt-4 flex items-baseline gap-4 border-t border-line pt-4">
                 <span className="u-label text-accent">{p.index}</span>
                 <h3 className="display text-[clamp(1.4rem,5.5vw,2rem)] leading-none">
@@ -212,15 +216,18 @@ export default function FeaturedProjects() {
                 data-cursor="view"
                 onClick={(e) => {
                   e.preventDefault();
+                  tickLink();
                   navigate(`/projects/${p.slug}`);
                 }}
                 className="block"
               >
-                <ProjectVisual
-                  project={p}
-                  image={p.cardImage}
-                  className="aspect-[16/10] w-full [container-type:inline-size] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[0.985]"
-                />
+                <div className="shadow-stack">
+                  <ProjectVisual
+                    project={p}
+                    image={p.cardImage}
+                    className="aspect-[16/10] w-full [container-type:inline-size] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[0.985]"
+                  />
+                </div>
                 <div className="mt-4 flex items-baseline justify-between gap-4 border-t border-line pt-4">
                   <div className="flex items-baseline gap-4">
                     <span className="u-label text-accent">{p.index}</span>

@@ -90,7 +90,13 @@ export default function Distortion() {
     const container = ref.current;
     if (!container) return;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+      if (!renderer.getContext()) throw new Error("no WebGL context");
+    } catch {
+      return;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 

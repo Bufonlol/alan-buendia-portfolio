@@ -19,7 +19,7 @@ export default function ProjectVisual({
   const { t } = useLang();
 
   return (
-    <div className={`relative overflow-hidden bg-paper-soft ${className}`}>
+    <div className={`card-notched relative overflow-hidden bg-paper-soft ${className}`}>
       {/* tinted wash + blueprint grid */}
       <div
         className="absolute inset-0"

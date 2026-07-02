@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "@/lib/useInView";
 import { useLang } from "@/lib/i18n";
+import { shareScoreCard } from "@/components/arcade/ScoreCard";
+import StickerBadge from "@/components/StickerBadge";
 
 /** Brick layout — the monogram, obviously. */
 const MASK = [
@@ -24,7 +26,7 @@ type Phase = "idle" | "serving" | "playing" | "paused" | "over" | "win";
 type Brick = { x: number; y: number; w: number; h: number; color: string; alive: boolean };
 
 export default function BreakoutGame() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { ref, active } = useInView<HTMLDivElement>();
   const activeRef = useRef(active);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,6 +34,7 @@ export default function BreakoutGame() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [lives, setLives] = useState(3);
   const [hi, setHi] = useState(0);
+  const [sharing, setSharing] = useState(false);
   const phaseRef = useRef<Phase>("idle");
   phaseRef.current = phase;
 
@@ -305,6 +308,17 @@ export default function BreakoutGame() {
     },
   };
   const o = overlay[phase];
+  const canShare = phase === "over" || phase === "win";
+
+  const onShare = async () => {
+    if (sharing) return;
+    setSharing(true);
+    try {
+      await shareScoreCard(game.current.score, hi, lang);
+    } finally {
+      setSharing(false);
+    }
+  };
 
   return (
     <div ref={ref} className="absolute inset-0 select-none touch-none">
@@ -336,6 +350,20 @@ export default function BreakoutGame() {
             </p>
           )}
           <p className="u-label mt-3 bg-paper/80 px-3 py-1 text-muted">{o.small}</p>
+          {canShare && (
+            <button
+              type="button"
+              onClick={onShare}
+              onPointerDown={(e) => e.stopPropagation()}
+              className="pointer-events-auto mt-4"
+            >
+              <StickerBadge rotate={-2}>
+                {sharing
+                  ? t({ es: "Generando…", en: "Generating…" })
+                  : t({ es: "Compartir puntaje ↓", en: "Share score ↓" })}
+              </StickerBadge>
+            </button>
+          )}
         </div>
       )}
     </div>
