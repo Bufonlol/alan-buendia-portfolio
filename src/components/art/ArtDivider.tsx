@@ -41,7 +41,7 @@ export default function ArtDivider({
   return (
     <div
       ref={ref}
-      className={`relative mx-auto flex w-full max-w-[1600px] items-center gap-5 px-5 py-10 md:px-8 ${className}`}
+      className={`relative mx-auto flex w-full max-w-[1600px] items-center gap-5 px-5 py-3 md:px-8 ${className}`}
     >
       <ColorBar className="hidden shrink-0 sm:flex" />
       <span

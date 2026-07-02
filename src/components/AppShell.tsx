@@ -17,7 +17,6 @@ import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
 import EasterEggs from "@/components/EasterEggs";
 import GrainOverlay from "@/components/GrainOverlay";
-import EditorialFrame from "@/components/art/EditorialFrame";
 
 type AppContextType = {
   /** true once the preloader has finished — entrance animations key off this */
@@ -181,7 +180,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <GrainOverlay />
         <Preloader onDone={handleLoaderDone} />
         <Cursor />
-        <EditorialFrame />
         <Navbar />
         <EasterEggs />
         <div id="page-root">{children}</div>
