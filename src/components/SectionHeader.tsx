@@ -37,8 +37,17 @@ export default function SectionHeader({
   }, [sweep]);
 
   return (
-    <Reveal className={className}>
-      <div className="flex items-baseline gap-4">
+    <Reveal className={`relative ${className}`}>
+      {/* oversized ghost index — editorial poster device */}
+      <span
+        aria-hidden="true"
+        className={`display pointer-events-none absolute -top-[0.35em] right-0 select-none text-[clamp(6rem,20vw,15rem)] leading-none ${
+          dark ? "text-outline-paper opacity-[0.14]" : "text-outline opacity-[0.10]"
+        }`}
+      >
+        {index}
+      </span>
+      <div className="relative flex items-baseline gap-4">
         <span className="u-label text-accent">{index}</span>
         <span className={`u-label ${dark ? "text-paper/50" : "text-muted"}`}>
           {label}
@@ -47,7 +56,7 @@ export default function SectionHeader({
       </div>
       <h2
         ref={h2Ref}
-        className={`display mt-5 text-[clamp(2.6rem,8vw,6.5rem)]${sweep ? " heading-sweep" : ""}`}
+        className={`display relative mt-5 text-[clamp(2.6rem,8vw,6.5rem)]${sweep ? " heading-sweep" : ""}`}
       >
         {title}
       </h2>

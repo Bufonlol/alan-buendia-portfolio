@@ -208,7 +208,8 @@ export function Asterisk({
 }) {
   const lines = Array.from({ length: rays }, (_, i) => {
     const a = (i / rays) * Math.PI * 2;
-    return [16 + Math.cos(a) * 14, 16 + Math.sin(a) * 14];
+    // round to a fixed precision so SSR and client markup match exactly
+    return [(16 + Math.cos(a) * 14).toFixed(3), (16 + Math.sin(a) * 14).toFixed(3)];
   });
   return (
     <svg

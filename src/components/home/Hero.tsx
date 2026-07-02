@@ -10,9 +10,9 @@ import Meteors from "@/components/Meteors";
 import {
   Contours,
   HalftoneArc,
-  CropMarks,
   RegistrationMark,
   ColorBar,
+  Asterisk,
 } from "@/components/art/EditorialArt";
 
 export default function Hero() {
@@ -90,16 +90,21 @@ export default function Hero() {
     >
       {/* === custom editorial art layer === */}
       <Contours
-        className="hero-fade absolute -left-[14%] bottom-[6%] z-0 hidden h-[58vh] w-[58vh] opacity-[0.5] md:block"
+        className="hero-fade absolute -left-[10%] bottom-[2%] z-0 hidden h-[68vh] w-[68vh] opacity-90 md:block"
         seed={11}
-        rings={10}
+        rings={11}
         accentRing={4}
       />
       <HalftoneArc
-        className="absolute -bottom-[22%] -right-[8%] z-0 h-[55vh] w-[55vh] opacity-60"
+        className="absolute -bottom-[18%] -right-[6%] z-0 h-[58vh] w-[58vh] opacity-80"
         seed={5}
       />
-      <CropMarks className="z-0 hidden md:block" size={20} inset={20} opacity={0.4} />
+      <Asterisk
+        className="absolute right-[6vw] top-[22vh] z-0 hidden h-20 w-20 md:block"
+        size={80}
+        rays={12}
+        spin
+      />
       <HeroCanvas />
       <Meteors count={16} />
 
@@ -141,10 +146,13 @@ export default function Hero() {
           <span
             ref={line2Ref}
             aria-hidden="true"
-            className="hero-line display -mt-[0.15em] block overflow-hidden pt-[0.15em] text-right text-[clamp(3.4rem,15.5vw,14rem)] leading-[0.85]"
+            className="hero-line text-outline display -mt-[0.15em] block overflow-hidden pt-[0.15em] text-right text-[clamp(3.4rem,15.5vw,14rem)] leading-[0.85]"
             style={{ opacity: 0 }}
           >
-            BUENDÍA<span className="text-accent">◆</span>
+            BUENDÍA
+            <span className="text-accent" style={{ WebkitTextStroke: "0" }}>
+              ◆
+            </span>
           </span>
         </h1>
       </div>
