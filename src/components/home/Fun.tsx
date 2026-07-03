@@ -1,7 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/i18n";
-import { FUN } from "@/data/site";
+import { STYLE } from "@/data/site";
 import { CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Fun() {
@@ -12,7 +12,7 @@ export default function Fun() {
       <TechnicalGrid className="opacity-20" />
       <div className="relative z-10 grid gap-8 border border-ink p-5 md:grid-cols-2 md:items-end md:p-7">
         <div>
-          <SystemLabel>OFF DUTY</SystemLabel>
+          <SystemLabel>STYLE FILE</SystemLabel>
           <h2 className="display mt-5 text-[clamp(3.1rem,7vw,6rem)]">
             {t({ es: "Fuera del", en: "Outside" })}
             <br />
@@ -21,8 +21,8 @@ export default function Fun() {
         </div>
         <p className="max-w-[40ch] text-base font-semibold leading-snug md:justify-self-end">
           {t({
-            es: "La disciplina también se entrena lejos del teclado.",
-            en: "Discipline is trained away from the keyboard too.",
+            es: "Este sitio sigue las mismas reglas que le pido a mis proyectos.",
+            en: "This site follows the same rules I demand from my projects.",
           })}
         </p>
       </div>
@@ -36,32 +36,30 @@ export default function Fun() {
             04
           </span>
           <div className="relative z-10 flex items-center justify-between">
-            <SystemLabel>CURRENT TRAINING</SystemLabel>
+            <SystemLabel>DESIGN SYSTEM</SystemLabel>
             <CrossMark />
           </div>
-          <p className="display relative z-10 mt-9 text-[clamp(3rem,6vw,5.4rem)]">{FUN.currentlyTraining.title}</p>
-          <p className="u-label relative z-10 mt-5">
-            {t(FUN.currentlyTraining.gym)} / {t(FUN.currentlyTraining.note)}
-          </p>
+          <p className="display relative z-10 mt-9 text-[clamp(2.4rem,5.4vw,5.4rem)]">{STYLE.system.title}</p>
+          <p className="u-label relative z-10 mt-5">{t(STYLE.system.ratio)}</p>
           <div className="relative z-10 mt-8 flex flex-wrap gap-2">
-            {FUN.martialArts.map((art) => (
-              <span key={art} className="u-label border border-ink px-3 py-2">{art}</span>
+            {STYLE.system.tokens.map((token) => (
+              <span key={token} className="u-label border border-ink px-3 py-2">{token}</span>
             ))}
           </div>
         </article>
 
         <article className="bento-reactive border border-ink">
           <div className="flex items-center justify-between border-b border-ink p-5">
-            <SystemLabel>ACTIVE INTERESTS</SystemLabel>
+            <SystemLabel>DESIGN RULES</SystemLabel>
             <span className="u-label">03 RECORDS</span>
           </div>
           <ul>
-            {FUN.interests.map((interest, index) => (
-              <li key={interest.name.en} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-ink p-5 last:border-b-0">
+            {STYLE.rules.map((rule, index) => (
+              <li key={rule.name.en} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-ink p-5 last:border-b-0">
                 <span className="u-label opacity-60">{String(index + 1).padStart(2, "0")}</span>
                 <div>
-                  <h3 className="display text-2xl">{t(interest.name)}</h3>
-                  <p className="mt-3 text-sm font-medium leading-relaxed">{t(interest.note)}</p>
+                  <h3 className="display text-2xl">{t(rule.name)}</h3>
+                  <p className="mt-3 text-sm font-medium leading-relaxed">{t(rule.note)}</p>
                 </div>
               </li>
             ))}

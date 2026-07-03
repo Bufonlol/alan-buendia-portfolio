@@ -50,7 +50,7 @@ export const STACK: { name: string; meta: L }[] = [
   { name: "Next.js", meta: { es: "Framework", en: "Framework" } },
   { name: "TypeScript", meta: { es: "Lenguaje", en: "Language" } },
   { name: "Node.js", meta: { es: "Backend", en: "Backend" } },
-  { name: "Laravel", meta: { es: "Backend", en: "Backend" } },
+  { name: "Angular", meta: { es: "Frontend", en: "Frontend" } },
   { name: "Spring Boot", meta: { es: "Backend", en: "Backend" } },
   { name: "PostgreSQL", meta: { es: "Base de datos", en: "Database" } },
   { name: "MySQL", meta: { es: "Base de datos", en: "Database" } },
@@ -166,32 +166,35 @@ export const ABOUT = {
 };
 
 export const FUN = {
-  currentlyTraining: {
-    title: "Jiu Jitsu",
-    gym: { es: "En el tatami", en: "On the mat" } satisfies L,
-    note: { es: "favorita de todas", en: "my favorite of all" } satisfies L,
-  },
   martialArts: ["MMA", "Boxeo", "Muay Thai", "Jiu Jitsu"],
-  interests: [
+};
+
+export const STYLE = {
+  system: {
+    title: "Swiss Technical Noise",
+    ratio: { es: "ORDEN 70% / RUIDO TÉCNICO 20% / TEXTURA 10%", en: "ORDER 70% / TECHNICAL NOISE 20% / TEXTURE 10%" } satisfies L,
+    tokens: ["#0647FF / INK", "#F7F6EF / PAPER", "ARCHIVO", "IBM PLEX MONO"],
+  },
+  rules: [
     {
-      name: { es: "Ciberseguridad", en: "Cybersecurity" },
+      name: { es: "Dos colores", en: "Two colors" },
       note: {
-        es: "CTFs, madrigueras de OWASP y romper mis propias apps antes de que alguien más lo haga.",
-        en: "CTFs, OWASP rabbit holes, and breaking my own apps before someone else does.",
+        es: "Azul #0647FF y paper #F7F6EF. Sin paleta decorativa — el contraste hace todo el trabajo.",
+        en: "Blue #0647FF and paper #F7F6EF. No decorative palette — contrast does all the work.",
       },
     },
     {
-      name: { es: "Animación UI", en: "UI Animation" },
+      name: { es: "Cero plantillas", en: "Zero templates" },
       note: {
-        es: "Las curvas de easing son un rasgo de personalidad. Timelines de GSAP como lenguaje del amor.",
-        en: "Easing curves are a personality trait. GSAP timelines as a love language.",
+        es: "Cada sección se diseña desde cero. Sin componentes de librería genéricos ni layouts reciclados.",
+        en: "Every section designed from scratch. No generic library components, no recycled layouts.",
       },
     },
     {
-      name: { es: "Experiencias web", en: "Web Experiences" },
+      name: { es: "Ruido con jerarquía", en: "Noise with hierarchy" },
       note: {
-        es: "Acechando Awwwards. Sitios que se sienten como lugares, no como páginas.",
-        en: "Awwwards lurker. Sites that feel like places, not pages.",
+        es: "Grids técnicos, halftones, marcas de registro — el caos se lee, no estorba.",
+        en: "Technical grids, halftones, registration marks — the chaos reads clearly, it doesn't get in the way.",
       },
     },
   ] satisfies { name: L; note: L }[],

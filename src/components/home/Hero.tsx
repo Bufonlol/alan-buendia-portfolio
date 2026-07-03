@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
-import { ABOUT, SITE, STACK } from "@/data/site";
+import { ABOUT, PROCESS, SITE, STACK } from "@/data/site";
 import { PROJECTS as PROJECT_LIST } from "@/data/projects";
 import {
   Barcode,
@@ -69,7 +69,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="top"
-      className="relative overflow-hidden border-b border-ink"
+      className="relative overflow-hidden border-b border-ink pt-20 md:pt-24"
     >
       <TechnicalGrid className="opacity-25" />
 
@@ -100,7 +100,7 @@ export default function Hero() {
               <PulseDot className="text-ink" />
               <SystemLabel className="opacity-70">ONLINE</SystemLabel>
             </span>
-            <SystemLabel className="mt-3 block max-w-[6ch] leading-relaxed opacity-60">
+            <SystemLabel className="mt-3 block max-w-[7rem] leading-relaxed opacity-60">
               {t({ es: "DISPONIBLE PARA TRABAJO", en: "AVAILABLE FOR WORK" })}
             </SystemLabel>
           </div>
@@ -345,6 +345,23 @@ export default function Hero() {
             {t({ es: "ENVIAR MENSAJE ↗", en: "SEND MESSAGE ↗" })}
           </button>
         </div>
+      </div>
+
+      {/* ── row: method preview ──────────────────────────────────── */}
+      <div className="hero-meta relative z-10 grid gap-3 border-b border-ink p-3 md:p-4 sm:grid-cols-[repeat(4,1fr)]">
+        <button
+          onClick={() => navigate("/#process")}
+          className="u-label flex items-center justify-between gap-3 border border-ink px-4 py-4 text-left transition-colors hover:bg-ink hover:text-paper"
+        >
+          <span>/{t({ es: "MÉTODO", en: "METHOD" })}</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+        {PROCESS.map((step) => (
+          <div key={step.step} className="flex items-center gap-3 border border-ink/40 px-4 py-4">
+            <span className="display text-2xl leading-none opacity-50">{step.step}</span>
+            <p className="u-label leading-relaxed">{t(step.name).toUpperCase()}</p>
+          </div>
+        ))}
       </div>
 
       {/* ── bottom status bar ────────────────────────────────────── */}

@@ -31,7 +31,7 @@ export default function Process() {
   );
 
   return (
-    <section className="home-bento-section bg-ink text-paper">
+    <section id="process" className="home-bento-section bg-ink text-paper">
       <TechnicalGrid className="opacity-20" />
       <div className="relative z-10 grid gap-8 border border-paper/35 p-5 md:grid-cols-2 md:items-end md:p-7">
         <div>
@@ -50,49 +50,46 @@ export default function Process() {
         </p>
       </div>
 
-      <div ref={ref} className="relative z-10 mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-3 lg:[grid-auto-flow:dense]">
+      <div
+        ref={ref}
+        className="relative z-10 mt-3 overflow-hidden border border-paper/35 md:mt-4"
+      >
+        <div
+          className="pointer-events-none absolute -right-10 -top-10 h-[240px] w-[240px] opacity-[0.35] mix-blend-multiply md:h-[300px] md:w-[300px]"
+          style={{
+            maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
+          }}
+        >
+          <Image src="/assets/process-gears.png" alt="" fill sizes="300px" className="object-contain" />
+        </div>
+
         {PROCESS.map((step, index) => {
           const featured = index === 1;
-          const wide = index === 2;
           return (
-            <article
+            <div
               key={step.step}
-              className={`process-record bento-reactive relative overflow-hidden border p-5 md:p-7 ${
-                featured ? "border-paper bg-paper text-ink lg:col-span-2" : "border-paper/35"
-              } ${wide ? "lg:col-span-3" : ""}`}
+              className={`process-record group relative grid grid-cols-[3rem_1fr] gap-4 border-b border-paper/35 p-5 last:border-b-0 md:grid-cols-[4rem_14rem_1fr] md:items-center md:gap-8 md:p-6 ${
+                featured ? "bg-paper text-ink" : ""
+              }`}
             >
-              {featured && (
-                <div
-                  className="pointer-events-none absolute -right-8 -top-8 h-[220px] w-[220px] opacity-[0.45] mix-blend-multiply"
-                  style={{
-                    maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
-                    WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
-                  }}
-                >
-                  <Image src="/assets/process-gears.png" alt="" fill sizes="220px" className="object-contain" />
-                </div>
-              )}
-              <div className="relative z-10 flex items-center justify-between">
-                <span className={`u-label ${featured ? "opacity-70" : ""}`}>STEP / {step.step}</span>
-                <CrossMark className={featured ? "text-ink/60" : "text-paper/60"} />
+              <span className="display text-3xl leading-none opacity-50 md:text-4xl">
+                {step.step}
+              </span>
+              <div className="flex items-center gap-3">
+                <CrossMark className={featured ? "text-ink/50" : "text-paper/50"} />
+                <h3 className="display text-[clamp(1.6rem,3vw,2.4rem)] leading-none">
+                  {t(step.name)}
+                </h3>
               </div>
-              <h3
-                className={`display relative z-10 leading-none ${
-                  featured
-                    ? "mt-8 text-[clamp(2.8rem,6vw,5.2rem)]"
-                    : "mt-10 text-[clamp(2.4rem,4vw,4rem)]"
-                }`}
-              >
-                {t(step.name)}
-              </h3>
               <p
-                className={`relative z-10 mt-6 max-w-[38ch] text-sm font-medium leading-relaxed ${
-                  featured ? "text-ink/75" : "text-paper/80"
+                className={`col-span-2 mt-2 max-w-[46ch] text-sm font-medium leading-relaxed md:col-span-1 md:mt-0 ${
+                  featured ? "text-ink/75" : "text-paper/75"
                 }`}
               >
                 {t(step.desc)}
               </p>
-            </article>
+            </div>
           );
         })}
       </div>

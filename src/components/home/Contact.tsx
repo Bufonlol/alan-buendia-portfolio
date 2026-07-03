@@ -138,7 +138,7 @@ export default function Contact() {
           </span>
         </h2>
 
-        <div className="contact-meta mt-8 grid gap-4 border-t border-paper/35 pt-5 lg:grid-cols-[1fr_auto_auto] lg:items-end">
+        <div className="contact-meta mt-8 grid gap-4 border-t border-paper/35 pt-5 lg:grid-cols-[1fr_auto_auto_auto] lg:items-end">
           <div>
             <SystemLabel className="block text-paper/65">DIRECT LINE</SystemLabel>
             <a
@@ -170,6 +170,16 @@ export default function Contact() {
               <SystemLabel className="text-paper/70">CHANNEL / OPEN</SystemLabel>
             </div>
             <p className="u-label mt-2 text-paper/60">{SITE.locationShort} · UTC−6</p>
+          </div>
+          <div className="hidden border border-paper/40 p-3 lg:flex lg:flex-col lg:items-center lg:gap-2">
+            <Image
+              src="/qr-alanbuendia.svg"
+              alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
+              width={64}
+              height={64}
+              className="invert"
+            />
+            <SystemLabel className="text-paper/60">SCAN</SystemLabel>
           </div>
           <p className="sr-only" aria-live="polite">
             {copied ? t({ es: "Correo copiado", en: "Email copied" }) : ""}

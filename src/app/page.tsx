@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
+import Manifesto from "@/components/home/Manifesto";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
 import Stats from "@/components/home/Stats";
 import Stack from "@/components/home/Stack";
@@ -43,6 +44,7 @@ export default function Home() {
     <main>
       <Hero />
       <Marquee items={MARQUEE_ITEMS} />
+      <Manifesto />
       <FeaturedProjects />
       <Stats />
       <Stack />
