@@ -27,7 +27,6 @@ export default function Hero() {
   const featuredTools = FEATURED_TOOLS.map((name) => STACK.find((item) => item.name === name)).filter(
     (item): item is (typeof STACK)[number] => Boolean(item)
   );
-  const previewProjects = PROJECT_LIST.slice(0, 5);
   const coverProject = PROJECT_LIST[0];
 
   useGSAP(
@@ -212,10 +211,10 @@ export default function Hero() {
       </div>
 
       {/* ── row: works / tools / contact ─────────────────────────── */}
-      <div className="relative z-10 grid gap-4 border-b border-ink p-4 md:gap-6 md:p-6 lg:grid-cols-[1.15fr_1fr_minmax(280px,0.8fr)] lg:items-start">
+      <div className="relative z-10 grid gap-3 border-b border-ink p-3 md:p-4 lg:grid-cols-12 lg:items-stretch">
         {/* selected works */}
-        <div className="hero-meta bento-reactive border border-ink">
-          <div className="flex items-center justify-between border-b border-ink px-5 py-3">
+        <div className="hero-meta bento-reactive flex min-h-[340px] flex-col border border-ink lg:col-span-5">
+          <div className="flex items-center justify-between border-b border-ink px-4 py-3">
             <SystemLabel>{t({ es: "TRABAJO SELECCIONADO", en: "SELECTED WORKS" })}</SystemLabel>
             <button
               onClick={() => navigate("/archive")}
@@ -224,60 +223,55 @@ export default function Hero() {
               {t({ es: "VER ARCHIVO ↗", en: "VIEW ARCHIVE ↗" })}
             </button>
           </div>
-          <div className="grid gap-5 p-5 md:grid-cols-[1fr_1.1fr] md:items-start md:p-6">
-            <div>
-              <p className="display text-[clamp(2.8rem,6vw,4.5rem)] leading-none">
-                {t({ es: "PROYECTOS", en: "PROJECTS" })}
-              </p>
-              <div className="mt-4 flex items-end gap-3">
-                <span className="display text-3xl">{String(PROJECT_LIST.length).padStart(2, "0")}</span>
-                <SystemLabel className="mb-1 opacity-60">
-                  {t({ es: "TOTAL", en: "TOTAL" })}
-                </SystemLabel>
-              </div>
-              <p className="u-label mt-6 max-w-[20ch] leading-relaxed opacity-60">
-                {t({
-                  es: "SISTEMAS REALES PARA OPERACIONES REALES.",
-                  en: "REAL SYSTEMS FOR REAL OPERATIONS.",
-                })}
-              </p>
-              <div className="mt-6 grid gap-2 border-t border-ink/20 pt-5">
-                <div className="flex items-center justify-between">
-                  <SystemLabel className="opacity-50">RANGE</SystemLabel>
-                  <span className="u-label opacity-70">2024–2026</span>
+          <button
+            onClick={() => navigate(`/projects/${coverProject.slug}`)}
+            className="group grid flex-1 text-left sm:grid-cols-[0.82fr_1.18fr]"
+            data-cursor="view"
+          >
+            <div className="relative flex min-h-[250px] flex-col justify-between overflow-hidden border-b border-ink p-5 sm:border-b-0 sm:border-r">
+              <div>
+                <div className="flex items-end gap-3">
+                  <span className="display text-[clamp(3.2rem,6vw,5.4rem)] leading-none">
+                    {String(PROJECT_LIST.length).padStart(2, "0")}
+                  </span>
+                  <SystemLabel className="mb-1 opacity-60">{t({ es: "CASOS", en: "CASES" })}</SystemLabel>
                 </div>
-                <div className="flex items-center justify-between">
-                  <SystemLabel className="opacity-50">STATUS</SystemLabel>
-                  <span className="u-label opacity-70">{t({ es: "ENVIADO", en: "SHIPPED" })}</span>
-                </div>
+                <p className="u-label mt-5 max-w-[22ch] leading-relaxed opacity-70">
+                  {t({
+                    es: "SISTEMAS REALES PARA OPERACIONES REALES.",
+                    en: "REAL SYSTEMS FOR REAL OPERATIONS.",
+                  })}
+                </p>
               </div>
-              <Barcode className="mt-6 opacity-60" />
+              <div>
+                <p className="u-label border-t border-ink/25 pt-3 opacity-65">2024–2026 / SHIPPED</p>
+                <Barcode className="mt-4 opacity-70" />
+              </div>
             </div>
-            <ul className="grid content-start gap-1">
-              {previewProjects.map((project) => (
-                <li key={project.slug}>
-                  <button
-                    onClick={() => navigate(`/projects/${project.slug}`)}
-                    className="group flex w-full items-start gap-3 border-b border-ink/25 py-2 text-left last:border-b-0"
-                  >
-                    <span className="u-label pt-1 opacity-50">{project.index}</span>
-                    <span className="flex-1">
-                      <span className="block text-base font-bold leading-tight transition-transform duration-300 group-hover:translate-x-1">
-                        {t(project.title)}
-                      </span>
-                      <span className="u-label mt-1 block opacity-55">{project.tags.slice(0, 3).join(" / ")}</span>
-                    </span>
-                    <span className="u-label opacity-40">{project.year}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="relative min-h-[250px] overflow-hidden bg-ink">
+              {coverProject.cardImage && (
+                <Image
+                  src={coverProject.cardImage}
+                  alt={t(coverProject.title)}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  quality={78}
+                  className="object-cover object-top opacity-85 mix-blend-screen transition duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.035] group-hover:opacity-100"
+                />
+              )}
+              <div className="technical-grid pointer-events-none absolute inset-0 opacity-25" />
+              <div className="absolute inset-x-0 bottom-0 bg-ink p-4 text-paper">
+                <SystemLabel className="opacity-65">FEATURED / {coverProject.year}</SystemLabel>
+                <p className="display mt-2 text-[clamp(1.8rem,3vw,2.8rem)] leading-[0.9]">{t(coverProject.title)}</p>
+                <span className="u-label mt-3 block">{t({ es: "ABRIR CASO ↗", en: "OPEN CASE ↗" })}</span>
+              </div>
+            </div>
+          </button>
         </div>
 
         {/* tools */}
-        <div className="hero-meta bento-reactive relative border border-ink">
-          <div className="flex items-center justify-between border-b border-ink px-5 py-3">
+        <div className="hero-meta bento-reactive relative flex min-h-[340px] flex-col border border-ink lg:col-span-4">
+          <div className="flex items-center justify-between border-b border-ink px-4 py-3">
             <SystemLabel>/TOOLS</SystemLabel>
             <button
               onClick={() => navigate("/#stack")}
@@ -286,9 +280,9 @@ export default function Hero() {
               {t({ es: "MÁS ↗", en: "MORE ↗" })}
             </button>
           </div>
-          <div className="relative min-h-[260px] p-5 md:p-6">
+          <div className="relative flex flex-1 flex-col justify-between overflow-hidden p-5">
             <div
-              className="pointer-events-none absolute -right-4 bottom-0 h-[240px] w-[240px] mix-blend-multiply md:h-[300px] md:w-[300px]"
+              className="pointer-events-none absolute -right-4 top-1/2 h-[250px] w-[250px] -translate-y-1/2 mix-blend-multiply"
               style={{
                 maskImage: "radial-gradient(ellipse 92% 92% at 50% 50%, #000 70%, transparent 100%)",
                 WebkitMaskImage: "radial-gradient(ellipse 92% 92% at 50% 50%, #000 70%, transparent 100%)",
@@ -298,36 +292,30 @@ export default function Hero() {
                 src="/assets/stack-layers.png"
                 alt=""
                 fill
-                sizes="300px"
-                className="object-contain object-bottom opacity-90"
+                sizes="250px"
+                className="object-contain opacity-80"
               />
             </div>
             <ul className="relative z-10">
               {featuredTools.map((tool) => (
-                <li key={tool.name} className="display text-[clamp(1.8rem,5vw,2.9rem)] leading-[1.05]">
+                <li key={tool.name} className="display text-[clamp(1.65rem,3vw,2.65rem)] leading-[1.02]">
                   {tool.name.toUpperCase()}
                 </li>
               ))}
             </ul>
-            <div className="relative z-10 mt-6 grid max-w-[11rem] gap-2 border border-ink/40 p-3">
-              <div className="flex items-center justify-between">
-                <SystemLabel className="opacity-60">EASE</SystemLabel>
-                <span className="u-label">power3.out</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <SystemLabel className="opacity-60">DURATION</SystemLabel>
-                <span className="u-label">0.8S</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <SystemLabel className="opacity-60">STAGGER</SystemLabel>
-                <span className="u-label">0.08S</span>
-              </div>
+            <div className="relative z-10 mt-6 grid grid-cols-3 border border-ink/40">
+              {["POWER3.OUT", "0.8S", "0.08S"].map((value, index) => (
+                <div key={value} className="border-r border-ink/30 p-3 last:border-r-0">
+                  <SystemLabel className="block opacity-50">{["EASE", "DURATION", "STAGGER"][index]}</SystemLabel>
+                  <span className="u-label mt-2 block">{value}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* contact */}
-        <div className="hero-meta bento-reactive relative flex flex-col justify-between gap-6 overflow-hidden border border-ink bg-ink p-5 text-paper md:p-6">
+        <div className="hero-meta bento-reactive relative flex min-h-[340px] flex-col justify-between gap-6 overflow-hidden border border-ink bg-ink p-5 text-paper lg:col-span-3">
           <div
             className="pointer-events-none absolute -right-10 -top-10 h-[220px] w-[220px] opacity-[0.16] mix-blend-screen"
             style={{
@@ -341,7 +329,7 @@ export default function Hero() {
             <SystemLabel>/CONTACT</SystemLabel>
             <SystemLabel className="opacity-60">OPEN</SystemLabel>
           </div>
-          <p className="display relative z-10 break-words text-[clamp(1.2rem,2.4vw,2.2rem)] leading-[1.15]">
+          <p className="display relative z-10 text-[clamp(1.9rem,2.5vw,2.7rem)] leading-[0.95]">
             {t({ es: "CONSTRUYAMOS IDEAS", en: "LET'S BUILD IDEAS" })}
           </p>
           <div className="relative z-10">
