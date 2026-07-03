@@ -11,14 +11,14 @@ import { SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 /* Bento spans for the first six records — asymmetric, dense-packed. */
 const BENTO_SPAN = [
-  "lg:col-span-2 lg:row-span-2",
-  "lg:col-span-1",
+  "lg:col-span-2",
   "lg:col-span-1",
   "lg:col-span-1",
   "lg:col-span-2",
-  "lg:col-span-3",
+  "lg:col-span-2",
+  "lg:col-span-1",
 ];
-const BENTO_COMPACT = [false, true, true, true, false, false];
+const BENTO_COMPACT = [false, true, true, false, false, true];
 
 /* Feature Dental Family in the big slot; keep the rest in catalog order. */
 const FEATURED_SLUG = "dental-family";
@@ -65,15 +65,15 @@ export default function FeaturedProjects() {
     <section
       ref={sectionRef}
       id="work"
-      className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36"
+      className="home-bento-section"
     >
       <TechnicalGrid className="opacity-25" />
 
       <div className="relative z-10">
-        <div className="grid gap-8 border-y border-ink py-5 md:grid-cols-[1fr_1.2fr] md:items-end">
+        <div className="grid gap-8 border border-ink p-5 md:grid-cols-[1fr_1.2fr] md:items-end md:p-7">
           <div>
-            <SystemLabel>A—02 / SELECTED WORKS</SystemLabel>
-            <h2 className="display mt-5 text-[clamp(3.5rem,10vw,9rem)]">
+            <SystemLabel>SELECTED WORKS / {String(PROJECTS.length).padStart(2, "0")} CASES</SystemLabel>
+            <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
               {t({ es: "Archivo", en: "Archive" })}
               <br />
               {t({ es: "selecto", en: "selected" })}
@@ -96,14 +96,14 @@ export default function FeaturedProjects() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:auto-rows-[minmax(240px,auto)] lg:grid-cols-3 lg:items-start lg:[grid-auto-flow:dense]">
+        <div className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:auto-rows-[minmax(220px,auto)] lg:grid-cols-3 lg:[grid-auto-flow:dense]">
           {orderedProjects.map((project, index) => (
             <ProjectArchiveCard
               key={project.slug}
               project={project}
               inverted={index % 2 === 1}
               compact={BENTO_COMPACT[index] ?? true}
-              className={BENTO_SPAN[index] ?? ""}
+              className={`${BENTO_SPAN[index] ?? ""} home-bento-panel-interactive`}
               onOpen={() => {
                 tickLink();
                 navigate(`/projects/${project.slug}`);
@@ -112,7 +112,7 @@ export default function FeaturedProjects() {
           ))}
         </div>
 
-        <div className="mt-8 grid gap-3 border-t border-ink pt-5 sm:grid-cols-2">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 md:mt-4">
           <button
             onClick={() => navigate("/archive")}
             className="u-label border border-ink px-4 py-4 text-left transition-colors hover:bg-ink hover:text-paper"

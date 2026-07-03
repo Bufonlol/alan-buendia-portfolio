@@ -41,14 +41,14 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36"
+      className="home-bento-section"
     >
       <TechnicalGrid className="opacity-25" />
       <div className="relative z-10">
-        <div className="grid gap-8 border-y border-ink py-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div className="grid gap-8 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-end md:p-7">
           <div>
-            <SystemLabel>A—06 / PROFILE</SystemLabel>
-            <h2 className="display mt-5 text-[clamp(3.5rem,10vw,9rem)]">
+            <SystemLabel>PERSONAL FILE</SystemLabel>
+            <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
               {t({ es: "Field note", en: "Field note" })}
             </h2>
           </div>
@@ -58,13 +58,13 @@ export default function About() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:auto-rows-[minmax(160px,auto)] lg:grid-cols-3">
-          <div className="profile-reveal border border-ink p-5 md:p-8 lg:col-span-2 lg:row-span-2">
+        <div className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:auto-rows-[minmax(150px,auto)] lg:grid-cols-3 lg:[grid-auto-flow:dense]">
+          <div className="profile-reveal bento-reactive border border-ink p-5 md:p-8 lg:col-span-2 lg:row-span-2">
             <div className="flex items-start justify-between gap-4">
               <p className="u-label">SUBJECT / {SITE.fullName}</p>
               <Signature className="hidden text-lg opacity-70 md:block" size="text-lg" />
             </div>
-            <p className="mt-12 max-w-[52rem] text-[clamp(1.45rem,3vw,2.7rem)] font-bold leading-[1.22] tracking-[-0.035em]">
+            <p className="mt-8 max-w-[52rem] text-[clamp(1.45rem,3vw,2.7rem)] font-bold leading-[1.22] tracking-[-0.035em]">
               {t(ABOUT.paragraph)}
             </p>
             <p className="u-label mt-8 max-w-[40ch] -rotate-1 border border-ink/40 px-3 py-2 text-ink/70">
@@ -73,7 +73,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="profile-reveal border border-ink">
+          <div className="profile-reveal bento-reactive border border-ink">
             <div className="flex items-center justify-between border-b border-ink p-5">
               <SystemLabel>IDENTIFICATION</SystemLabel>
               <CrossMark />
@@ -94,7 +94,7 @@ export default function About() {
             </dl>
           </div>
 
-          <div className="profile-reveal relative overflow-hidden border border-ink p-5">
+          <div className="profile-reveal bento-reactive relative overflow-hidden border border-ink p-5">
             <div className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-multiply">
               <Image src="/assets/about-hands.png" alt="" fill sizes="360px" className="object-cover object-[center_65%]" />
             </div>

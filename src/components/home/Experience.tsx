@@ -8,12 +8,12 @@ export default function Experience() {
   const { t } = useLang();
 
   return (
-    <section id="experience" className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36">
+    <section id="experience" className="home-bento-section">
       <TechnicalGrid className="opacity-20" />
-      <div className="relative z-10 grid gap-8 border-y border-ink py-5 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+      <div className="relative z-10 grid gap-8 border border-ink p-5 md:grid-cols-[0.8fr_1.2fr] md:items-end md:p-7">
         <div>
-          <SystemLabel>A—05 / FIELD RECORD</SystemLabel>
-          <h2 className="display mt-5 text-[clamp(3.3rem,8vw,7rem)]">
+          <SystemLabel>PRODUCTION RECORD</SystemLabel>
+          <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
             {t({ es: "Experiencia", en: "Experience" })}
           </h2>
         </div>
@@ -25,13 +25,13 @@ export default function Experience() {
         </p>
       </div>
 
-      <div className="relative z-10 mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="relative z-10 mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-3 lg:[grid-auto-flow:dense]">
         {EXPERIENCE.map((job, index) => {
           const featured = index === 0;
           return (
             <article
               key={job.company}
-              className={`grid border border-ink ${
+              className={`bento-reactive grid border border-ink ${
                 featured ? "lg:col-span-2 lg:grid-cols-[8rem_1fr_1.2fr]" : "lg:grid-cols-1"
               }`}
             >

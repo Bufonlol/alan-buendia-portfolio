@@ -25,7 +25,10 @@ export default function ProjectArchiveCard({
   const ruleTone = inverted ? "border-paper/35" : "border-ink/35";
 
   return (
-    <article className={`archive-card group flex flex-col border ${cardTone} ${className}`}>
+    <article
+      className={`archive-card bento-reactive group flex flex-col border ${cardTone} ${className}`}
+      data-cursor="view"
+    >
       <a
         href={`/projects/${project.slug}`}
         onClick={(event) => {
@@ -46,7 +49,7 @@ export default function ProjectArchiveCard({
 
         <div className={compact ? "flex flex-1 flex-col" : "grid flex-1 lg:grid-cols-[1.35fr_0.65fr] lg:items-start"}>
           <div className={`border-b p-3 ${compact ? "" : "lg:border-b-0 lg:border-r"} ${ruleTone}`}>
-            <div className={`relative overflow-hidden bg-ink ${compact ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+            <div className={`project-media relative overflow-hidden bg-ink ${compact ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
               {project.cardImage && (
                 <Image
                   src={project.cardImage}

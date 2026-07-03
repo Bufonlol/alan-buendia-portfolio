@@ -229,7 +229,7 @@ export default function Navbar() {
         >
           <button
             onClick={() => navigate("/")}
-            className="display pointer-events-auto flex items-center gap-2 text-xl tracking-[-0.06em]"
+            className="display pointer-events-auto flex items-center gap-2 text-xl tracking-[-0.03em]"
             aria-label={t({ es: "Inicio", en: "Home" })}
           >
             AB

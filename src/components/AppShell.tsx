@@ -12,6 +12,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { LangProvider } from "@/lib/i18n";
 import Navbar from "@/components/Navbar";
 import GrainOverlay from "@/components/GrainOverlay";
+import Cursor from "@/components/Cursor";
 
 type AppContextType = {
   /** true once the preloader has finished — entrance animations key off this */
@@ -157,6 +158,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <LangProvider>
       <AppContext.Provider value={{ ready: true, navigate }}>
         <GrainOverlay />
+        <Cursor />
         <Navbar />
         <div id="page-root">{children}</div>
       {/* Route transition curtain */}
@@ -166,9 +168,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         aria-hidden="true"
       >
         <div className="technical-grid absolute inset-0 opacity-25" />
-        <span className="u-label relative border border-paper/40 px-4 py-3">
-          SYSTEM / ROUTE TRANSFER
-        </span>
+        <div className="relative grid place-items-center">
+          <span className="display text-outline-paper text-[clamp(4rem,12vw,6rem)]">AB / 26</span>
+          <span className="u-label mt-5 border border-paper/40 px-4 py-3">
+            SYSTEM / ROUTE TRANSFER
+          </span>
+        </div>
       </div>
       </AppContext.Provider>
     </LangProvider>

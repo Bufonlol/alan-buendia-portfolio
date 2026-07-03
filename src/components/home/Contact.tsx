@@ -85,12 +85,12 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink px-4 pb-5 pt-24 text-paper md:px-8 md:pb-7 md:pt-28"
+      className="relative flex min-h-[74dvh] flex-col overflow-hidden bg-ink p-3 text-paper md:p-4"
     >
       <TechnicalGrid className="opacity-20" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-4 bottom-5 top-24 border border-paper/35 md:inset-x-8 md:bottom-7 md:top-28"
+        className="pointer-events-none absolute inset-3 border border-paper/35 md:inset-4"
       />
       <div
         aria-hidden="true"
@@ -104,13 +104,13 @@ export default function Contact() {
       </div>
 
       <div className="contact-meta relative z-10 grid grid-cols-2 border-b border-paper/35 px-3 py-3 md:grid-cols-4 md:px-4">
-        <SystemLabel>A—08 / TRANSMISSION</SystemLabel>
+        <SystemLabel>DIRECT TRANSMISSION</SystemLabel>
         <SystemLabel className="hidden md:block">CHANNEL / OPEN</SystemLabel>
         <SystemLabel className="hidden md:block">{SITE.locationShort}</SystemLabel>
         <SystemLabel className="text-right">STATUS / AVAILABLE</SystemLabel>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-center px-3 py-12 md:px-4">
+      <div className="relative z-10 flex flex-1 flex-col justify-center px-3 py-10 md:px-4 md:py-14">
         <div className="contact-meta mb-6 flex items-center gap-3">
           <CrossMark />
           <SystemLabel>{t({ es: "INICIAR TRANSMISIÓN", en: "START TRANSMISSION" })}</SystemLabel>
@@ -121,7 +121,7 @@ export default function Contact() {
           <span className="block overflow-hidden pb-[0.06em]">
             <span
               aria-hidden="true"
-              className="contact-word display block text-[clamp(2.5rem,9.8vw,9.5rem)] leading-[0.8]"
+              className="contact-word display block text-[clamp(2.5rem,8vw,6rem)] leading-[0.86]"
               style={{ opacity: 0 }}
             >
               {t({ es: "CONSTRUYAMOS", en: "LET'S BUILD" })}
@@ -130,7 +130,7 @@ export default function Contact() {
           <span className="block overflow-hidden pb-[0.08em]">
             <span
               aria-hidden="true"
-              className="contact-word display block text-right text-[clamp(3rem,11vw,10.2rem)] leading-[0.8]"
+              className="contact-word display block text-right text-[clamp(3rem,8vw,6rem)] leading-[0.86]"
               style={{ opacity: 0 }}
             >
               {t({ es: "ALGO REAL", en: "SOMETHING REAL" })}
@@ -138,7 +138,7 @@ export default function Contact() {
           </span>
         </h2>
 
-        <div className="contact-meta mt-10 grid gap-5 lg:grid-cols-[1fr_auto_auto] lg:items-end">
+        <div className="contact-meta mt-8 grid gap-4 border-t border-paper/35 pt-5 lg:grid-cols-[1fr_auto_auto] lg:items-end">
           <div>
             <SystemLabel className="block text-paper/65">DIRECT LINE</SystemLabel>
             <a

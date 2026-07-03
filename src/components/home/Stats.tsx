@@ -36,14 +36,14 @@ export default function Stats() {
         {STATS.map((stat, index) => (
           <div
             key={stat.label.en}
-            className={`metric-cell min-h-40 border-b border-ink p-4 odd:border-r md:min-h-56 md:border-b-0 md:border-r md:p-6 md:last:border-r-0 ${
+            className={`metric-cell bento-reactive min-h-36 border-b border-ink p-4 odd:border-r md:min-h-44 md:border-b-0 md:border-r md:p-5 md:last:border-r-0 ${
               index === 0 ? "md:col-span-2 bg-ink text-paper" : ""
             }`}
           >
             <span className="u-label opacity-70">METRIC / {String(index + 1).padStart(2, "0")}</span>
             <p
-              className={`display mt-6 ${
-                index === 0 ? "text-[clamp(4.5rem,9vw,9rem)]" : "text-[clamp(3.5rem,7vw,6.5rem)]"
+              className={`display mt-5 ${
+                index === 0 ? "text-[clamp(4rem,7vw,6rem)]" : "text-[clamp(3rem,5vw,5.2rem)]"
               }`}
             >
               {stat.value}

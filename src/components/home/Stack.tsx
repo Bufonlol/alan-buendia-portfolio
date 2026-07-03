@@ -76,13 +76,13 @@ export default function Stack() {
   );
 
   return (
-    <section id="stack" className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36">
+    <section id="stack" className="home-bento-section">
       <TechnicalGrid className="opacity-20" />
       <div className="relative z-10">
-        <div className="grid gap-8 border-y border-ink py-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div className="grid gap-8 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-end md:p-7">
           <div>
-            <SystemLabel>A—03 / TOOL INVENTORY</SystemLabel>
-            <h2 className="display mt-5 text-[clamp(3.5rem,10vw,9rem)]">
+            <SystemLabel>PRODUCTION TOOLCHAIN</SystemLabel>
+            <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
               {t({ es: "Sistema de", en: "Build" })}
               <br />
               {t({ es: "herramientas", en: "system" })}
@@ -101,12 +101,12 @@ export default function Stack() {
 
         <div
           ref={listRef}
-          className="mt-8 grid gap-6 lg:auto-rows-[minmax(140px,auto)] lg:grid-cols-3"
+          className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:auto-rows-[minmax(140px,auto)] lg:grid-cols-3 lg:[grid-auto-flow:dense]"
         >
           {GROUPS.map((group) => (
             <div
               key={group.key}
-              className={`tool-cell group relative overflow-hidden border border-ink p-5 md:p-6 ${group.span} ${
+              className={`tool-cell bento-reactive group relative overflow-hidden border border-ink p-5 md:p-6 ${group.span} ${
                 group.inverted ? "bg-ink text-paper" : ""
               }`}
             >

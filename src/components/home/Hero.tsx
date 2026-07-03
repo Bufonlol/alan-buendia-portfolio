@@ -140,7 +140,7 @@ export default function Hero() {
             <span className="block overflow-hidden pb-[0.04em]">
               <span
                 aria-hidden="true"
-                className="hero-word display block text-[clamp(3.6rem,11vw,9.5rem)] leading-[0.8]"
+                className="hero-word display block text-[clamp(3.6rem,9vw,6rem)] leading-[0.86]"
                 style={{ opacity: 0 }}
               >
                 ALAN
@@ -149,7 +149,7 @@ export default function Hero() {
             <span className="block overflow-hidden pb-[0.08em]">
               <span
                 aria-hidden="true"
-                className="hero-word display block text-[clamp(3.6rem,11vw,9.5rem)] leading-[0.8]"
+                className="hero-word display block text-[clamp(3.6rem,9vw,6rem)] leading-[0.86]"
                 style={{ opacity: 0 }}
               >
                 BUENDÍA
@@ -168,7 +168,7 @@ export default function Hero() {
           <div>
             <div className="flex items-center justify-between">
               <SystemLabel>/ABOUT ME</SystemLabel>
-              <SystemLabel className="opacity-50">A—02</SystemLabel>
+              <SystemLabel className="opacity-50">PROFILE / ACTIVE</SystemLabel>
             </div>
             <p className="mt-4 text-sm font-semibold leading-relaxed">{t(ABOUT.paragraph).split(".").slice(0, 2).join(".") + "."}</p>
           </div>
@@ -214,7 +214,7 @@ export default function Hero() {
       {/* ── row: works / tools / contact ─────────────────────────── */}
       <div className="relative z-10 grid gap-4 border-b border-ink p-4 md:gap-6 md:p-6 lg:grid-cols-[1.15fr_1fr_minmax(280px,0.8fr)] lg:items-start">
         {/* selected works */}
-        <div className="hero-meta border border-ink">
+        <div className="hero-meta bento-reactive border border-ink">
           <div className="flex items-center justify-between border-b border-ink px-5 py-3">
             <SystemLabel>{t({ es: "TRABAJO SELECCIONADO", en: "SELECTED WORKS" })}</SystemLabel>
             <button
@@ -276,7 +276,7 @@ export default function Hero() {
         </div>
 
         {/* tools */}
-        <div className="hero-meta relative border border-ink">
+        <div className="hero-meta bento-reactive relative border border-ink">
           <div className="flex items-center justify-between border-b border-ink px-5 py-3">
             <SystemLabel>/TOOLS</SystemLabel>
             <button
@@ -327,7 +327,7 @@ export default function Hero() {
         </div>
 
         {/* contact */}
-        <div className="hero-meta relative flex flex-col justify-between gap-6 overflow-hidden border border-ink bg-ink p-5 text-paper md:p-6">
+        <div className="hero-meta bento-reactive relative flex flex-col justify-between gap-6 overflow-hidden border border-ink bg-ink p-5 text-paper md:p-6">
           <div
             className="pointer-events-none absolute -right-10 -top-10 h-[220px] w-[220px] opacity-[0.16] mix-blend-screen"
             style={{
@@ -339,7 +339,7 @@ export default function Hero() {
           </div>
           <div className="relative z-10 flex items-center justify-between">
             <SystemLabel>/CONTACT</SystemLabel>
-            <SystemLabel className="opacity-60">A—03</SystemLabel>
+            <SystemLabel className="opacity-60">OPEN</SystemLabel>
           </div>
           <p className="display relative z-10 break-words text-[clamp(1.2rem,2.4vw,2.2rem)] leading-[1.15]">
             {t({ es: "CONSTRUYAMOS IDEAS", en: "LET'S BUILD IDEAS" })}

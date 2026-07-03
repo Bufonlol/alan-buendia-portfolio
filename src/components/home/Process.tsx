@@ -31,12 +31,12 @@ export default function Process() {
   );
 
   return (
-    <section className="relative overflow-hidden border-b border-ink bg-ink px-4 py-24 text-paper md:px-8 md:py-36">
+    <section className="home-bento-section bg-ink text-paper">
       <TechnicalGrid className="opacity-20" />
-      <div className="relative z-10 grid gap-8 border-y border-paper/35 py-5 md:grid-cols-2 md:items-end">
+      <div className="relative z-10 grid gap-8 border border-paper/35 p-5 md:grid-cols-2 md:items-end md:p-7">
         <div>
-          <SystemLabel>A—04 / METHOD</SystemLabel>
-          <h2 className="display mt-5 text-[clamp(3.5rem,9vw,8rem)]">
+          <SystemLabel>WORKING METHOD</SystemLabel>
+          <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
             {t({ es: "Protocolo", en: "Working" })}
             <br />
             {t({ es: "de trabajo", en: "protocol" })}
@@ -50,14 +50,14 @@ export default function Process() {
         </p>
       </div>
 
-      <div ref={ref} className="relative z-10 mt-8 grid gap-6 lg:grid-cols-3">
+      <div ref={ref} className="relative z-10 mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-3 lg:[grid-auto-flow:dense]">
         {PROCESS.map((step, index) => {
           const featured = index === 1;
           const wide = index === 2;
           return (
             <article
               key={step.step}
-              className={`process-record relative overflow-hidden border p-5 md:p-7 ${
+              className={`process-record bento-reactive relative overflow-hidden border p-5 md:p-7 ${
                 featured ? "border-paper bg-paper text-ink lg:col-span-2" : "border-paper/35"
               } ${wide ? "lg:col-span-3" : ""}`}
             >
@@ -79,8 +79,8 @@ export default function Process() {
               <h3
                 className={`display relative z-10 leading-none ${
                   featured
-                    ? "mt-10 text-[clamp(3rem,7vw,6rem)]"
-                    : "mt-16 text-[clamp(2.5rem,5vw,4.7rem)]"
+                    ? "mt-8 text-[clamp(2.8rem,6vw,5.2rem)]"
+                    : "mt-10 text-[clamp(2.4rem,4vw,4rem)]"
                 }`}
               >
                 {t(step.name)}

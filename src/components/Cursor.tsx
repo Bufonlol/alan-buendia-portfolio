@@ -12,8 +12,8 @@ const LABELS: Record<Exclude<Mode, "default">, L> = {
   play: { es: "JUGAR ▶", en: "PLAY ▶" },
 };
 
-const TRAIL_COUNT = 5;
-const trailOpacity = (i: number) => 0.5 - i * 0.09;
+const TRAIL_COUNT = 2;
+const trailOpacity = (i: number) => 0.32 - i * 0.11;
 const trailScale = (i: number) => 1 - i * 0.12;
 
 export default function Cursor() {
@@ -57,6 +57,12 @@ export default function Cursor() {
 
     let seen = false;
     const onMove = (e: PointerEvent) => {
+      const reactive = (e.target as HTMLElement | null)?.closest<HTMLElement>(".bento-reactive");
+      if (reactive) {
+        const bounds = reactive.getBoundingClientRect();
+        reactive.style.setProperty("--spot-x", `${e.clientX - bounds.left}px`);
+        reactive.style.setProperty("--spot-y", `${e.clientY - bounds.top}px`);
+      }
       if (!seen) {
         seen = true;
         gsap.set([dot, ring, ...trailEls], { x: e.clientX, y: e.clientY });
@@ -135,7 +141,7 @@ export default function Cursor() {
       gsap.to(dot, { autoAlpha: 1, duration: 0.2 });
       gsap.to(trailEls, { opacity: (i: number) => trailOpacity(i), duration: 0.25 });
     } else {
-      gsap.to(ring, { width: 92, height: 92, duration: 0.35, ease: "back.out(1.6)" });
+      gsap.to(ring, { width: 92, height: 92, duration: 0.35, ease: "power4.out" });
       gsap.to(dot, { autoAlpha: 0, duration: 0.2 });
       gsap.to(trailEls, { opacity: 0, duration: 0.25 });
     }
