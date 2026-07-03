@@ -224,7 +224,7 @@ export default function Hero() {
               {t({ es: "VER ARCHIVO ↗", en: "VIEW ARCHIVE ↗" })}
             </button>
           </div>
-          <div className="grid gap-5 p-5 md:grid-cols-[1fr_1.1fr] md:p-6">
+          <div className="grid gap-5 p-5 md:grid-cols-[1fr_1.1fr] md:items-start md:p-6">
             <div>
               <p className="display text-[clamp(2.8rem,6vw,4.5rem)] leading-none">
                 {t({ es: "PROYECTOS", en: "PROJECTS" })}
@@ -241,6 +241,17 @@ export default function Hero() {
                   en: "REAL SYSTEMS FOR REAL OPERATIONS.",
                 })}
               </p>
+              <div className="mt-6 grid gap-2 border-t border-ink/20 pt-5">
+                <div className="flex items-center justify-between">
+                  <SystemLabel className="opacity-50">RANGE</SystemLabel>
+                  <span className="u-label opacity-70">2024–2026</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <SystemLabel className="opacity-50">STATUS</SystemLabel>
+                  <span className="u-label opacity-70">{t({ es: "ENVIADO", en: "SHIPPED" })}</span>
+                </div>
+              </div>
+              <Barcode className="mt-6 opacity-60" />
             </div>
             <ul className="grid content-start gap-1">
               {previewProjects.map((project) => (

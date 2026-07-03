@@ -63,7 +63,7 @@ export default function ArchiveClient() {
 
           <div
             ref={gridRef}
-            className="mt-16 grid gap-6 pb-8 lg:auto-rows-[minmax(180px,auto)] lg:grid-cols-3"
+            className="mt-16 grid gap-6 pb-8 lg:auto-rows-[minmax(180px,auto)] lg:grid-cols-3 lg:items-start"
           >
             {ARCHIVE.map((entry, index) => {
               const compact = index !== 0;

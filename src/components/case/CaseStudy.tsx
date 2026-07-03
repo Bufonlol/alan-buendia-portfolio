@@ -12,28 +12,6 @@ import MiniFooter from "@/components/MiniFooter";
 import { Contours, CropMarks } from "@/components/art/EditorialArt";
 import { TechnicalGrid } from "@/components/system/TechnicalLayer";
 
-function Block({
-  index,
-  label,
-  children,
-}: {
-  index: string;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="grid gap-6 border-t border-line py-14 md:grid-cols-[14rem_1fr] md:gap-12 md:py-20">
-      <Reveal>
-        <div className="flex items-baseline gap-3 md:sticky md:top-28">
-          <span className="u-label text-accent">{index}</span>
-          <h2 className="u-label">{label}</h2>
-        </div>
-      </Reveal>
-      <div>{children}</div>
-    </div>
-  );
-}
-
 /** Counts metric values up when they scroll into view ("30s" → 0→30 + "s"). */
 function Metric({ metric, label }: { metric: string; label: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -233,33 +211,40 @@ export default function CaseStudy({
           </Reveal>
         </div>
 
-        <Block index="03" label={t({ es: "La solución", en: "The solution" })}>
-          <ul className="flex flex-col">
-            {project.solution.map((s, i) => (
-              <Reveal key={i} delay={i * 0.04}>
-                <li className="flex items-start gap-4 border-b border-line py-4 last:border-b-0">
-                  <span className="u-label mt-1 text-accent">→</span>
-                  <span className="leading-relaxed">{t(s)}</span>
-                </li>
-              </Reveal>
-            ))}
-          </ul>
-        </Block>
+        <div className="grid gap-6 border-t border-line py-14 md:grid-cols-3 md:items-start md:py-20">
+          <Reveal className="md:col-span-2">
+            <div className="border border-line p-6 md:p-8">
+              <span className="u-label text-accent">03 / {t({ es: "La solución", en: "The solution" })}</span>
+              <ul className="mt-6 flex flex-col">
+                {project.solution.map((s, i) => (
+                  <li key={i} className="flex items-start gap-4 border-b border-line py-4 last:border-b-0">
+                    <span className="u-label mt-1 text-accent">→</span>
+                    <span className="leading-relaxed">{t(s)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <div className="border border-line bg-ink p-6 text-paper md:p-8">
+              <span className="u-label opacity-70">04 / {t({ es: "Stack técnico", en: "Tech stack" })}</span>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {project.stack.map((s) => (
+                  <span
+                    key={s}
+                    className="display inline-flex items-center leading-none border border-paper/40 px-4 py-3 text-[clamp(1rem,2vw,1.4rem)] transition-colors duration-300 hover:border-paper hover:text-accent"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
 
-        <Block index="04" label={t({ es: "Stack técnico", en: "Tech stack" })}>
-          <div className="flex flex-wrap gap-3">
-            {project.stack.map((t, i) => (
-              <Reveal key={t} delay={i * 0.04}>
-                <span className="display inline-flex items-center leading-none border border-line px-5 py-4 text-[clamp(1.2rem,2.4vw,2rem)] transition-colors duration-300 hover:border-accent hover:text-accent">
-                  {t}
-                </span>
-              </Reveal>
-            ))}
-          </div>
-        </Block>
-
-        <Block index="05" label={t({ es: "Pantallas", en: "Screens" })}>
-          <div className="grid gap-5 md:grid-cols-2">
+        <div className="border-t border-line py-14 md:py-20">
+          <span className="u-label text-accent">05 / {t({ es: "Pantallas", en: "Screens" })}</span>
+          <div className="mt-6 grid gap-5 md:grid-cols-2">
             {project.screens.map((s, i) => (
               <Reveal key={i} delay={i * 0.05}>
                 <ProjectVisual
@@ -267,12 +252,12 @@ export default function CaseStudy({
                   image={s.image}
                   caption={t(s.caption)}
                   fit={s.fit}
-                  className="aspect-[4/3] w-full [container-type:inline-size]"
+                  className="aspect-[4/3] w-full border border-line [container-type:inline-size]"
                 />
               </Reveal>
             ))}
           </div>
-        </Block>
+        </div>
 
         <div className="border-t border-line py-14 md:py-20">
           <span className="u-label text-accent">06 / {t({ es: "Resultados", en: "Results" })}</span>
@@ -283,35 +268,42 @@ export default function CaseStudy({
           </div>
         </div>
 
-        <Block index="07" label={t({ es: "Aprendizajes", en: "Learnings" })}>
-          <ol className="flex max-w-[42rem] flex-col gap-6">
-            {project.learnings.map((l, i) => (
-              <Reveal key={i} delay={i * 0.05}>
-                <li className="flex gap-5">
-                  <span className="display text-2xl text-accent">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p className="leading-relaxed text-ink-soft">{t(l)}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </Block>
-
-        {(project.live || project.repo) && (
-          <div className="u-label flex gap-8 border-t border-line py-10">
-            {project.live && (
-              <a href={project.live} target="_blank" rel="noreferrer" className="link-line">
-                {t({ es: "Ver sitio en vivo ↗", en: "Visit live site ↗" })}
-              </a>
-            )}
-            {project.repo && (
-              <a href={project.repo} target="_blank" rel="noreferrer" className="link-line">
-                {t({ es: "Código ↗", en: "Source ↗" })}
-              </a>
-            )}
-          </div>
-        )}
+        <div className="grid gap-6 border-t border-line py-14 md:grid-cols-3 md:items-start md:py-20">
+          <Reveal className={project.live || project.repo ? "md:col-span-2" : "md:col-span-3"}>
+            <div className="border border-line p-6 md:p-8">
+              <span className="u-label text-accent">07 / {t({ es: "Aprendizajes", en: "Learnings" })}</span>
+              <ol className="mt-6 flex flex-col gap-6">
+                {project.learnings.map((l, i) => (
+                  <li key={i} className="flex gap-5">
+                    <span className="display text-2xl text-accent">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <p className="leading-relaxed text-ink-soft">{t(l)}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
+          {(project.live || project.repo) && (
+            <Reveal delay={0.05}>
+              <div className="flex h-full flex-col justify-between gap-6 border border-line bg-ink p-6 text-paper md:p-8">
+                <span className="u-label opacity-70">{t({ es: "ENLACES", en: "LINKS" })}</span>
+                <div className="u-label flex flex-col gap-4">
+                  {project.live && (
+                    <a href={project.live} target="_blank" rel="noreferrer" className="link-line">
+                      {t({ es: "Ver sitio en vivo ↗", en: "Visit live site ↗" })}
+                    </a>
+                  )}
+                  {project.repo && (
+                    <a href={project.repo} target="_blank" rel="noreferrer" className="link-line">
+                      {t({ es: "Código ↗", en: "Source ↗" })}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </Reveal>
+          )}
+        </div>
         </div>
       </section>
 

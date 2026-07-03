@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   description:
     "Frontend developer from Orizaba, México / desarrollador frontend de Orizaba, México. I build interfaces that feel inevitable — fast, accessible, and a little bit playful. React, TypeScript, GSAP & Three.js.",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: "/favicon.png" },
   openGraph: {
     title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
     description:
