@@ -20,10 +20,19 @@ const BENTO_SPAN = [
 ];
 const BENTO_COMPACT = [false, true, true, true, false, false];
 
+/* Feature Dental Family in the big slot; keep the rest in catalog order. */
+const FEATURED_SLUG = "dental-family";
+const orderProjects = <T extends { slug: string }>(projects: T[]): T[] => {
+  const featured = projects.find((p) => p.slug === FEATURED_SLUG);
+  if (!featured) return projects;
+  return [featured, ...projects.filter((p) => p.slug !== FEATURED_SLUG)];
+};
+
 export default function FeaturedProjects() {
   const { navigate } = useApp();
   const { t } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
+  const orderedProjects = orderProjects(PROJECTS);
 
   useGSAP(
     () => {
@@ -88,7 +97,7 @@ export default function FeaturedProjects() {
         </div>
 
         <div className="mt-8 grid gap-6 lg:auto-rows-[minmax(240px,auto)] lg:grid-cols-3 lg:items-start lg:[grid-auto-flow:dense]">
-          {PROJECTS.map((project, index) => (
+          {orderedProjects.map((project, index) => (
             <ProjectArchiveCard
               key={project.slug}
               project={project}

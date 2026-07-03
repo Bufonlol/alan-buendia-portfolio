@@ -25,7 +25,7 @@ export default function ProjectArchiveCard({
   const ruleTone = inverted ? "border-paper/35" : "border-ink/35";
 
   return (
-    <article className={`archive-card group flex h-full flex-col border ${cardTone} ${className}`}>
+    <article className={`archive-card group flex flex-col border ${cardTone} ${className}`}>
       <a
         href={`/projects/${project.slug}`}
         onClick={(event) => {
@@ -82,9 +82,26 @@ export default function ProjectArchiveCard({
                 {t(project.title)}
               </h3>
               {!compact && (
-                <p className="mt-5 max-w-[34ch] text-sm font-semibold leading-snug">
-                  {t(project.tagline)}
-                </p>
+                <>
+                  <p className="mt-5 max-w-[34ch] text-sm font-semibold leading-snug">
+                    {t(project.tagline)}
+                  </p>
+                  <p className="mt-6 max-w-[46ch] text-sm leading-relaxed opacity-75">
+                    {t(project.problem).split(".").slice(0, 1).join(".") + "."}
+                  </p>
+                  <div className={`mt-8 grid grid-cols-3 gap-4 border-t pt-5 ${ruleTone}`}>
+                    {project.results.slice(0, 3).map((r) => (
+                      <div key={r.label.en}>
+                        <span className="display block text-2xl leading-none md:text-3xl">
+                          {t(r.metric)}
+                        </span>
+                        <span className="u-label mt-2 block leading-snug opacity-60">
+                          {t(r.label)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
 
