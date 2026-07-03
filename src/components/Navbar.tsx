@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useApp } from "@/components/AppShell";
 import { useLang, type Lang } from "@/lib/i18n";
 import { NAV_LINKS, SITE } from "@/data/site";
 import { isSoundEnabled, setSoundEnabled, tickLink } from "@/lib/sound";
+import { Barcode, CrossMark } from "@/components/system/TechnicalLayer";
 
 function useLocalTime() {
   const [time, setTime] = useState("--:--");
+
   useEffect(() => {
     const fmt = new Intl.DateTimeFormat("en-US", {
       hour: "2-digit",
@@ -21,27 +23,29 @@ function useLocalTime() {
     const id = setInterval(tick, 10_000);
     return () => clearInterval(id);
   }, []);
+
   return time;
 }
 
 function LangToggle({ className = "" }: { className?: string }) {
   const { lang, setLang } = useLang();
-  const btn = (l: Lang) => (
+  const button = (value: Lang) => (
     <button
-      onClick={() => setLang(l)}
-      aria-pressed={lang === l}
-      className={`u-label transition-opacity duration-300 ${
-        lang === l ? "underline underline-offset-4" : "opacity-45 hover:opacity-100"
+      onClick={() => setLang(value)}
+      aria-pressed={lang === value}
+      className={`u-label px-1 py-1 transition-opacity duration-300 ${
+        lang === value ? "underline underline-offset-4" : "opacity-50 hover:opacity-100"
       }`}
     >
-      {l.toUpperCase()}
+      {value.toUpperCase()}
     </button>
   );
+
   return (
-    <div className={`pointer-events-auto flex items-center gap-1.5 ${className}`}>
-      {btn("es")}
-      <span className="u-label opacity-30">/</span>
-      {btn("en")}
+    <div className={`pointer-events-auto flex items-center gap-1 ${className}`}>
+      {button("es")}
+      <span className="u-label opacity-40">/</span>
+      {button("en")}
     </div>
   );
 }
@@ -49,19 +53,20 @@ function LangToggle({ className = "" }: { className?: string }) {
 function SoundToggle({ className = "" }: { className?: string }) {
   const { t } = useLang();
   const [on, setOn] = useState(false);
+
   useEffect(() => setOn(isSoundEnabled()), []);
-  const toggle = () => {
-    const next = !on;
-    setSoundEnabled(next);
-    setOn(next);
-  };
+
   return (
     <button
-      onClick={toggle}
+      onClick={() => {
+        const next = !on;
+        setSoundEnabled(next);
+        setOn(next);
+      }}
       aria-pressed={on}
       aria-label={t({ es: "Sonido", en: "Sound" })}
-      className={`u-label pointer-events-auto transition-opacity duration-300 ${
-        on ? "underline underline-offset-4" : "opacity-45 hover:opacity-100"
+      className={`u-label pointer-events-auto px-1 py-1 transition-opacity duration-300 ${
+        on ? "underline underline-offset-4" : "opacity-50 hover:opacity-100"
       } ${className}`}
     >
       {on ? t({ es: "SONIDO ON", en: "SOUND ON" }) : t({ es: "SONIDO OFF", en: "SOUND OFF" })}
@@ -70,157 +75,185 @@ function SoundToggle({ className = "" }: { className?: string }) {
 }
 
 export default function Navbar() {
-  const { ready, lenis, navigate } = useApp();
+  const { ready, navigate } = useApp();
   const { t } = useLang();
   const [open, setOpen] = useState(false);
   const barRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const logoClicks = useRef<{ n: number; t: number }>({ n: 0, t: 0 });
   const time = useLocalTime();
 
-  /* Entrance once the preloader is done */
   useGSAP(() => {
     if (!ready || !barRef.current) return;
     gsap.fromTo(
       barRef.current,
-      { y: -24, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.9, delay: 0.9, ease: "power3.out" }
+      { y: -20, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 0.8, delay: 0.55, ease: "power3.out" }
     );
   }, [ready]);
 
-  /* Scroll progress bar */
-  useGSAP(() => {
-    if (!progressRef.current) return;
-    gsap.to(progressRef.current, {
-      scaleX: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-      },
-    });
-  }, []);
-
-  /* Menu open/close timeline */
   useGSAP(
     () => {
       const overlay = overlayRef.current;
       if (!overlay) return;
+      const duration = prefersReducedMotion() ? 0.01 : 0.68;
       const links = overlay.querySelectorAll<HTMLElement>(".menu-link-row");
       const meta = overlay.querySelectorAll<HTMLElement>(".menu-meta");
+
       tlRef.current = gsap
         .timeline({ paused: true })
         .set(overlay, { display: "flex" })
         .fromTo(
           overlay,
-          { clipPath: "inset(0% 0% 100% 0%)" },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: 0.7,
-            ease: "power4.inOut",
-          }
+          { clipPath: "inset(0 0 100% 0)" },
+          { clipPath: "inset(0 0 0% 0)", duration, ease: "power4.inOut" }
         )
         .fromTo(
           links,
-          { yPercent: 120, autoAlpha: 0 },
+          { yPercent: 105, autoAlpha: 0 },
           {
             yPercent: 0,
             autoAlpha: 1,
-            duration: 0.7,
-            stagger: 0.06,
+            duration: duration * 0.9,
+            stagger: prefersReducedMotion() ? 0 : 0.045,
             ease: "power3.out",
           },
           "-=0.25"
         )
         .fromTo(
           meta,
-          { y: 20, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.05, ease: "power2.out" },
-          "-=0.4"
+          { y: 14, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: duration * 0.7,
+            stagger: prefersReducedMotion() ? 0 : 0.04,
+          },
+          "-=0.3"
         );
-      tlRef.current.eventCallback("onReverseComplete", () =>
-        gsap.set(overlay, { display: "none" })
-      );
+
+      tlRef.current.eventCallback("onReverseComplete", () => {
+        gsap.set(overlay, { display: "none" });
+      });
     },
     { scope: overlayRef }
   );
 
-  const toggle = (next: boolean) => {
-    setOpen(next);
-    if (next) {
-      lenis?.stop();
-      // no Lenis (reduced motion) → lock native scroll while the menu is open
-      if (!lenis) document.documentElement.style.overflow = "hidden";
-      tlRef.current?.timeScale(1).play();
-    } else {
-      lenis?.start();
-      if (!lenis) document.documentElement.style.overflow = "";
-      tlRef.current?.timeScale(1.4).reverse();
-    }
-  };
+  const toggle = useCallback(
+    (next: boolean) => {
+      setOpen(next);
+      if (next) {
+        document.documentElement.style.overflow = "hidden";
+        tlRef.current?.timeScale(1).play();
+      } else {
+        document.documentElement.style.overflow = "";
+        tlRef.current?.timeScale(1.5).reverse();
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+
+    const focusTimer = window.setTimeout(() => {
+      overlay.querySelector<HTMLElement>("button, a")?.focus();
+    }, prefersReducedMotion() ? 10 : 520);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        toggle(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const focusable = Array.from(
+        overlay.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => !element.hasAttribute("aria-hidden"));
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open, toggle]);
+
+  useEffect(
+    () => () => {
+      document.documentElement.style.overflow = "";
+    },
+    []
+  );
 
   const go = (href: string) => {
     tickLink();
     toggle(false);
-    setTimeout(() => navigate(href), 250);
-  };
-
-  const onLogoClick = () => {
-    const now = Date.now();
-    const s = logoClicks.current;
-    s.n = now - s.t < 2000 ? s.n + 1 : 1;
-    s.t = now;
-    if (s.n >= 5) {
-      s.n = 0;
-      window.dispatchEvent(new CustomEvent("ab:spin")); // easter egg #2
-      return;
-    }
-    tickLink();
-    if (open) toggle(false);
-    setTimeout(() => navigate("/"), open ? 250 : 0);
+    window.setTimeout(() => navigate(href), prefersReducedMotion() ? 20 : 240);
   };
 
   return (
     <>
-      {/* Scroll progress line */}
-      <div className="fixed inset-x-0 top-0 z-[100] h-[2px] origin-left scale-x-0 bg-accent" ref={progressRef} />
+      <div
+        className="scroll-progress fixed inset-x-0 top-0 z-[100] h-[2px] origin-left scale-x-0 bg-ink"
+      />
 
       <header
         ref={barRef}
-        className="pointer-events-none fixed inset-x-0 top-0 z-[90] mix-blend-difference"
+        className={`pointer-events-none fixed inset-x-0 top-0 z-[90] border-b transition-colors duration-300 ${
+          open ? "border-paper/30 bg-ink text-paper" : "border-ink/35 bg-paper/95 text-ink"
+        }`}
         style={{ opacity: 0 }}
       >
-        <nav className="flex items-center justify-between px-5 py-5 md:px-8 text-paper">
+        <nav
+          aria-label={t({ es: "Navegación principal", en: "Primary navigation" })}
+          className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-4 px-4 md:px-8"
+        >
           <button
-            onClick={onLogoClick}
-            className="display pointer-events-auto text-xl tracking-wide"
+            onClick={() => navigate("/")}
+            className="display pointer-events-auto flex items-center gap-2 text-xl tracking-[-0.06em]"
             aria-label={t({ es: "Inicio", en: "Home" })}
           >
-            AB<span className="text-accent">◆</span>
+            AB
+            <CrossMark className="h-2.5 w-2.5" />
           </button>
-          <div className="u-label hidden gap-8 opacity-70 md:flex">
+
+          <div className="u-label hidden items-center justify-center gap-8 md:flex">
             <span>{SITE.locationShort}</span>
             <span suppressHydrationWarning>{time} CST</span>
+            <span>SYSTEM / ONLINE</span>
           </div>
-          <div className="flex items-center gap-6">
-            <SoundToggle />
+
+          <div className="flex items-center justify-end gap-3 md:gap-5">
+            <SoundToggle className="hidden sm:block" />
             <LangToggle />
             <button
+              ref={menuButtonRef}
               onClick={() => toggle(!open)}
-              className="u-label pointer-events-auto flex items-center gap-3"
+              className="u-label pointer-events-auto flex min-h-9 items-center gap-3 border border-current px-3"
               aria-expanded={open}
               aria-controls="site-menu"
             >
-              <span>
-                {open
-                  ? t({ es: "Cerrar", en: "Close" })
-                  : t({ es: "Menú", en: "Menu" })}
-              </span>
-              <span className="relative block h-3 w-6" aria-hidden="true">
+              <span>{open ? t({ es: "CERRAR", en: "CLOSE" }) : t({ es: "ÍNDICE", en: "INDEX" })}</span>
+              <span className="relative block h-3 w-5" aria-hidden="true">
                 <span
                   className={`absolute left-0 top-0 block h-px w-full bg-current transition-transform duration-300 ${
                     open ? "translate-y-[5.5px] rotate-45" : ""
@@ -237,62 +270,53 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Fullscreen menu */}
       <div
         id="site-menu"
         ref={overlayRef}
-        className="fixed inset-0 z-[80] hidden flex-col justify-between overflow-y-auto bg-ink px-5 pb-6 pt-20 text-paper md:px-8"
+        role="dialog"
+        aria-modal="true"
+        aria-label={t({ es: "Índice del sitio", en: "Site index" })}
+        aria-hidden={!open}
+        className="fixed inset-0 z-[80] hidden flex-col justify-between overflow-y-auto bg-ink px-4 pb-5 pt-20 text-paper md:px-8 md:pb-7 md:pt-24"
       >
-        <nav className="flex flex-col">
+        <div className="technical-grid pointer-events-none absolute inset-0 opacity-20" />
+
+        <nav className="relative grid md:grid-cols-2">
           {NAV_LINKS.map((link) => (
-            <div key={link.href} className="overflow-hidden border-b border-line-paper">
+            <div key={link.href} className="overflow-hidden border-b border-paper/30 md:odd:border-r">
               <div className="menu-link-row">
                 <button
                   onClick={() => go(link.href)}
-                  className="group flex w-full items-baseline gap-5 py-2 text-left md:py-2.5"
+                  className="group flex w-full items-center gap-4 px-2 py-2 text-left md:px-4 md:py-3"
                 >
-                  <span className="u-label text-accent">{link.index}</span>
-                  <span className="relative overflow-hidden">
-                    <span className="display block text-[clamp(1.9rem,5.6vh,3.6rem)] leading-[1.05] transition-transform duration-500 ease-[cubic-bezier(.77,0,.18,1)] group-hover:-translate-y-full">
-                      {t(link.label)}
-                    </span>
-                    <span className="absolute left-0 top-full font-serif italic text-[clamp(1.8rem,5.3vh,3.4rem)] leading-[1.05] text-accent transition-transform duration-500 ease-[cubic-bezier(.77,0,.18,1)] group-hover:-translate-y-full">
-                      {t(link.label).toLowerCase()}
-                    </span>
+                  <span className="u-label w-7 text-paper/55">{link.index}</span>
+                  <span className="display text-[clamp(1.8rem,5.2vh,4.2rem)] leading-none transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-3">
+                    {t(link.label)}
                   </span>
-                  <span className="u-label ml-auto opacity-0 transition-opacity duration-300 group-hover:opacity-60">
-                    →
-                  </span>
+                  <span className="u-label ml-auto opacity-50">↗</span>
                 </button>
               </div>
             </div>
           ))}
         </nav>
 
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="menu-meta flex flex-col gap-1">
-            <span className="u-label text-paper/50">
-              {t({ es: "Escríbeme", en: "Get in touch" })}
-            </span>
-            <a
-              href={`mailto:${SITE.email}`}
-              className="link-line font-serif text-xl italic"
-            >
+        <div className="relative grid gap-6 border-t border-paper/30 pt-5 md:grid-cols-[1fr_auto_auto] md:items-end">
+          <div className="menu-meta">
+            <span className="u-label block text-paper/55">TRANSMISSION / CONTACT</span>
+            <a href={`mailto:${SITE.email}`} className="mt-2 block text-lg font-bold">
               {SITE.email}
             </a>
           </div>
-          <div className="menu-meta u-label flex items-center gap-6">
+          <Barcode className="menu-meta hidden text-paper md:block" />
+          <div className="menu-meta u-label flex flex-wrap items-center gap-5">
             <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">
-              CV ↘
+              CV ↗
             </a>
             <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">
-              GitHub ↗
+              GITHUB ↗
             </a>
-            <SoundToggle className="border-l border-line-paper pl-6" />
-            <LangToggle className="border-l border-line-paper pl-6" />
-          </div>
-          <div className="menu-meta u-label text-paper/40">
-            {SITE.locationShort} — {time} CST
+            <SoundToggle />
+            <span className="text-paper/55">{time} / UTC−6</span>
           </div>
         </div>
       </div>

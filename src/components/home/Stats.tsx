@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STATS } from "@/data/site";
+import { TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Stats() {
   const { t } = useLang();
@@ -11,71 +12,45 @@ export default function Stats() {
 
   useGSAP(
     () => {
-      if (!ref.current) return;
-
+      if (!ref.current || prefersReducedMotion()) return;
       gsap.fromTo(
-        gsap.utils.toArray<HTMLElement>(".stat-item", ref.current),
-        { y: 50, autoAlpha: 0 },
+        gsap.utils.toArray<HTMLElement>(".metric-cell", ref.current),
+        { y: 24, autoAlpha: 0 },
         {
           y: 0,
           autoAlpha: 1,
-          duration: 0.9,
+          duration: 0.75,
+          stagger: 0.08,
           ease: "power3.out",
-          stagger: 0.1,
-          scrollTrigger: { trigger: ref.current, start: "top 82%", once: true },
+          scrollTrigger: { trigger: ref.current, start: "top 84%", once: true },
         }
       );
-
-      gsap.utils.toArray<HTMLElement>("[data-count]", ref.current).forEach((el) => {
-        const to = parseFloat(el.dataset.count!);
-        const suffix = el.dataset.suffix ?? "";
-        if (isNaN(to)) return;
-        const final = (Number.isInteger(to) ? String(to) : to.toFixed(1)) + suffix;
-        if (prefersReducedMotion()) {
-          el.textContent = final;
-        } else {
-          gsap.to(el, {
-            scrambleText: {
-              text: final,
-              chars: "0123456789",
-              revealDelay: 0.3,
-              speed: 0.4,
-            },
-            duration: 1.6,
-            ease: "power2.out",
-            scrollTrigger: { trigger: el, start: "top 85%", once: true },
-          });
-        }
-      });
     },
     { scope: ref }
   );
 
-  const parse = (v: string) => {
-    const m = v.match(/^(\d+\.?\d*)(.*)$/);
-    return m ? { num: m[1], suffix: m[2] } : { num: null, suffix: v };
-  };
-
   return (
-    <section className="relative overflow-hidden border-y border-line px-5 py-16 md:px-8 md:py-20">
-      <div className="dot-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
-      <div ref={ref} className="relative z-10 grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
-        {STATS.map((s) => {
-          const { num, suffix } = parse(s.value);
-          return (
-            <div key={s.label.en} className="stat-item">
-              <p
-                className="display text-[clamp(3rem,6.5vw,5.5rem)] leading-none text-accent"
-                data-count={num ?? undefined}
-                data-suffix={suffix}
-                suppressHydrationWarning
-              >
-                {s.value}
-              </p>
-              <p className="u-label mt-3 text-muted">{t(s.label)}</p>
-            </div>
-          );
-        })}
+    <section aria-label={t({ es: "Métricas", en: "Metrics" })} className="relative overflow-hidden border-b border-ink">
+      <TechnicalGrid className="opacity-20" />
+      <div ref={ref} className="relative z-10 grid grid-cols-2 md:grid-cols-5">
+        {STATS.map((stat, index) => (
+          <div
+            key={stat.label.en}
+            className={`metric-cell min-h-40 border-b border-ink p-4 odd:border-r md:min-h-56 md:border-b-0 md:border-r md:p-6 md:last:border-r-0 ${
+              index === 0 ? "md:col-span-2 bg-ink text-paper" : ""
+            }`}
+          >
+            <span className="u-label opacity-70">METRIC / {String(index + 1).padStart(2, "0")}</span>
+            <p
+              className={`display mt-6 ${
+                index === 0 ? "text-[clamp(4.5rem,9vw,9rem)]" : "text-[clamp(3.5rem,7vw,6.5rem)]"
+              }`}
+            >
+              {stat.value}
+            </p>
+            <p className="u-label mt-3 max-w-[18ch] leading-relaxed opacity-80">{t(stat.label)}</p>
+          </div>
+        ))}
       </div>
     </section>
   );

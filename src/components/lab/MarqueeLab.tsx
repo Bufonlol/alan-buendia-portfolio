@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, Draggable } from "@/lib/gsap";
+import { gsap, useGSAP, Draggable } from "@/lib/gsap-plugins";
 import { useInView } from "@/lib/useInView";
 
 const ROWS = [

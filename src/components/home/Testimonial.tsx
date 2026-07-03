@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, SplitText, prefersReducedMotion } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/gsap";
+import { gsap, useGSAP, SplitText } from "@/lib/gsap-plugins";
 import { useLang } from "@/lib/i18n";
 import { TESTIMONIAL } from "@/data/site";
 

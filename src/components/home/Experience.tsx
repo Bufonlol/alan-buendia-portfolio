@@ -2,62 +2,73 @@
 
 import { useLang } from "@/lib/i18n";
 import { EXPERIENCE } from "@/data/site";
-import SectionHeader from "@/components/SectionHeader";
-import Reveal from "@/components/Reveal";
-import TracingBeam from "@/components/TracingBeam";
+import { Barcode, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Experience() {
   const { t } = useLang();
 
   return (
-    <section
-      id="experience"
-      className="grid gap-12 px-5 py-28 md:px-8 md:py-40 lg:grid-cols-[1fr_1.5fr] lg:gap-20"
-    >
-      <div className="lg:sticky lg:top-28 lg:self-start">
-        <SectionHeader
-          index="03"
-          label={t({ es: "Experiencia", en: "Experience" })}
-          title={t({ es: "Dónde he construido", en: "Where I've built" })}
-        />
-        <Reveal delay={0.15}>
-          <p className="mt-6 max-w-[26rem] font-serif text-xl italic text-ink-soft">
-            {t({
-              es: "de las trincheras freelance a la escala retail — cada línea lanzada a gente que de verdad la usa.",
-              en: "from freelance trenches to retail scale — every line of it shipped to people who actually use it.",
-            })}
-          </p>
-        </Reveal>
+    <section id="experience" className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36">
+      <TechnicalGrid className="opacity-20" />
+      <div className="relative z-10 grid gap-8 border-y border-ink py-5 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+        <div>
+          <SystemLabel>A—05 / FIELD RECORD</SystemLabel>
+          <h2 className="display mt-5 text-[clamp(3.3rem,8vw,7rem)]">
+            {t({ es: "Experiencia", en: "Experience" })}
+          </h2>
+        </div>
+        <p className="max-w-[45ch] text-base font-semibold leading-snug md:justify-self-end">
+          {t({
+            es: "Trabajo enviado a producción para restaurantes, retail, clínicas y plataformas operativas.",
+            en: "Production work shipped for restaurants, retail, clinics and operational platforms.",
+          })}
+        </p>
       </div>
 
-      <div className="relative pl-8 md:pl-12">
-        <TracingBeam />
-
-        <ol className="flex flex-col gap-16">
-          {EXPERIENCE.map((job, i) => (
-            <li key={job.company} className="relative">
-              <span
-                className="absolute -left-8 top-2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-accent md:-left-12"
-                aria-hidden="true"
-              />
-              <Reveal delay={i * 0.05}>
-                <p className="u-label text-muted">{t(job.period)}</p>
-                <h3 className="display mt-3 text-[clamp(1.7rem,4vw,3rem)] leading-none">
+      <div className="relative z-10 mt-8 grid gap-6 lg:grid-cols-3">
+        {EXPERIENCE.map((job, index) => {
+          const featured = index === 0;
+          return (
+            <article
+              key={job.company}
+              className={`grid border border-ink ${
+                featured ? "lg:col-span-2 lg:grid-cols-[8rem_1fr_1.2fr]" : "lg:grid-cols-1"
+              }`}
+            >
+              <div className="flex flex-row items-center justify-between border-b border-ink bg-ink p-4 text-paper lg:flex-col lg:items-start lg:justify-between lg:border-b-0 lg:border-r">
+                <span className="u-label">REC / {String(index + 1).padStart(2, "0")}</span>
+                <Barcode className="opacity-80 lg:mt-8" />
+              </div>
+              <div className={`border-b border-ink p-5 lg:p-7 ${featured ? "lg:border-b-0 lg:border-r" : ""}`}>
+                <p className="u-label opacity-65">{t(job.period)}</p>
+                <h3
+                  className={`display mt-4 leading-none ${
+                    featured ? "text-[clamp(2rem,4.5vw,4rem)]" : "text-[clamp(1.6rem,3.4vw,2.6rem)]"
+                  }`}
+                >
                   {t(job.role)}
                 </h3>
-                <p className="mt-2 font-serif text-xl italic text-accent">
-                  {job.company}
-                </p>
-                <p className="mt-4 max-w-[34rem] leading-relaxed text-ink-soft">
-                  {t(job.summary)}
-                </p>
-                <p className="pill u-label mt-5 text-muted">
-                  <span className="text-accent">◆</span> {t(job.highlight)}
-                </p>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
+                <p className="mt-4 text-lg font-bold">{job.company}</p>
+                {!featured && (
+                  <>
+                    <p className="mt-4 text-sm font-medium leading-relaxed opacity-80">{t(job.summary)}</p>
+                    <p className="u-label mt-5 border-t border-ink/35 pt-4 leading-relaxed opacity-70">
+                      OUTPUT / {t(job.highlight)}
+                    </p>
+                  </>
+                )}
+              </div>
+              {featured && (
+                <div className="p-5 lg:p-7">
+                  <p className="max-w-[52ch] text-sm font-medium leading-relaxed">{t(job.summary)}</p>
+                  <p className="u-label mt-7 border-t border-ink/35 pt-4 leading-relaxed">
+                    OUTPUT / {t(job.highlight)}
+                  </p>
+                </div>
+              )}
+            </article>
+          );
+        })}
       </div>
     </section>
   );

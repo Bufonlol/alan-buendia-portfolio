@@ -1,11 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import Image from "next/image";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { PROCESS } from "@/data/site";
-import SectionHeader from "@/components/SectionHeader";
-import TracingBeam from "@/components/TracingBeam";
+import { CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Process() {
   const { t } = useLang();
@@ -13,17 +13,17 @@ export default function Process() {
 
   useGSAP(
     () => {
-      if (!ref.current) return;
+      if (!ref.current || prefersReducedMotion()) return;
       gsap.fromTo(
-        gsap.utils.toArray<HTMLElement>(".process-step", ref.current),
-        { x: -30, autoAlpha: 0 },
+        gsap.utils.toArray<HTMLElement>(".process-record", ref.current),
+        { y: 28, autoAlpha: 0 },
         {
-          x: 0,
+          y: 0,
           autoAlpha: 1,
-          duration: 0.85,
+          duration: 0.8,
+          stagger: 0.1,
           ease: "power3.out",
-          stagger: 0.14,
-          scrollTrigger: { trigger: ref.current, start: "top 78%", once: true },
+          scrollTrigger: { trigger: ref.current, start: "top 82%", once: true },
         }
       );
     },
@@ -31,37 +31,70 @@ export default function Process() {
   );
 
   return (
-    <section className="relative overflow-hidden px-5 py-28 md:px-8 md:py-36">
-      <div
-        aria-hidden="true"
-        className="dot-grid pointer-events-none absolute inset-0 z-0 opacity-50 [mask-image:radial-gradient(ellipse_85%_65%_at_50%_50%,black_30%,transparent_100%)]"
-      />
-      <div className="relative z-10">
-        <SectionHeader
-          index="03"
-          label={t({ es: "Cómo trabajo", en: "How I work" })}
-          title={t({ es: "El proceso", en: "The process" })}
-          sweep
-        />
-      </div>
-      <div ref={ref} className="relative z-10 mt-16 pl-8 md:pl-12">
-        <TracingBeam />
-        <div className="divide-y divide-line">
-          {PROCESS.map((p) => (
-            <div
-              key={p.step}
-              className="process-step grid grid-cols-[3rem_1fr] gap-x-8 py-10 md:grid-cols-[4rem_18rem_1fr] md:gap-x-12"
-            >
-              <span className="u-label pt-1 text-accent">{p.step}</span>
-              <h3 className="display text-[clamp(2rem,4.5vw,3.5rem)] leading-none">
-                {t(p.name)}
-              </h3>
-              <p className="col-start-2 mt-4 max-w-[38rem] leading-relaxed text-ink-soft md:col-start-3 md:mt-0">
-                {t(p.desc)}
-              </p>
-            </div>
-          ))}
+    <section className="relative overflow-hidden border-b border-ink bg-ink px-4 py-24 text-paper md:px-8 md:py-36">
+      <TechnicalGrid className="opacity-20" />
+      <div className="relative z-10 grid gap-8 border-y border-paper/35 py-5 md:grid-cols-2 md:items-end">
+        <div>
+          <SystemLabel>A—04 / METHOD</SystemLabel>
+          <h2 className="display mt-5 text-[clamp(3.5rem,9vw,8rem)]">
+            {t({ es: "Protocolo", en: "Working" })}
+            <br />
+            {t({ es: "de trabajo", en: "protocol" })}
+          </h2>
         </div>
+        <p className="max-w-[38ch] text-base font-semibold leading-snug md:justify-self-end">
+          {t({
+            es: "Tres movimientos claros: entender el sistema, construirlo con feedback real y acompañarlo en producción.",
+            en: "Three clear moves: understand the system, build with real feedback and support it in production.",
+          })}
+        </p>
+      </div>
+
+      <div ref={ref} className="relative z-10 mt-8 grid gap-6 lg:grid-cols-3">
+        {PROCESS.map((step, index) => {
+          const featured = index === 1;
+          const wide = index === 2;
+          return (
+            <article
+              key={step.step}
+              className={`process-record relative overflow-hidden border p-5 md:p-7 ${
+                featured ? "border-paper bg-paper text-ink lg:col-span-2" : "border-paper/35"
+              } ${wide ? "lg:col-span-3" : ""}`}
+            >
+              {featured && (
+                <div
+                  className="pointer-events-none absolute -right-8 -top-8 h-[220px] w-[220px] opacity-[0.45] mix-blend-multiply"
+                  style={{
+                    maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
+                    WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
+                  }}
+                >
+                  <Image src="/assets/process-gears.png" alt="" fill sizes="220px" className="object-contain" />
+                </div>
+              )}
+              <div className="relative z-10 flex items-center justify-between">
+                <span className={`u-label ${featured ? "opacity-70" : ""}`}>STEP / {step.step}</span>
+                <CrossMark className={featured ? "text-ink/60" : "text-paper/60"} />
+              </div>
+              <h3
+                className={`display relative z-10 leading-none ${
+                  featured
+                    ? "mt-10 text-[clamp(3rem,7vw,6rem)]"
+                    : "mt-16 text-[clamp(2.5rem,5vw,4.7rem)]"
+                }`}
+              >
+                {t(step.name)}
+              </h3>
+              <p
+                className={`relative z-10 mt-6 max-w-[38ch] text-sm font-medium leading-relaxed ${
+                  featured ? "text-ink/75" : "text-paper/80"
+                }`}
+              >
+                {t(step.desc)}
+              </p>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

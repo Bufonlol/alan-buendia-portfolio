@@ -1,15 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Archivo, Instrument_Serif } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 import { SITE } from "@/data/site";
-
-const anton = Anton({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-anton",
-  display: "swap",
-});
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -17,11 +10,10 @@ const archivo = Archivo({
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
-  weight: "400",
-  style: ["normal", "italic"],
+const plexMono = IBM_Plex_Mono({
+  weight: "600",
   subsets: ["latin"],
-  variable: "--font-instrument",
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -63,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f3efe6",
+  themeColor: "#F7F6EF",
 };
 
 export default function RootLayout({
@@ -72,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${anton.variable} ${archivo.variable} ${instrument.variable}`}
+      className={`${archivo.variable} ${plexMono.variable}`}
     >
       <body className="bg-paper font-sans text-ink antialiased">
         <AppShell>{children}</AppShell>

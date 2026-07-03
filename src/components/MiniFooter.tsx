@@ -6,16 +6,16 @@ import { SITE } from "@/data/site";
 
 /** Slim footer for subpages (case studies, playground). */
 export default function MiniFooter({ dark = false }: { dark?: boolean }) {
-  const { navigate, lenis } = useApp();
+  const { navigate } = useApp();
   const { t } = useLang();
   return (
     <footer
-      className={`flex flex-col gap-3 border-t px-5 py-6 md:flex-row md:items-center md:justify-between md:px-8 ${
-        dark ? "border-line-paper bg-ink text-paper" : "border-line"
+      className={`grid gap-5 border-t px-4 py-6 md:grid-cols-[1fr_auto_1fr] md:items-center md:px-8 ${
+        dark ? "border-paper/35 bg-ink text-paper" : "border-ink bg-paper text-ink"
       }`}
     >
-      <span className="u-label opacity-60">© 2026 {SITE.name}</span>
-      <div className="u-label flex gap-6">
+      <span className="u-label">© 2026 {SITE.name}</span>
+      <div className="u-label flex flex-wrap gap-6">
         <button onClick={() => navigate("/")} className="link-line uppercase">
           {t({ es: "Índice", en: "Index" })}
         </button>
@@ -27,8 +27,10 @@ export default function MiniFooter({ dark = false }: { dark?: boolean }) {
         </a>
       </div>
       <button
-        onClick={() => lenis?.scrollTo(0, { duration: 1.2 })}
-        className="u-label link-line text-left uppercase md:text-right"
+        onClick={() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        className="u-label link-line text-left uppercase md:justify-self-end md:text-right"
       >
         {t({ es: "Volver arriba ↑", en: "Back to top ↑" })}
       </button>

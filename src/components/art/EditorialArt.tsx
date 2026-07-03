@@ -263,6 +263,52 @@ export function Asterisk({
 }
 
 /* ----------------------------------------------------------------------- *
+ * HalftoneBlob — an organic, dithered "processed photograph" silhouette.
+ * Stands in for portrait photography we don't have: a seeded blob shape
+ * filled with a halftone dot pattern and a soft radial fade, reading as
+ * a grainy duotone print rather than a literal image.
+ * ----------------------------------------------------------------------- */
+export function HalftoneBlob({
+  className = "",
+  seed = 5,
+  dotColor = "var(--color-ink)",
+}: {
+  className?: string;
+  seed?: number;
+  dotColor?: string;
+}) {
+  const rand = rng(seed);
+  const outer = blobPath(200, 200, 168, 12, 0.24, rand);
+  const inner = blobPath(200, 200, 92, 10, 0.3, rand);
+  const id = `halftone-blob-${seed}`;
+  return (
+    <svg
+      viewBox="0 0 400 400"
+      className={`pointer-events-none select-none ${className}`}
+      aria-hidden="true"
+    >
+      <defs>
+        <mask id={`${id}-mask`}>
+          <path d={outer} fill="#fff" />
+        </mask>
+        <pattern id={`${id}-dots-a`} width="9" height="9" patternUnits="userSpaceOnUse">
+          <circle cx="2.5" cy="2.5" r="1.7" fill={dotColor} />
+        </pattern>
+        <pattern id={`${id}-dots-b`} width="6" height="6" patternUnits="userSpaceOnUse">
+          <circle cx="1.6" cy="1.6" r="1.4" fill={dotColor} />
+        </pattern>
+      </defs>
+      <g mask={`url(#${id}-mask)`}>
+        <rect width="400" height="400" fill={`url(#${id}-dots-a)`} opacity="0.55" />
+        <path d={inner} fill={`url(#${id}-dots-b)`} opacity="0.85" />
+        <path d={outer} fill="none" stroke={dotColor} strokeWidth="1.2" opacity="0.5" />
+        <path d={inner} fill="none" stroke={dotColor} strokeWidth="1" opacity="0.35" />
+      </g>
+    </svg>
+  );
+}
+
+/* ----------------------------------------------------------------------- *
  * HalftoneArc — a big risograph arc filled with a halftone dot gradient.
  * Pure decoration for hero / large empty corners.
  * ----------------------------------------------------------------------- */

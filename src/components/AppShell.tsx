@@ -6,80 +6,41 @@ import {
   useContext,
   useEffect,
   useRef,
-  useState,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import Lenis from "lenis";
-import { gsap, ScrollTrigger, prefersReducedMotion, isFinePointer } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { LangProvider } from "@/lib/i18n";
-import Preloader from "@/components/Preloader";
-import Cursor from "@/components/Cursor";
 import Navbar from "@/components/Navbar";
-import EasterEggs from "@/components/EasterEggs";
 import GrainOverlay from "@/components/GrainOverlay";
 
 type AppContextType = {
   /** true once the preloader has finished — entrance animations key off this */
   ready: boolean;
-  lenis: Lenis | null;
   /** page navigation with curtain transition; handles same-page hash scrolls */
   navigate: (href: string) => void;
 };
 
 const AppContext = createContext<AppContextType>({
-  ready: false,
-  lenis: null,
+  ready: true,
   navigate: () => {},
 });
 
 export const useApp = () => useContext(AppContext);
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const [ready, setReady] = useState(false);
-  const [lenis, setLenis] = useState<Lenis | null>(null);
-  const lenisRef = useRef<Lenis | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const overlayRef = useRef<HTMLDivElement>(null);
   const navigatingRef = useRef(false);
   const pendingHashRef = useRef<string | null>(null);
   const failsafeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const readyRef = useRef(false);
-
-  /* ───────────── Lenis smooth scroll, wired into GSAP's ticker ───────────── */
-  useEffect(() => {
-    // Touch devices have hardware-accelerated native scroll — Lenis on mobile
-    // intercepts touch events through JS and causes jank. Skip it entirely.
-    if (prefersReducedMotion() || !isFinePointer()) return;
-    const instance = new Lenis({ duration: 0.9, smoothWheel: true });
-    instance.on("scroll", ScrollTrigger.update);
-    const raf = (time: number) => instance.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
-    if (!readyRef.current) instance.stop(); // locked while preloader runs
-    lenisRef.current = instance;
-    setLenis(instance);
-    return () => {
-      gsap.ticker.remove(raf);
-      instance.destroy();
-      lenisRef.current = null;
-    };
-  }, []);
 
   const scrollToHash = useCallback((hash: string, immediate = false) => {
     const target = document.querySelector(hash);
     if (!target) return;
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(target as HTMLElement, {
-        offset: 0,
-        duration: immediate ? 0 : 1.4,
-        immediate,
-      });
-    } else {
-      (target as HTMLElement).scrollIntoView({
-        behavior: immediate ? "auto" : "smooth",
-      });
-    }
+    (target as HTMLElement).scrollIntoView({
+      behavior: immediate ? "auto" : "smooth",
+    });
   }, []);
 
   /* ───────────── Page transitions (ink curtain) ───────────── */
@@ -94,7 +55,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         return;
       }
       if (targetPath === pathname && !hash) {
-        lenisRef.current?.scrollTo(0, { duration: 1.2 });
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
 
@@ -148,7 +109,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         scrollToHash(pendingHashRef.current, true);
         pendingHashRef.current = null;
       } else {
-        lenisRef.current?.scrollTo(0, { immediate: true });
         window.scrollTo(0, 0);
       }
       ScrollTrigger.refresh();
@@ -164,36 +124,52 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     });
   }, [pathname, scrollToHash]);
 
-  const handleLoaderDone = useCallback(() => {
-    readyRef.current = true;
-    setReady(true);
-    lenisRef.current?.start();
-    // Deep links like /#stack on first load
+  useEffect(() => {
     if (window.location.hash) {
-      setTimeout(() => scrollToHash(window.location.hash, true), 50);
+      const id = window.setTimeout(() => scrollToHash(window.location.hash, true), 0);
+      return () => window.clearTimeout(id);
     }
   }, [scrollToHash]);
 
+  /* Images (bento thumbnails, art) finish loading after ScrollTrigger's initial
+     measurement and shift layout — refresh positions whenever one settles so
+     reveal animations don't get stuck at their pre-image-load offsets. */
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRefresh = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => ScrollTrigger.refresh(), 120);
+    };
+    const onLoad = (event: Event) => {
+      if ((event.target as HTMLElement)?.tagName !== "IMG") return;
+      scheduleRefresh();
+    };
+    document.addEventListener("load", onLoad, true);
+    window.addEventListener("load", scheduleRefresh);
+    return () => {
+      document.removeEventListener("load", onLoad, true);
+      window.removeEventListener("load", scheduleRefresh);
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
   return (
     <LangProvider>
-      <AppContext.Provider value={{ ready, lenis, navigate }}>
+      <AppContext.Provider value={{ ready: true, navigate }}>
         <GrainOverlay />
-        <Preloader onDone={handleLoaderDone} />
-        <Cursor />
         <Navbar />
-        <EasterEggs />
         <div id="page-root">{children}</div>
       {/* Route transition curtain */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[150] hidden items-center justify-center bg-ink"
+        className="fixed inset-0 z-[150] hidden items-center justify-center bg-ink text-paper"
         aria-hidden="true"
       >
-        <span className="display text-paper/20 text-[clamp(3rem,10vw,8rem)]">
-          AB<span className="text-accent">◆</span>
+        <div className="technical-grid absolute inset-0 opacity-25" />
+        <span className="u-label relative border border-paper/40 px-4 py-3">
+          SYSTEM / ROUTE TRANSFER
         </span>
       </div>
-        <div className="grain" aria-hidden="true" />
       </AppContext.Provider>
     </LangProvider>
   );

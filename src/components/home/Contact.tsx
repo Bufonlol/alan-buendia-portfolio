@@ -1,71 +1,81 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { gsap, useGSAP, SplitText, prefersReducedMotion } from "@/lib/gsap";
-import { useApp } from "@/components/AppShell";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
-import Magnetic from "@/components/Magnetic";
 import Signature from "@/components/art/Signature";
-import StickerBadge from "@/components/StickerBadge";
+import {
+  Barcode,
+  CrossMark,
+  SignalBars,
+  SystemLabel,
+  TechnicalGrid,
+} from "@/components/system/TechnicalLayer";
 
 export default function Contact() {
-  const { lenis } = useApp();
-  const { lang, t } = useLang();
+  const { t } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [copied, setCopied] = useState(false);
 
   useGSAP(
     () => {
       const section = sectionRef.current;
-      const title = titleRef.current;
-      if (!section || !title) return;
+      if (!section) return;
       const q = gsap.utils.selector(section);
 
       if (prefersReducedMotion()) {
-        // calm mode: opacity-only reveal when the section arrives
-        gsap.fromTo(
-          [title, ...q(".contact-fade")],
-          { autoAlpha: 0 },
-          {
-            autoAlpha: 1,
-            duration: 0.9,
-            stagger: 0.06,
-            ease: "power2.out",
-            scrollTrigger: { trigger: section, start: "top 60%", once: true },
-          }
-        );
+        gsap.set(q(".contact-word, .contact-meta"), { autoAlpha: 1, yPercent: 0 });
         return;
       }
 
-      const split = new SplitText(title, { type: "chars", mask: "chars" });
       gsap
         .timeline({
-          defaults: { ease: "power4.out" },
-          scrollTrigger: { trigger: section, start: "top 55%", once: true },
+          scrollTrigger: { trigger: section, start: "top 62%", once: true },
         })
-        .set(title, { autoAlpha: 1 })
+        .set(q(".contact-word"), { autoAlpha: 1 })
         .fromTo(
-          split.chars,
-          { yPercent: 115 },
-          { yPercent: 0, duration: 1, stagger: 0.025 }
+          q(".contact-word"),
+          { yPercent: 110, skewY: 2 },
+          {
+            yPercent: 0,
+            skewY: 0,
+            duration: 1,
+            stagger: 0.12,
+            ease: "power3.out",
+          }
         )
         .fromTo(
-          q(".contact-fade"),
-          { y: 30, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.07 },
-          "-=0.5"
+          q(".contact-meta"),
+          { y: 18, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.72,
+            stagger: 0.06,
+            ease: "power3.out",
+          },
+          "-=0.48"
         );
     },
-    { dependencies: [lang], scope: sectionRef }
+    { scope: sectionRef }
+  );
+
+  useEffect(
+    () => () => {
+      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+    },
+    []
   );
 
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(SITE.email);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
+      copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
     } catch {
       window.location.href = `mailto:${SITE.email}`;
     }
@@ -75,114 +85,117 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-ink px-5 pb-6 pt-28 text-paper md:px-8"
+      className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-ink px-4 pb-5 pt-24 text-paper md:px-8 md:pb-7 md:pt-28"
     >
-      {/* Aceternity grid + Magic UI retro grid backgrounds */}
-      <div className="bg-grid-paper pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
-      <div className="retro-grid pointer-events-none absolute inset-x-0 bottom-0 h-1/2" aria-hidden="true" />
-
-      <div className="relative z-10 flex items-center justify-between">
-        <StickerBadge rotate={3}>
-          <span
-            className="inline-block h-2 w-2 rounded-full bg-paper"
-            style={{ animation: "pulse-dot 2s ease-in-out infinite" }}
-          />
-          {t(SITE.availability)}
-        </StickerBadge>
-        <div className="flex items-center gap-6">
-          <Signature size="text-2xl" shadowColor="var(--color-paper)" />
-          <span className="u-label text-paper/40">
-            {t({ es: "06 — Contacto", en: "06 — Contact" })}
-          </span>
-        </div>
+      <TechnicalGrid className="opacity-20" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-4 bottom-5 top-24 border border-paper/35 md:inset-x-8 md:bottom-7 md:top-28"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-16 top-[8%] hidden h-[360px] w-[360px] opacity-[0.14] mix-blend-screen md:block lg:h-[480px] lg:w-[480px]"
+        style={{
+          maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 25%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 25%, transparent 70%)",
+        }}
+      >
+        <Image src="/assets/contact-tower.png" alt="" fill sizes="480px" className="object-contain" />
       </div>
 
-      <div className="relative z-10">
-        <p className="contact-fade u-label mb-6 text-paper/50" style={{ opacity: 0 }}>
-          {t({
-            es: "¿Una idea? ¿Una chamba? ¿Un boss fight?",
-            en: "Have an idea? A job? A boss fight?",
-          })}
-        </p>
-        <h2
-          ref={titleRef}
-          className="display text-[clamp(2.4rem,10.5vw,11.5rem)] leading-[0.92]"
-          style={{ opacity: 0 }}
-        >
-          {t({ es: "Construyamos", en: "Let's build" })}
-          <br />
-          {t({ es: "juntos", en: "together" })}
-          <span className="text-accent">◆</span>
+      <div className="contact-meta relative z-10 grid grid-cols-2 border-b border-paper/35 px-3 py-3 md:grid-cols-4 md:px-4">
+        <SystemLabel>A—08 / TRANSMISSION</SystemLabel>
+        <SystemLabel className="hidden md:block">CHANNEL / OPEN</SystemLabel>
+        <SystemLabel className="hidden md:block">{SITE.locationShort}</SystemLabel>
+        <SystemLabel className="text-right">STATUS / AVAILABLE</SystemLabel>
+      </div>
+
+      <div className="relative z-10 flex flex-1 flex-col justify-center px-3 py-12 md:px-4">
+        <div className="contact-meta mb-6 flex items-center gap-3">
+          <CrossMark />
+          <SystemLabel>{t({ es: "INICIAR TRANSMISIÓN", en: "START TRANSMISSION" })}</SystemLabel>
+          <span className="h-px flex-1 bg-paper/35" />
+        </div>
+
+        <h2 aria-label={t({ es: "Construyamos", en: "Let's build" })}>
+          <span className="block overflow-hidden pb-[0.06em]">
+            <span
+              aria-hidden="true"
+              className="contact-word display block text-[clamp(2.5rem,9.8vw,9.5rem)] leading-[0.8]"
+              style={{ opacity: 0 }}
+            >
+              {t({ es: "CONSTRUYAMOS", en: "LET'S BUILD" })}
+            </span>
+          </span>
+          <span className="block overflow-hidden pb-[0.08em]">
+            <span
+              aria-hidden="true"
+              className="contact-word display block text-right text-[clamp(3rem,11vw,10.2rem)] leading-[0.8]"
+              style={{ opacity: 0 }}
+            >
+              {t({ es: "ALGO REAL", en: "SOMETHING REAL" })}
+            </span>
+          </span>
         </h2>
 
-        <div className="mt-10 flex flex-col gap-8 md:mt-14 md:flex-row md:items-center md:gap-12">
-          <div className="contact-fade" style={{ opacity: 0 }}>
-            <Magnetic strength={0.25}>
-              <a
-                href={`mailto:${SITE.email}`}
-                className="link-line font-serif text-[clamp(1.3rem,3vw,2.2rem)] italic text-paper"
-              >
-                {SITE.email}
-              </a>
-            </Magnetic>
+        <div className="contact-meta mt-10 grid gap-5 lg:grid-cols-[1fr_auto_auto] lg:items-end">
+          <div>
+            <SystemLabel className="block text-paper/65">DIRECT LINE</SystemLabel>
+            <a
+              href={`mailto:${SITE.email}`}
+              className="mt-2 block break-all text-[clamp(1.15rem,2.6vw,2rem)] font-bold underline decoration-1 underline-offset-4"
+            >
+              {SITE.email}
+            </a>
           </div>
-          <div className="contact-fade" style={{ opacity: 0 }}>
-            <Magnetic>
-              <button
-                onClick={copyEmail}
-                className="btn-accent-glow border-beam u-label rounded-full bg-accent px-8 py-4 text-paper hover:scale-105"
-                style={{ ["--beam-color" as string]: "rgba(243, 239, 230, 0.9)" }}
-              >
-                {copied
-                  ? t({ es: "Copiado ✓", en: "Copied ✓" })
-                  : t({ es: "Copiar correo →", en: "Copy email →" })}
-              </button>
-            </Magnetic>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={copyEmail}
+              className="u-label min-h-12 border border-paper bg-paper px-5 text-ink transition-colors hover:bg-ink hover:text-paper"
+            >
+              {copied
+                ? t({ es: "COPIADO ✓", en: "COPIED ✓" })
+                : t({ es: "COPIAR CORREO", en: "COPY EMAIL" })}
+            </button>
+            <a
+              href={`mailto:${SITE.email}`}
+              className="u-label flex min-h-12 items-center border border-paper px-5 transition-colors hover:bg-paper hover:text-ink"
+            >
+              {t({ es: "ENVIAR MENSAJE ↗", en: "SEND MESSAGE ↗" })}
+            </a>
           </div>
-        </div>
-
-        <div
-          className="contact-fade u-label mt-12 flex flex-wrap gap-8"
-          style={{ opacity: 0 }}
-        >
-          <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">
-            {t({ es: "Descargar CV ↘", en: "Download CV ↘" })}
-          </a>
-          <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">
-            GitHub ↗
-          </a>
+          <div className="hidden border border-paper/40 p-4 lg:block">
+            <div className="flex items-center gap-2">
+              <SignalBars className="text-paper" />
+              <SystemLabel className="text-paper/70">CHANNEL / OPEN</SystemLabel>
+            </div>
+            <p className="u-label mt-2 text-paper/60">{SITE.locationShort} · UTC−6</p>
+          </div>
+          <p className="sr-only" aria-live="polite">
+            {copied ? t({ es: "Correo copiado", en: "Email copied" }) : ""}
+          </p>
         </div>
       </div>
 
-      {/* footer strip */}
-      <div className="relative z-10 flex flex-col gap-3 border-t border-line-paper pt-5 md:flex-row md:items-center md:justify-between">
-        <span className="u-label text-paper/40">
-          © 2026 {SITE.fullName}
-        </span>
-        <span className="u-label text-paper/40">
-          {t({
-            es: `Hecho con Next.js, GSAP & Three.js — diseñado en ${SITE.locationShort}`,
-            en: `Built with Next.js, GSAP & Three.js — designed in ${SITE.locationShort}`,
-          })}
-        </span>
-        <button
-          onClick={() => {
-            if (lenis) lenis.scrollTo(0, { duration: 1.6 });
-            else window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="u-label link-line text-left text-paper md:text-right"
-        >
-          {t({ es: "Volver arriba ↑", en: "Back to top ↑" })}
-        </button>
-      </div>
-
-      {/* watermark */}
-      <span
-        className="display pointer-events-none absolute -bottom-[0.22em] right-0 select-none text-[clamp(8rem,28vw,26rem)] leading-none text-paper/[0.04]"
-        aria-hidden="true"
-      >
-        AB
-      </span>
+      <footer className="contact-meta relative z-10 grid gap-5 border-t border-paper/35 px-3 py-4 md:grid-cols-[1fr_auto_1fr] md:items-end md:px-4">
+        <div>
+          <Signature className="text-paper" size="text-2xl" shadowColor="var(--color-accent)" />
+          <p className="u-label mt-2 text-paper/65">© 2026 {SITE.fullName}</p>
+        </div>
+        <Barcode className="hidden text-paper md:block" />
+        <div className="u-label flex flex-wrap gap-5 md:justify-end">
+          <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">CV ↗</a>
+          <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">GITHUB ↗</a>
+          <button
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="link-line"
+          >
+            {t({ es: "ARRIBA ↑", en: "BACK TO TOP ↑" })}
+          </button>
+        </div>
+      </footer>
     </section>
   );
 }

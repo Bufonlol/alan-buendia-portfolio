@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/lib/i18n";
 import type { Project } from "@/data/projects";
 
@@ -38,16 +39,17 @@ export default function ProjectVisual({
 
       {image ? (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={image}
             alt={caption ?? t(project.title)}
-            className={`absolute inset-0 h-full w-full ${
+            fill
+            sizes="(max-width: 768px) 100vw, 70vw"
+            quality={80}
+            className={`object-top ${
               fit === "contain"
                 ? "object-contain p-8"
                 : "object-cover object-top"
             }`}
-            loading="lazy"
           />
           {caption && (
             <span className="u-label absolute bottom-4 right-4 rounded-full border border-line bg-paper px-3 py-1.5 text-ink">

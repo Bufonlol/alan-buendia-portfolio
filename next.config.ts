@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   outputFileTracingRoot: __dirname,
+  experimental: {
+    webpackBuildWorker: true,
+    webpackMemoryOptimizations: true,
+  },
   webpack: (config) => {
     // tooling artifacts (test logs, screenshots, archives) must not retrigger HMR
     config.watchOptions = {

@@ -32,4 +32,6 @@ next-env.d.ts
 /.playwright-mcp
 /.claude
 /.agents
+/.impeccable
+/.next-verify
 skills-lock.json

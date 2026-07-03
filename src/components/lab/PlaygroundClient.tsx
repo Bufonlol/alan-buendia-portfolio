@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, SplitText, prefersReducedMotion } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/gsap";
+import { gsap, useGSAP, SplitText } from "@/lib/gsap-plugins";
 import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import LabCard from "@/components/lab/LabCard";
@@ -16,6 +17,7 @@ import AsciiDonut from "@/components/lab/AsciiDonut";
 import Rope from "@/components/lab/Rope";
 import ScrambleType from "@/components/lab/ScrambleType";
 import MiniFooter from "@/components/MiniFooter";
+import { TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function PlaygroundClient() {
   const { ready, navigate } = useApp();
@@ -59,6 +61,9 @@ export default function PlaygroundClient() {
 
   return (
     <main className="px-5 pt-28 md:px-8">
+      <div className="relative">
+      <TechnicalGrid className="opacity-20" />
+      <div className="relative z-10">
       <header ref={headRef}>
         <div className="lab-fade flex items-center justify-between" style={{ opacity: 0 }}>
           <button onClick={() => navigate("/")} className="u-label link-line uppercase">
@@ -86,7 +91,8 @@ export default function PlaygroundClient() {
         </p>
       </header>
 
-      <section className="mt-16 grid gap-6 pb-20 lg:grid-cols-2">
+      <section className="mt-16 grid gap-6 pb-20 lg:grid-cols-3">
+        <div className="lg:col-span-2">
         <LabCard
           index="01"
           title={t({ es: "Escena Three.js", en: "Three.js Scene" })}
@@ -98,6 +104,7 @@ export default function PlaygroundClient() {
         >
           <ThreeScene />
         </LabCard>
+        </div>
 
         <LabCard
           index="02"
@@ -195,6 +202,7 @@ export default function PlaygroundClient() {
           <Rope />
         </LabCard>
 
+        <div className="lg:col-span-2">
         <LabCard
           index="10"
           title={t({ es: "Tipografía Scramble", en: "Scramble Type" })}
@@ -206,7 +214,10 @@ export default function PlaygroundClient() {
         >
           <ScrambleType />
         </LabCard>
+        </div>
       </section>
+      </div>
+      </div>
 
       <div className="-mx-5 md:-mx-8">
         <MiniFooter />

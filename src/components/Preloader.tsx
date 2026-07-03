@@ -69,15 +69,18 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
       className="fixed inset-0 z-[200] flex flex-col justify-between bg-ink px-6 py-6 text-paper"
       aria-hidden="true"
     >
+      <div className="technical-grid pointer-events-none absolute inset-0 opacity-20" />
       <div className="flex items-center justify-between">
-        <span className="u-label text-paper/60">{SITE.fullName}</span>
+        <span className="u-label relative text-paper/70">SYSTEM / INITIALIZE</span>
         <span className="u-label text-paper/60">
           {t({ es: "Portafolio © 2026", en: "Portfolio © 2026" })}
         </span>
       </div>
-      <div className="flex items-end justify-between gap-6">
+      <div className="relative flex items-end justify-between gap-6">
         <div className="max-w-[18rem]">
-          <p className="font-serif italic text-xl leading-snug text-paper/80">
+          <p className="u-label leading-relaxed text-paper/70">
+            {SITE.fullName}
+            <br />
             {t(SITE.tagline)}
           </p>
           <div className="mt-6 h-px w-full origin-left bg-paper/20">

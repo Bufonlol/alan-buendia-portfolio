@@ -1,118 +1,112 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, SplitText, prefersReducedMotion } from "@/lib/gsap";
+import Image from "next/image";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
-import { ABOUT, SITE } from "@/data/site";
-import SectionHeader from "@/components/SectionHeader";
-import Reveal from "@/components/Reveal";
-import { AuroraBlob } from "@/components/art/EditorialArt";
+import { ABOUT, FUN, SITE } from "@/data/site";
+import {
+  Barcode,
+  CrossMark,
+  SystemLabel,
+  TechnicalGrid,
+} from "@/components/system/TechnicalLayer";
+import Signature from "@/components/art/Signature";
 
 export default function About() {
-  const { lang, t } = useLang();
-  const pRef = useRef<HTMLParagraphElement>(null);
+  const { t } = useLang();
+  const sectionRef = useRef<HTMLElement>(null);
 
-  /* char-by-char: rotates upright and gains weight while scrolling through the paragraph */
   useGSAP(
     () => {
-      const el = pRef.current;
-      if (!el || prefersReducedMotion()) return;
-      const mobile = window.matchMedia("(max-width: 767px)").matches;
-      const split = new SplitText(el, { type: mobile ? "words" : "chars" });
-      const targets = mobile ? split.words : split.chars;
-      gsap.set(targets, { transformOrigin: "50% 100%" });
+      if (!sectionRef.current || prefersReducedMotion()) return;
+      const q = gsap.utils.selector(sectionRef);
       gsap.fromTo(
-        targets,
+        q(".profile-reveal"),
+        { y: 30, autoAlpha: 0 },
         {
-          opacity: 0.12,
-          rotateX: mobile ? 0 : () => gsap.utils.random(-35, 35),
-          rotateZ: mobile ? 0 : () => gsap.utils.random(-6, 6),
-          fontVariationSettings: '"wght" 300',
-        },
-        {
-          opacity: 1,
-          rotateX: 0,
-          rotateZ: 0,
-          fontVariationSettings: '"wght" 650',
-          stagger: mobile ? 0.04 : 0.015,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 80%",
-            end: "bottom 55%",
-            scrub: true,
-          },
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.82,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 76%", once: true },
         }
       );
     },
-    { dependencies: [lang], scope: pRef }
+    { scope: sectionRef }
   );
 
   return (
-    <section id="about" className="relative overflow-hidden px-5 py-28 md:px-8 md:py-40">
-      <div className="bg-grid pointer-events-none absolute inset-0 opacity-70" aria-hidden="true" />
-      <AuroraBlob
-        className="absolute -right-[15%] top-[10%] h-[60vh] w-[60vh] opacity-80"
-        seed={19}
-        color="var(--color-accent)"
-      />
+    <section
+      ref={sectionRef}
+      id="about"
+      className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36"
+    >
+      <TechnicalGrid className="opacity-25" />
       <div className="relative z-10">
-      <SectionHeader
-        index="04"
-        label={t({ es: "Sobre mí", en: "About" })}
-        title={t({ es: "En corto", en: "In short" })}
-      />
-      <div className="mt-14 grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-20">
-        <p
-          ref={pRef}
-          className="max-w-[52rem] text-[clamp(1.4rem,2.8vw,2.3rem)] font-medium leading-[1.35] tracking-tight"
-          style={{ perspective: 600 }}
-        >
-          {t(ABOUT.paragraph)}
-        </p>
+        <div className="grid gap-8 border-y border-ink py-5 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <SystemLabel>A—06 / PROFILE</SystemLabel>
+            <h2 className="display mt-5 text-[clamp(3.5rem,10vw,9rem)]">
+              {t({ es: "Field note", en: "Field note" })}
+            </h2>
+          </div>
+          <div className="flex items-end gap-5">
+            <Barcode className="hidden md:block" />
+            <SystemLabel>PROFILE / ACTIVE</SystemLabel>
+          </div>
+        </div>
 
-        <div className="flex flex-col items-start gap-8 lg:items-end">
-          <Reveal delay={0.1}>
-            {/* rotating stamp — photo-optional corner, swap for a portrait anytime */}
-            <div className="relative h-36 w-36">
-              <svg
-                viewBox="0 0 100 100"
-                className="h-full w-full"
-                style={{ animation: "spin-slow 18s linear infinite" }}
-                aria-hidden="true"
-              >
-                <defs>
-                  <path
-                    id="stamp-circle"
-                    d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"
-                  />
-                </defs>
-                <text className="u-label fill-ink" style={{ fontSize: "9.5px" }}>
-                  <textPath href="#stamp-circle">
-                    {t({
-                      es: "Frontend Engineer · Orizaba MX · Desde 2022 ·",
-                      en: "Frontend Engineer · Orizaba MX · Est. 2022 ·",
-                    })}
-                  </textPath>
-                </text>
-              </svg>
-              <span className="display absolute inset-0 flex items-center justify-center text-3xl text-accent">
-                ◆
-              </span>
+        <div className="mt-8 grid gap-6 lg:auto-rows-[minmax(160px,auto)] lg:grid-cols-3">
+          <div className="profile-reveal border border-ink p-5 md:p-8 lg:col-span-2 lg:row-span-2">
+            <div className="flex items-start justify-between gap-4">
+              <p className="u-label">SUBJECT / {SITE.fullName}</p>
+              <Signature className="hidden text-lg opacity-70 md:block" size="text-lg" />
             </div>
-          </Reveal>
-          <Reveal delay={0.2} className="flex flex-col gap-2 lg:items-end">
-            <p className="font-serif text-xl italic">{SITE.fullName}</p>
-            <div className="flex flex-wrap gap-2">
-              {ABOUT.facts.map((f) => (
-                <span key={f.en} className="pill u-label text-muted">
-                  {t(f)}
-                </span>
+            <p className="mt-12 max-w-[52rem] text-[clamp(1.45rem,3vw,2.7rem)] font-bold leading-[1.22] tracking-[-0.035em]">
+              {t(ABOUT.paragraph)}
+            </p>
+            <p className="u-label mt-8 max-w-[40ch] -rotate-1 border border-ink/40 px-3 py-2 text-ink/70">
+              MARGIN NOTE — {t({ es: "cuando no hay código, hay tatami:", en: "when there's no code, there's a mat:" })}{" "}
+              {FUN.martialArts.join(" / ")}
+            </p>
+          </div>
+
+          <div className="profile-reveal border border-ink">
+            <div className="flex items-center justify-between border-b border-ink p-5">
+              <SystemLabel>IDENTIFICATION</SystemLabel>
+              <CrossMark />
+            </div>
+            <dl>
+              <div className="grid grid-cols-[7rem_1fr] border-b border-ink p-5">
+                <dt className="u-label opacity-60">ROLE</dt>
+                <dd className="u-label text-right">FRONTEND ENGINEER</dd>
+              </div>
+              <div className="grid grid-cols-[7rem_1fr] border-b border-ink p-5">
+                <dt className="u-label opacity-60">BASE</dt>
+                <dd className="u-label text-right">{SITE.locationShort}</dd>
+              </div>
+              <div className="grid grid-cols-[7rem_1fr] p-5">
+                <dt className="u-label opacity-60">STATUS</dt>
+                <dd className="u-label text-right">{t(SITE.availability)}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="profile-reveal relative overflow-hidden border border-ink p-5">
+            <div className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-multiply">
+              <Image src="/assets/about-hands.png" alt="" fill sizes="360px" className="object-cover object-[center_65%]" />
+            </div>
+            <div className="relative z-10 grid h-full content-between gap-2">
+              {ABOUT.facts.map((fact, index) => (
+                <p key={fact.en} className="u-label border border-ink bg-paper px-3 py-3">
+                  {String(index + 1).padStart(2, "0")} / {t(fact)}
+                </p>
               ))}
             </div>
-          </Reveal>
+          </div>
         </div>
-      </div>
       </div>
     </section>
   );

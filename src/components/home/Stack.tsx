@@ -1,33 +1,74 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import Image from "next/image";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STACK } from "@/data/site";
-import SectionHeader from "@/components/SectionHeader";
+import { Barcode, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+
+const pick = (names: string[]) => STACK.filter((item) => names.includes(item.name));
+
+const GROUPS = [
+  {
+    key: "core",
+    label: { es: "NÚCLEO", en: "CORE" },
+    items: pick(["React", "Next.js", "TypeScript"]),
+    span: "lg:col-span-2 lg:row-span-2",
+    big: true,
+    inverted: false,
+  },
+  {
+    key: "motion",
+    label: { es: "MOTION / 3D", en: "MOTION / 3D" },
+    items: pick(["GSAP", "Three.js"]),
+    span: "lg:row-span-2",
+    big: false,
+    inverted: true,
+  },
+  {
+    key: "backend",
+    label: { es: "BACKEND", en: "BACKEND" },
+    items: pick(["Node.js", "Laravel", "Spring Boot"]),
+    span: "",
+    big: false,
+    inverted: false,
+  },
+  {
+    key: "database",
+    label: { es: "BASE DE DATOS", en: "DATABASE" },
+    items: pick(["PostgreSQL", "MySQL", "Supabase"]),
+    span: "",
+    big: false,
+    inverted: false,
+  },
+  {
+    key: "workflow",
+    label: { es: "FLUJO", en: "WORKFLOW" },
+    items: pick(["Git"]),
+    span: "",
+    big: false,
+    inverted: false,
+  },
+];
 
 export default function Stack() {
   const { t } = useLang();
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      if (!listRef.current) return;
-      const rows = gsap.utils.toArray<HTMLElement>(".stack-row", listRef.current);
+      if (!listRef.current || prefersReducedMotion()) return;
       gsap.fromTo(
-        rows,
-        { yPercent: 60, autoAlpha: 0 },
+        gsap.utils.toArray<HTMLElement>(".tool-cell", listRef.current),
+        { y: 28, autoAlpha: 0 },
         {
-          yPercent: 0,
+          y: 0,
           autoAlpha: 1,
-          duration: 0.8,
+          duration: 0.7,
           ease: "power3.out",
           stagger: 0.06,
-          scrollTrigger: {
-            trigger: listRef.current,
-            start: "top 80%",
-            once: true,
-          },
+          scrollTrigger: { trigger: listRef.current, start: "top 82%", once: true },
         }
       );
     },
@@ -35,37 +76,88 @@ export default function Stack() {
   );
 
   return (
-    <section id="stack" className="relative overflow-hidden px-5 py-28 md:px-8 md:py-40">
-      <div className="aurora" aria-hidden="true" />
-      <SectionHeader
-        index="02"
-        label="Stack"
-        title={t({ es: "Con esto construyo", en: "Tools I think in" })}
-        sweep
-      />
-      <ul ref={listRef} className="mt-14 border-b border-line">
-        {STACK.map((item, i) => (
-          <li key={item.name} className="stack-row border-t border-line">
-            <div className="flex items-baseline gap-5 px-2 py-4 md:gap-8 md:px-4 md:py-5">
-              <span className="u-label w-8 shrink-0 text-muted">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="stack-name display text-[clamp(1.9rem,5.5vw,4.4rem)] leading-none">
-                {item.name}
-              </span>
-              <span className="stack-meta u-label ml-auto shrink-0 text-muted">
-                {t(item.meta)}
-              </span>
+    <section id="stack" className="relative overflow-hidden border-b border-ink px-4 py-24 md:px-8 md:py-36">
+      <TechnicalGrid className="opacity-20" />
+      <div className="relative z-10">
+        <div className="grid gap-8 border-y border-ink py-5 md:grid-cols-[1fr_auto] md:items-end">
+          <div>
+            <SystemLabel>A—03 / TOOL INVENTORY</SystemLabel>
+            <h2 className="display mt-5 text-[clamp(3.5rem,10vw,9rem)]">
+              {t({ es: "Sistema de", en: "Build" })}
+              <br />
+              {t({ es: "herramientas", en: "system" })}
+            </h2>
+          </div>
+          <div className="flex items-end gap-6">
+            <Barcode className="hidden md:block" />
+            <p className="u-label max-w-[32ch] leading-relaxed md:text-right">
+              {t({
+                es: "TECNOLOGÍAS USADAS EN PRODUCCIÓN. SIN PORCENTAJES DECORATIVOS.",
+                en: "TECHNOLOGIES USED IN PRODUCTION. NO DECORATIVE PERCENTAGES.",
+              })}
+            </p>
+          </div>
+        </div>
+
+        <div
+          ref={listRef}
+          className="mt-8 grid gap-6 lg:auto-rows-[minmax(140px,auto)] lg:grid-cols-3"
+        >
+          {GROUPS.map((group) => (
+            <div
+              key={group.key}
+              className={`tool-cell group relative overflow-hidden border border-ink p-5 md:p-6 ${group.span} ${
+                group.inverted ? "bg-ink text-paper" : ""
+              }`}
+            >
+              {group.key === "core" && (
+                <div
+                  className="pointer-events-none absolute -right-10 -bottom-10 h-[260px] w-[260px] opacity-[0.35] mix-blend-multiply"
+                  style={{
+                    maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
+                    WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
+                  }}
+                >
+                  <Image src="/assets/stack-layers.png" alt="" fill sizes="260px" className="object-contain" />
+                </div>
+              )}
+              <div className="relative z-10 flex items-center justify-between">
+                <SystemLabel className={group.inverted ? "opacity-70" : "opacity-60"}>
+                  {t(group.label)}
+                </SystemLabel>
+                <SystemLabel className={group.inverted ? "opacity-50" : "opacity-40"}>
+                  {String(group.items.length).padStart(2, "0")}
+                </SystemLabel>
+              </div>
+              <ul className={`relative z-10 ${group.big ? "mt-6 grid gap-4" : "mt-5 grid gap-2"}`}>
+                {group.items.map((item, i) => (
+                  <li key={item.name} className="flex items-baseline gap-3">
+                    <span
+                      className={`u-label ${group.inverted ? "opacity-50" : "opacity-40"}`}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className={
+                        group.big
+                          ? "display text-[clamp(2rem,4.5vw,3.8rem)] leading-none"
+                          : "display text-[clamp(1.3rem,2.6vw,1.9rem)] leading-none"
+                      }
+                    >
+                      {item.name}
+                    </span>
+                    {group.big && (
+                      <span className={`u-label ml-auto ${group.inverted ? "opacity-60" : "opacity-50"}`}>
+                        {t(item.meta)}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </li>
-        ))}
-      </ul>
-      <p className="u-label mt-6 text-muted">
-        {t({
-          es: "Sin barras de progreso — o lanzas con ello o no.",
-          en: "No progress bars — you either ship with it or you don't.",
-        })}
-      </p>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

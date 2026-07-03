@@ -1,179 +1,165 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, isFinePointer } from "@/lib/gsap";
+import Image from "next/image";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { ARCHIVE } from "@/data/archive";
 import PageHeader from "@/components/PageHeader";
 import MiniFooter from "@/components/MiniFooter";
+import { CrossMark, TechnicalGrid } from "@/components/system/TechnicalLayer";
+
+/* Bento spans for the six archive records — asymmetric, dense-packed. */
+const BENTO_SPAN = [
+  "lg:col-span-2 lg:row-span-2",
+  "lg:col-span-1",
+  "lg:col-span-1",
+  "lg:col-span-1",
+  "lg:col-span-1",
+  "lg:col-span-1",
+];
 
 export default function ArchiveClient() {
   const { navigate } = useApp();
   const { t } = useLang();
-  const listRef = useRef<HTMLUListElement>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
-  const previewImgRef = useRef<HTMLImageElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
-  /* rows entrance */
   useGSAP(
     () => {
-      if (!listRef.current) return;
+      if (!gridRef.current) return;
       gsap.fromTo(
-        gsap.utils.toArray<HTMLElement>(".archive-row", listRef.current),
-        { yPercent: 60, autoAlpha: 0 },
+        gsap.utils.toArray<HTMLElement>(".archive-tile", gridRef.current),
+        { y: 36, autoAlpha: 0 },
         {
-          yPercent: 0,
+          y: 0,
           autoAlpha: 1,
-          duration: 0.8,
+          duration: 0.75,
           ease: "power3.out",
-          stagger: 0.05,
-          scrollTrigger: { trigger: listRef.current, start: "top 85%", once: true },
+          stagger: 0.06,
+          scrollTrigger: { trigger: gridRef.current, start: "top 85%", once: true },
         }
       );
     },
-    { scope: listRef }
+    { scope: gridRef }
   );
-
-  /* floating image preview follows the cursor (fine pointers only) */
-  useGSAP(() => {
-    const preview = previewRef.current;
-    if (!preview || !isFinePointer()) return;
-
-    gsap.set(preview, { xPercent: -50, yPercent: -120, autoAlpha: 0, rotate: 0 });
-    const xTo = gsap.quickTo(preview, "x", { duration: 0.5, ease: "power3.out" });
-    const yTo = gsap.quickTo(preview, "y", { duration: 0.5, ease: "power3.out" });
-    const rTo = gsap.quickTo(preview, "rotate", { duration: 0.45, ease: "power2.out" });
-
-    let lastX = 0;
-    const onMove = (e: PointerEvent) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
-      rTo(gsap.utils.clamp(-7, 7, (e.clientX - lastX) * 0.6));
-      lastX = e.clientX;
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  });
-
-  const showPreview = (image?: string) => {
-    if (!isFinePointer() || !previewRef.current) return;
-    if (image && previewImgRef.current) {
-      previewImgRef.current.src = image;
-      gsap.to(previewRef.current, { autoAlpha: 1, duration: 0.3 });
-    } else {
-      gsap.to(previewRef.current, { autoAlpha: 0, duration: 0.25 });
-    }
-  };
-  const hidePreview = () => {
-    if (previewRef.current)
-      gsap.to(previewRef.current, { autoAlpha: 0, duration: 0.25 });
-  };
 
   return (
     <main className="px-5 pt-28 md:px-8">
-      <PageHeader
-        kicker={{
-          es: `Índice 01 — ${String(ARCHIVE.length).padStart(2, "0")}`,
-          en: `Index 01 — ${String(ARCHIVE.length).padStart(2, "0")}`,
-        }}
-        title={{ es: "Archivo", en: "Archive" }}
-        blurb={{
-          es: "todo — enviado, en proceso o retirado. los case studies cuentan las historias; esta tabla guarda los recibos.",
-          en: "everything — shipped, in progress or retired. the case studies tell the stories; this table keeps the receipts.",
-        }}
-      />
+      <div className="relative">
+        <TechnicalGrid className="opacity-20" />
+        <div className="relative z-10">
+          <PageHeader
+            kicker={{
+              es: `Índice 01 — ${String(ARCHIVE.length).padStart(2, "0")}`,
+              en: `Index 01 — ${String(ARCHIVE.length).padStart(2, "0")}`,
+            }}
+            title={{ es: "Archivo", en: "Archive" }}
+            blurb={{
+              es: "todo — enviado, en proceso o retirado. cada ficha guarda el recibo.",
+              en: "everything — shipped, in progress or retired. every tile keeps the receipt.",
+            }}
+          />
 
-      <ul
-        ref={listRef}
-        className="mt-16 border-b border-line pb-0"
-        onMouseLeave={hidePreview}
-      >
-        {ARCHIVE.map((entry) => {
-          const rowInner = (
-            <>
-              <span className="u-label w-8 shrink-0 text-muted">{entry.index}</span>
-              <span className="stack-name display text-[clamp(1.5rem,4vw,2.8rem)] leading-none">
-                {t(entry.title)}
-              </span>
-              <span className="u-label hidden shrink-0 text-muted sm:block">
-                {entry.year}
-              </span>
-              <span className="u-label hidden w-36 shrink-0 text-muted md:block">
-                {t(entry.type)}
-              </span>
-              <span className="u-label hidden w-44 shrink-0 text-muted lg:block">
-                {entry.stack}
-              </span>
-              <span className="u-label ml-auto shrink-0">
-                {entry.tag ? (
-                  <span className="text-muted">{t(entry.tag)}</span>
-                ) : entry.external ? (
-                  "↗"
-                ) : (
-                  "→"
-                )}
-              </span>
-            </>
-          );
-          const rowClass =
-            "flex w-full items-baseline gap-5 px-2 py-5 text-left md:gap-8 md:px-4";
+          <div
+            ref={gridRef}
+            className="mt-16 grid gap-6 pb-8 lg:auto-rows-[minmax(180px,auto)] lg:grid-cols-3"
+          >
+            {ARCHIVE.map((entry, index) => {
+              const compact = index !== 0;
+              const inner = (
+                <>
+                  <div className="flex items-center justify-between border-b border-line px-4 py-3">
+                    <span className="u-label text-muted">
+                      {entry.index} / {entry.year}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      {entry.tag ? (
+                        <span className="u-label text-muted">{t(entry.tag)}</span>
+                      ) : (
+                        <CrossMark className="h-2.5 w-2.5" />
+                      )}
+                    </div>
+                  </div>
+                  {entry.image ? (
+                    <div className={`relative overflow-hidden bg-ink ${compact ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+                      <Image
+                        src={entry.image}
+                        alt={t(entry.title)}
+                        fill
+                        sizes={compact ? "(max-width: 1024px) 100vw, 32vw" : "(max-width: 1024px) 100vw, 64vw"}
+                        quality={78}
+                        className="object-cover object-top contrast-105 saturate-[1.1] transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.025]"
+                      />
+                      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-ink/10 mix-blend-multiply" />
+                      <div aria-hidden="true" className="technical-grid absolute inset-0 opacity-20" />
+                    </div>
+                  ) : (
+                    <div className={`dot-grid flex items-center justify-center bg-paper-soft ${compact ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+                      <span className="u-label text-muted">{t({ es: "SIN VISTA PREVIA", en: "NO PREVIEW" })}</span>
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col justify-between p-4 md:p-5">
+                    <div>
+                      <span className="u-label text-muted">{t(entry.type)}</span>
+                      <h3
+                        className={`stack-name display mt-2 leading-none ${
+                          compact ? "text-[clamp(1.5rem,3.2vw,2.3rem)]" : "text-[clamp(2.2rem,5vw,4.2rem)]"
+                        }`}
+                      >
+                        {t(entry.title)}
+                      </h3>
+                    </div>
+                    <div className="mt-4 flex items-end justify-between gap-3 border-t border-line pt-3">
+                      <span className="u-label text-muted">{entry.stack}</span>
+                      <span className="u-label border border-current px-3 py-2 transition-colors duration-300 group-hover:bg-ink group-hover:text-paper">
+                        {entry.href ? "→" : entry.external ? "↗" : "—"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              );
 
-          return (
-            <li
-              key={entry.index}
-              className="archive-row stack-row border-t border-line"
-              onMouseEnter={() => showPreview(entry.image)}
-            >
-              {entry.href ? (
-                <a
-                  href={entry.href}
-                  data-cursor="view"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate(entry.href!);
-                  }}
-                  className={rowClass}
-                >
-                  {rowInner}
-                </a>
-              ) : entry.external ? (
-                <a
-                  href={entry.external}
-                  target="_blank"
-                  rel="noreferrer"
-                  data-cursor="view"
-                  className={rowClass}
-                >
-                  {rowInner}
-                </a>
-              ) : (
-                <div className={rowClass}>{rowInner}</div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+              const tileClass = `archive-tile group flex flex-col border border-line ${BENTO_SPAN[index] ?? ""}`;
 
-      <p className="u-label mt-6 pb-20 text-muted">{t({
-        es: "◆ las filas con preview muestran su interfaz real — pasa el cursor.",
-        en: "◆ rows with a preview show their real interface — hover around.",
-      })}</p>
-
-      {/* floating preview */}
-      <div
-        ref={previewRef}
-        className="pointer-events-none fixed left-0 top-0 z-[60] hidden w-[19rem] overflow-hidden border border-line bg-paper-soft shadow-xl md:block"
-        aria-hidden="true"
-        style={{ opacity: 0 }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          ref={previewImgRef}
-          src="/projects/restaurant-surveys/dashboard.png"
-          alt=""
-          className="aspect-[16/10] w-full object-cover object-top"
-        />
+              if (entry.href) {
+                return (
+                  <a
+                    key={entry.index}
+                    href={entry.href}
+                    data-cursor="view"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate(entry.href!);
+                    }}
+                    className={tileClass}
+                  >
+                    {inner}
+                  </a>
+                );
+              }
+              if (entry.external) {
+                return (
+                  <a
+                    key={entry.index}
+                    href={entry.external}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cursor="view"
+                    className={tileClass}
+                  >
+                    {inner}
+                  </a>
+                );
+              }
+              return (
+                <div key={entry.index} className={tileClass}>
+                  {inner}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <div className="-mx-5 md:-mx-8">

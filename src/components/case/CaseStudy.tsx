@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, SplitText, prefersReducedMotion } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/gsap";
+import { gsap, useGSAP, SplitText } from "@/lib/gsap-plugins";
 import { useApp } from "@/components/AppShell";
 import { useLang } from "@/lib/i18n";
 import { PROJECTS, type Project } from "@/data/projects";
@@ -9,6 +10,7 @@ import ProjectVisual from "@/components/ProjectVisual";
 import Reveal from "@/components/Reveal";
 import MiniFooter from "@/components/MiniFooter";
 import { Contours, CropMarks } from "@/components/art/EditorialArt";
+import { TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 function Block({
   index,
@@ -209,22 +211,27 @@ export default function CaseStudy({
       </div>
 
       {/* content blocks */}
-      <section className="mx-auto mt-20 max-w-6xl">
-        <Block index="01" label={t({ es: "El problema", en: "The problem" })}>
+      <section className="relative mx-auto mt-20 max-w-6xl overflow-hidden">
+        <TechnicalGrid className="opacity-15" />
+        <div className="relative z-10">
+        <div className="grid gap-6 border-t border-line py-14 md:grid-cols-2 md:py-20">
           <Reveal>
-            <p className="max-w-[40rem] text-lg leading-relaxed text-ink-soft md:text-xl">
-              {t(project.problem)}
-            </p>
+            <div className="h-full border border-line p-6 md:p-8">
+              <span className="u-label text-accent">01 / {t({ es: "El problema", en: "The problem" })}</span>
+              <p className="mt-6 text-lg leading-relaxed text-ink-soft md:text-xl">
+                {t(project.problem)}
+              </p>
+            </div>
           </Reveal>
-        </Block>
-
-        <Block index="02" label={t({ es: "Investigación", en: "Research" })}>
-          <Reveal>
-            <p className="max-w-[40rem] text-lg leading-relaxed text-ink-soft md:text-xl">
-              {t(project.research)}
-            </p>
+          <Reveal delay={0.05}>
+            <div className="h-full border border-line bg-ink p-6 text-paper md:p-8">
+              <span className="u-label opacity-70">02 / {t({ es: "Investigación", en: "Research" })}</span>
+              <p className="mt-6 text-lg leading-relaxed opacity-90 md:text-xl">
+                {t(project.research)}
+              </p>
+            </div>
           </Reveal>
-        </Block>
+        </div>
 
         <Block index="03" label={t({ es: "La solución", en: "The solution" })}>
           <ul className="flex flex-col">
@@ -267,13 +274,14 @@ export default function CaseStudy({
           </div>
         </Block>
 
-        <Block index="06" label={t({ es: "Resultados", en: "Results" })}>
-          <div className="grid gap-8 sm:grid-cols-3">
+        <div className="border-t border-line py-14 md:py-20">
+          <span className="u-label text-accent">06 / {t({ es: "Resultados", en: "Results" })}</span>
+          <div className="mt-6 grid gap-6 border border-line p-6 sm:grid-cols-3 md:p-8">
             {project.results.map((r) => (
               <Metric key={r.label.en} metric={t(r.metric)} label={t(r.label)} />
             ))}
           </div>
-        </Block>
+        </div>
 
         <Block index="07" label={t({ es: "Aprendizajes", en: "Learnings" })}>
           <ol className="flex max-w-[42rem] flex-col gap-6">
@@ -304,6 +312,7 @@ export default function CaseStudy({
             )}
           </div>
         )}
+        </div>
       </section>
 
       {/* next project */}
