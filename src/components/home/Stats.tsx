@@ -1,56 +1,75 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STATS } from "@/data/site";
-import { TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { VerticalText } from "@/components/modular/VerticalText";
+
+const STAT_CLASS = ["metric-years", "metric-projects", "metric-clients", "metric-language"];
 
 export default function Stats() {
   const { t } = useLang();
-  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      if (!ref.current || prefersReducedMotion()) return;
+      const section = sectionRef.current;
+      if (!section) return;
+      const cells = gsap.utils.toArray<HTMLElement>(".metric-cell", section);
+      if (prefersReducedMotion()) {
+        gsap.set(cells, { x: 0, clipPath: "inset(0%)" });
+        return;
+      }
       gsap.fromTo(
-        gsap.utils.toArray<HTMLElement>(".metric-cell", ref.current),
-        { y: 24, autoAlpha: 0 },
+        cells,
         {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.75,
-          stagger: 0.08,
+          x: (index) => (index % 2 ? 16 : -16),
+          clipPath: (index) => (index % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)"),
+        },
+        {
+          x: 0,
+          clipPath: "inset(0%)",
+          duration: 0.68,
+          stagger: 0.06,
           ease: "power3.out",
-          scrollTrigger: { trigger: ref.current, start: "top 84%", once: true },
+          scrollTrigger: { trigger: section, start: "top 88%", once: true },
         }
       );
     },
-    { scope: ref }
+    { scope: sectionRef }
   );
 
   return (
-    <section aria-label={t({ es: "Métricas", en: "Metrics" })} className="relative overflow-hidden border-b border-ink">
+    <section
+      ref={sectionRef}
+      aria-label={t({ es: "Métricas", en: "Metrics" })}
+      className="metric-bridge relative overflow-hidden border-b border-ink p-3 md:p-4"
+    >
       <TechnicalGrid className="opacity-20" />
-      <div ref={ref} className="relative z-10 grid grid-cols-2 md:grid-cols-5">
+      <div className="metric-mosaic relative z-10">
         {STATS.map((stat, index) => (
           <div
             key={stat.label.en}
-            className={`metric-cell bento-reactive min-h-36 border-b border-ink p-4 odd:border-r md:min-h-44 md:border-b-0 md:border-r md:p-5 md:last:border-r-0 ${
-              index === 0 ? "md:col-span-2 bg-ink text-paper" : ""
+            className={`metric-cell flex flex-col justify-between border border-ink p-4 ${STAT_CLASS[index]} ${
+              index === 0 ? "bg-ink text-paper" : "bg-paper text-ink"
             }`}
           >
-            <span className="u-label opacity-70">METRIC / {String(index + 1).padStart(2, "0")}</span>
-            <p
-              className={`display mt-5 ${
-                index === 0 ? "text-[clamp(4rem,7vw,6rem)]" : "text-[clamp(3rem,5vw,5.2rem)]"
-              }`}
-            >
-              {stat.value}
-            </p>
-            <p className="u-label mt-3 max-w-[18ch] leading-relaxed opacity-80">{t(stat.label)}</p>
+            <div className="flex items-center justify-between">
+              <SystemLabel>OUTPUT / 0{index + 1}</SystemLabel>
+              <CrossMark className="opacity-50" />
+            </div>
+            <p className="display text-[clamp(3.8rem,7vw,6.5rem)] leading-none">{stat.value}</p>
+            <div>
+              <SystemLabel className="block leading-relaxed">{t(stat.label)}</SystemLabel>
+              {index === 0 && <Barcode className="mt-4 text-paper" />}
+            </div>
           </div>
         ))}
+        <div className="metric-vertical flex items-center justify-center border border-ink bg-paper">
+          <VerticalText>MEASURED / SHIPPED / ACTIVE / VERIFIED</VerticalText>
+        </div>
       </div>
     </section>
   );

@@ -1,97 +1,134 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { PROCESS } from "@/data/site";
+import { VerticalText } from "@/components/modular/VerticalText";
 import { CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Process() {
   const { t } = useLang();
-  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const steps = [
+    PROCESS[0],
+    {
+      step: "02",
+      name: { es: "Mapear", en: "Map" },
+      desc: {
+        es: "Convierto reglas, excepciones y recorridos reales en una arquitectura que el equipo puede discutir.",
+        en: "I turn real rules, exceptions, and journeys into an architecture the team can discuss.",
+      },
+    },
+    { ...PROCESS[1], step: "03" },
+    { ...PROCESS[2], step: "04" },
+  ];
 
   useGSAP(
     () => {
-      if (!ref.current || prefersReducedMotion()) return;
+      const section = sectionRef.current;
+      if (!section) return;
+      const nodes = gsap.utils.toArray<HTMLElement>(".process-node", section);
+
+      if (prefersReducedMotion()) {
+        gsap.set(nodes, { scale: 1, clipPath: "inset(0%)" });
+        return;
+      }
+
       gsap.fromTo(
-        gsap.utils.toArray<HTMLElement>(".process-record", ref.current),
-        { y: 28, autoAlpha: 0 },
+        nodes,
+        { scale: 0.96, clipPath: "inset(50% 0 50% 0)" },
         {
-          y: 0,
-          autoAlpha: 1,
+          scale: 1,
+          clipPath: "inset(0%)",
           duration: 0.8,
           stagger: 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: ref.current, start: "top 82%", once: true },
+          scrollTrigger: { trigger: section, start: "top 76%", once: true },
         }
       );
     },
-    { scope: ref }
+    { scope: sectionRef }
   );
 
   return (
-    <section id="process" className="home-bento-section bg-ink text-paper">
+    <section ref={sectionRef} id="process" className="home-bento-section bg-ink text-paper">
       <TechnicalGrid className="opacity-20" />
-      <div className="relative z-10 grid gap-8 border border-paper/35 p-5 md:grid-cols-2 md:items-end md:p-7">
-        <div>
-          <SystemLabel>WORKING METHOD</SystemLabel>
-          <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
-            {t({ es: "Protocolo", en: "Working" })}
-            <br />
-            {t({ es: "de trabajo", en: "protocol" })}
+
+      <header className="process-heading relative z-10">
+        <div className="process-heading-title border border-paper p-4 md:p-6">
+          <div className="flex items-center justify-between">
+            <SystemLabel>WORKING PROTOCOL / CLOSED LOOP</SystemLabel>
+            <CrossMark />
+          </div>
+          <h2 className="display mt-8 text-[clamp(3.8rem,8vw,7.5rem)] leading-[0.8]">
+            {t({ es: "Método", en: "Method" })}
           </h2>
+          <p className="mt-6 max-w-[38ch] text-base font-semibold leading-snug">
+            {t({
+              es: "El sistema avanza por decisiones verificables, no por entregas aisladas.",
+              en: "The system advances through verifiable decisions, not isolated handoffs.",
+            })}
+          </p>
         </div>
-        <p className="max-w-[38ch] text-base font-semibold leading-snug md:justify-self-end">
-          {t({
-            es: "Tres movimientos claros: entender el sistema, construirlo con feedback real y acompañarlo en producción.",
-            en: "Three clear moves: understand the system, build with real feedback and support it in production.",
-          })}
-        </p>
-      </div>
-
-      <div
-        ref={ref}
-        className="relative z-10 mt-3 overflow-hidden border border-paper/35 md:mt-4"
-      >
-        <div
-          className="pointer-events-none absolute -right-10 -top-10 h-[240px] w-[240px] opacity-[0.35] mix-blend-multiply md:h-[300px] md:w-[300px]"
-          style={{
-            maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 30%, transparent 75%)",
-          }}
-        >
-          <Image src="/assets/process-gears.png" alt="" fill sizes="300px" className="object-contain" />
+        <div className="process-heading-number flex flex-col justify-between border border-paper bg-paper p-4 text-ink">
+          <SystemLabel>LOOP / ACTIVE</SystemLabel>
+          <span className="display text-[clamp(4.5rem,9vw,8rem)]">04</span>
+          <SystemLabel>INPUT → OUTPUT</SystemLabel>
         </div>
+        <div className="process-heading-vertical flex items-center justify-center border border-paper">
+          <VerticalText>LISTEN / MAP / BUILD / SHIP</VerticalText>
+        </div>
+      </header>
 
-        {PROCESS.map((step, index) => {
-          const featured = index === 1;
-          return (
-            <div
-              key={step.step}
-              className={`process-record group relative grid grid-cols-[3rem_1fr] gap-4 border-b border-paper/35 p-5 last:border-b-0 md:grid-cols-[4rem_14rem_1fr] md:items-center md:gap-8 md:p-6 ${
-                featured ? "bg-paper text-ink" : ""
-              }`}
-            >
-              <span className="display text-3xl leading-none opacity-50 md:text-4xl">
-                {step.step}
-              </span>
-              <div className="flex items-center gap-3">
-                <CrossMark className={featured ? "text-ink/50" : "text-paper/50"} />
-                <h3 className="display text-[clamp(1.6rem,3vw,2.4rem)] leading-none">
-                  {t(step.name)}
-                </h3>
-              </div>
-              <p
-                className={`col-span-2 mt-2 max-w-[46ch] text-sm font-medium leading-relaxed md:col-span-1 md:mt-0 ${
-                  featured ? "text-ink/75" : "text-paper/75"
-                }`}
-              >
-                {t(step.desc)}
-              </p>
+      <div className="process-diagram relative z-10 mt-2">
+        <span aria-hidden="true" className="process-connector process-connector-top">→</span>
+        <span aria-hidden="true" className="process-connector process-connector-left">↓</span>
+        <span aria-hidden="true" className="process-connector process-connector-right">↓</span>
+        <span aria-hidden="true" className="process-connector process-connector-bottom">→</span>
+
+        {steps.map((step, index) => (
+          <article
+            key={`${step.step}-${step.name.en}`}
+            className={`process-node process-step-${index + 1} flex flex-col justify-between border border-paper p-4 ${
+              index === 1 ? "bg-paper text-ink" : "bg-ink text-paper"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <SystemLabel>STEP / {step.step}</SystemLabel>
+              <CrossMark className="opacity-50" />
             </div>
-          );
-        })}
+            <div className="mt-8">
+              <span className="display text-[clamp(3.8rem,7vw,6rem)] leading-none">{step.step}</span>
+              <h3 className="display mt-2 text-[clamp(2rem,4vw,4rem)] leading-[0.86]">{t(step.name)}</h3>
+              <p className="mt-5 max-w-[42ch] text-sm font-semibold leading-relaxed opacity-75">{t(step.desc)}</p>
+            </div>
+          </article>
+        ))}
+
+        <div className="process-node process-loop relative overflow-hidden border border-paper bg-paper p-3 text-ink">
+          <div className="grid h-full grid-cols-2 grid-rows-2 border border-ink">
+            {[
+              ["01", "LISTEN"],
+              ["02", "MAP"],
+              ["04", "SHIP"],
+              ["03", "BUILD"],
+            ].map(([number, label], index) => (
+              <div
+                key={number}
+                className={`flex flex-col justify-between p-3 ${
+                  index % 2 === 0 ? "border-r border-ink" : ""
+                } ${index < 2 ? "border-b border-ink" : ""}`}
+              >
+                <SystemLabel>{number}</SystemLabel>
+                <span className="display text-[clamp(1.1rem,2vw,2rem)]">{label}</span>
+              </div>
+            ))}
+          </div>
+          <span className="display absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-ink bg-paper text-3xl">
+            ↻
+          </span>
+        </div>
       </div>
     </section>
   );

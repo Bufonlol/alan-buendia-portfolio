@@ -33,7 +33,7 @@ function LangToggle({ className = "" }: { className?: string }) {
     <button
       onClick={() => setLang(value)}
       aria-pressed={lang === value}
-      className={`u-label px-1 py-1 transition-opacity duration-300 ${
+      className={`u-label min-h-11 min-w-11 px-2 py-2 transition-opacity duration-300 ${
         lang === value ? "underline underline-offset-4" : "opacity-50 hover:opacity-100"
       }`}
     >
@@ -65,7 +65,7 @@ function SoundToggle({ className = "" }: { className?: string }) {
       }}
       aria-pressed={on}
       aria-label={t({ es: "Sonido", en: "Sound" })}
-      className={`u-label pointer-events-auto px-1 py-1 transition-opacity duration-300 ${
+      className={`u-label pointer-events-auto min-h-11 px-2 py-2 transition-opacity duration-300 ${
         on ? "underline underline-offset-4" : "opacity-50 hover:opacity-100"
       } ${className}`}
     >
@@ -248,7 +248,7 @@ export default function Navbar() {
             <button
               ref={menuButtonRef}
               onClick={() => toggle(!open)}
-              className="u-label pointer-events-auto flex min-h-9 items-center gap-3 border border-current px-3"
+              className="u-label pointer-events-auto flex min-h-11 items-center gap-3 border border-current px-3"
               aria-expanded={open}
               aria-controls="site-menu"
             >

@@ -8,7 +8,7 @@ import {
   useRef,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, ScrollTrigger } from "@/lib/gsap";
 import { LangProvider } from "@/lib/i18n";
 import Navbar from "@/components/Navbar";
 import GrainOverlay from "@/components/GrainOverlay";
@@ -40,7 +40,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const target = document.querySelector(hash);
     if (!target) return;
     (target as HTMLElement).scrollIntoView({
-      behavior: immediate ? "auto" : "smooth",
+      behavior: immediate || prefersReducedMotion() ? "auto" : "smooth",
     });
   }, []);
 
@@ -56,7 +56,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         return;
       }
       if (targetPath === pathname && !hash) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
         return;
       }
 
@@ -72,7 +72,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         .set(overlay, { display: "flex", yPercent: 100 })
         .to(overlay, {
           yPercent: 0,
-          duration: 0.55,
+          duration: prefersReducedMotion() ? 0.01 : 0.55,
           ease: "power3.inOut",
           onComplete: () => router.push(targetPath || "/"),
         });
@@ -85,7 +85,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         pendingHashRef.current = null;
         gsap.to(overlay, {
           yPercent: 100,
-          duration: 0.5,
+          duration: prefersReducedMotion() ? 0.01 : 0.5,
           ease: "power3.inOut",
           onComplete: () => gsap.set(overlay, { display: "none" }),
         });
@@ -116,8 +116,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       if (overlay) {
         gsap.to(overlay, {
           yPercent: -100,
-          duration: 0.6,
-          delay: 0.15,
+          duration: prefersReducedMotion() ? 0.01 : 0.6,
+          delay: prefersReducedMotion() ? 0 : 0.15,
           ease: "power3.inOut",
           onComplete: () => gsap.set(overlay, { display: "none" }),
         });

@@ -1,17 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { ABOUT, FUN, SITE } from "@/data/site";
-import {
-  Barcode,
-  CrossMark,
-  SystemLabel,
-  TechnicalGrid,
-} from "@/components/system/TechnicalLayer";
-import Signature from "@/components/art/Signature";
+import { AssetFrame } from "@/components/modular/AssetFrame";
+import { VerticalText } from "@/components/modular/VerticalText";
+import { Barcode, CrossMark, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function About() {
   const { t } = useLang();
@@ -19,93 +14,91 @@ export default function About() {
 
   useGSAP(
     () => {
-      if (!sectionRef.current || prefersReducedMotion()) return;
-      const q = gsap.utils.selector(sectionRef);
+      const section = sectionRef.current;
+      if (!section) return;
+      const pieces = gsap.utils.toArray<HTMLElement>(".field-piece", section);
+      if (prefersReducedMotion()) {
+        gsap.set(pieces, { y: 0, clipPath: "inset(0%)" });
+        return;
+      }
       gsap.fromTo(
-        q(".profile-reveal"),
-        { y: 30, autoAlpha: 0 },
+        pieces,
+        { y: 20, clipPath: "inset(100% 0 0 0)" },
         {
           y: 0,
-          autoAlpha: 1,
-          duration: 0.82,
-          stagger: 0.08,
+          clipPath: "inset(0%)",
+          duration: 0.76,
+          stagger: 0.055,
           ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 76%", once: true },
+          scrollTrigger: { trigger: section, start: "top 78%", once: true },
         }
       );
     },
     { scope: sectionRef }
   );
 
+  const metadata = [
+    ["ROLE", "FRONTEND ENGINEER"],
+    ["BASE", SITE.locationShort],
+    ["STATUS", t(SITE.availability).toUpperCase()],
+    ["OFFLINE", FUN.martialArts.join(" / ")],
+    ["FOCUS", "MOTION / SYSTEMS"],
+    ["TIME", "UTC−6"],
+  ];
+
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="home-bento-section"
-    >
+    <section ref={sectionRef} id="about" className="home-bento-section">
       <TechnicalGrid className="opacity-25" />
-      <div className="relative z-10">
-        <div className="grid gap-8 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-end md:p-7">
-          <div>
-            <SystemLabel>PERSONAL FILE</SystemLabel>
-            <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
-              {t({ es: "Field note", en: "Field note" })}
-            </h2>
+
+      <div className="field-note-grid relative z-10">
+        <div className="field-piece field-title border border-ink p-4 md:p-6">
+          <div className="flex items-center justify-between">
+            <SystemLabel>FIELD NOTE / SUBJECT 001</SystemLabel>
+            <CrossMark />
           </div>
-          <div className="flex items-end gap-5">
-            <Barcode className="hidden md:block" />
-            <SystemLabel>PROFILE / ACTIVE</SystemLabel>
-          </div>
+          <h2 className="display mt-8 text-[clamp(3.7rem,8vw,7.5rem)] leading-[0.78]">
+            {t({ es: "Soy Alan.", en: "I'm Alan." })}
+            <br />
+            Frontend engineer.
+            <br />
+            Orizaba, MX.
+          </h2>
         </div>
 
-        <div className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:auto-rows-[minmax(150px,auto)] lg:grid-cols-3 lg:[grid-auto-flow:dense]">
-          <div className="profile-reveal bento-reactive border border-ink p-5 md:p-8 lg:col-span-2 lg:row-span-2">
-            <div className="flex items-start justify-between gap-4">
-              <p className="u-label">SUBJECT / {SITE.fullName}</p>
-              <Signature className="hidden text-lg opacity-70 md:block" size="text-lg" />
-            </div>
-            <p className="mt-8 max-w-[52rem] text-[clamp(1.45rem,3vw,2.7rem)] font-bold leading-[1.22] tracking-[-0.035em]">
-              {t(ABOUT.paragraph)}
-            </p>
-            <p className="u-label mt-8 max-w-[40ch] -rotate-1 border border-ink/40 px-3 py-2 text-ink/70">
-              MARGIN NOTE — {t({ es: "cuando no hay código, hay tatami:", en: "when there's no code, there's a mat:" })}{" "}
-              {FUN.martialArts.join(" / ")}
-            </p>
-          </div>
+        <div className="field-piece field-asset relative min-h-80 overflow-hidden border border-ink">
+          <AssetFrame
+            src="/assets/about-hands.png"
+            alt={t({ es: "Manos trabajando frente a un teclado", en: "Hands working at a keyboard" })}
+            imageClassName="object-cover object-center mix-blend-multiply"
+            sizes="(max-width: 767px) 100vw, 42vw"
+          />
+          <SystemLabel className="absolute left-3 top-3 border border-ink bg-paper px-2 py-1">SUBJECT / ACTIVE</SystemLabel>
+        </div>
 
-          <div className="profile-reveal bento-reactive border border-ink">
-            <div className="flex items-center justify-between border-b border-ink p-5">
-              <SystemLabel>IDENTIFICATION</SystemLabel>
-              <CrossMark />
-            </div>
-            <dl>
-              <div className="grid grid-cols-[7rem_1fr] border-b border-ink p-5">
-                <dt className="u-label opacity-60">ROLE</dt>
-                <dd className="u-label text-right">FRONTEND ENGINEER</dd>
-              </div>
-              <div className="grid grid-cols-[7rem_1fr] border-b border-ink p-5">
-                <dt className="u-label opacity-60">BASE</dt>
-                <dd className="u-label text-right">{SITE.locationShort}</dd>
-              </div>
-              <div className="grid grid-cols-[7rem_1fr] p-5">
-                <dt className="u-label opacity-60">STATUS</dt>
-                <dd className="u-label text-right">{t(SITE.availability)}</dd>
-              </div>
-            </dl>
-          </div>
+        <div className="field-piece field-status flex flex-col justify-between border border-ink bg-ink p-4 text-paper">
+          <span className="flex items-center gap-2"><PulseDot /><SystemLabel>ONLINE</SystemLabel></span>
+          <span className="display text-[clamp(4rem,7vw,6rem)]">001</span>
+          <Barcode className="text-paper" />
+        </div>
 
-          <div className="profile-reveal bento-reactive relative overflow-hidden border border-ink p-5">
-            <div className="pointer-events-none absolute inset-0 opacity-[0.18] mix-blend-multiply">
-              <Image src="/assets/about-hands.png" alt="" fill sizes="360px" className="object-cover object-[center_65%]" />
+        <div className="field-piece field-copy border border-ink p-5 md:p-6">
+          <SystemLabel>PERSONAL STATEMENT / ES-MX</SystemLabel>
+          <p className="mt-6 max-w-[54ch] text-[clamp(1.2rem,2.2vw,2rem)] font-bold leading-[1.22]">
+            {t(ABOUT.paragraph).split(".").slice(0, 2).join(".")}.
+          </p>
+        </div>
+
+        <dl className="field-piece field-meta grid grid-cols-2 border border-ink">
+          {metadata.map(([key, value]) => (
+            <div key={key} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
+              <dt className="u-label opacity-50">{key}</dt>
+              <dd className="u-label mt-3 leading-relaxed">{value}</dd>
             </div>
-            <div className="relative z-10 grid h-full content-between gap-2">
-              {ABOUT.facts.map((fact, index) => (
-                <p key={fact.en} className="u-label border border-ink bg-paper px-3 py-3">
-                  {String(index + 1).padStart(2, "0")} / {t(fact)}
-                </p>
-              ))}
-            </div>
-          </div>
+          ))}
+        </dl>
+
+        <div className="field-piece field-vertical flex items-center justify-center border border-ink">
+          <VerticalText>ENGINEERING / MOTION / DISCIPLINE / FIELD NOTE</VerticalText>
         </div>
       </div>
     </section>

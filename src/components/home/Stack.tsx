@@ -1,12 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STACK } from "@/data/site";
-import { Barcode, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { AssetFrame } from "@/components/modular/AssetFrame";
+import { VerticalText } from "@/components/modular/VerticalText";
+import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 import {
   Atom,
+  Box,
   Braces,
   Database,
   GitBranch,
@@ -15,110 +18,146 @@ import {
   Server,
   Shield,
   Sparkles,
-  Box,
   Triangle,
   Zap,
   type LucideIcon,
 } from "lucide-react";
 
 const ICONS: Record<string, LucideIcon> = {
-  "React": Atom,
+  React: Atom,
   "Next.js": Triangle,
-  "TypeScript": Braces,
+  TypeScript: Braces,
   "Node.js": Hexagon,
-  "Angular": Shield,
+  Angular: Shield,
   "Spring Boot": Leaf,
-  "PostgreSQL": Database,
-  "MySQL": Server,
-  "Supabase": Zap,
-  "Git": GitBranch,
-  "GSAP": Sparkles,
+  PostgreSQL: Database,
+  MySQL: Server,
+  Supabase: Zap,
+  Git: GitBranch,
+  GSAP: Sparkles,
   "Three.js": Box,
 };
 
-const FEATURED = ["GSAP", "Three.js"];
+const MATRIX_CLASS = [
+  "stack-react",
+  "stack-next",
+  "stack-typescript",
+  "stack-node",
+  "stack-angular",
+  "stack-spring",
+  "stack-postgres",
+  "stack-mysql",
+  "stack-supabase",
+  "stack-git",
+  "stack-gsap",
+  "stack-three",
+];
 
 export default function Stack() {
   const { t } = useLang();
-  const gridRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
     () => {
-      if (!gridRef.current || prefersReducedMotion()) return;
+      const section = sectionRef.current;
+      if (!section) return;
+      const pieces = gsap.utils.toArray<HTMLElement>(".stack-piece", section);
+
+      if (prefersReducedMotion()) {
+        gsap.set(pieces, { x: 0, y: 0, clipPath: "inset(0%)" });
+        return;
+      }
+
       gsap.fromTo(
-        gsap.utils.toArray<HTMLElement>(".tool-tile", gridRef.current),
-        { y: 20, autoAlpha: 0 },
+        pieces,
         {
+          x: (index) => (index % 2 ? 18 : -18),
+          y: (index) => (index % 3 ? 10 : 24),
+          clipPath: (index) => (index % 2 ? "inset(0 0 100% 0)" : "inset(100% 0 0 0)"),
+        },
+        {
+          x: 0,
           y: 0,
-          autoAlpha: 1,
-          duration: 0.6,
+          clipPath: "inset(0%)",
+          duration: 0.72,
+          stagger: 0.045,
           ease: "power3.out",
-          stagger: 0.035,
-          scrollTrigger: { trigger: gridRef.current, start: "top 85%", once: true },
+          scrollTrigger: { trigger: section, start: "top 76%", once: true },
         }
       );
     },
-    { scope: gridRef }
+    { scope: sectionRef }
   );
 
   return (
-    <section id="stack" className="home-bento-section">
+    <section ref={sectionRef} id="stack" className="home-bento-section">
       <TechnicalGrid className="opacity-20" />
+
       <div className="relative z-10">
-        <div className="grid gap-8 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-end md:p-7">
-          <div>
-            <SystemLabel>PRODUCTION TOOLCHAIN</SystemLabel>
-            <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
-              {t({ es: "Sistema de", en: "Build" })}
-              <br />
-              {t({ es: "herramientas", en: "system" })}
+        <header className="stack-heading">
+          <div className="stack-heading-title border border-ink p-4 md:p-6">
+            <div className="flex items-center justify-between">
+              <SystemLabel>PRODUCTION TOOLCHAIN / MATRIX</SystemLabel>
+              <CrossMark />
+            </div>
+            <h2 className="display mt-8 text-[clamp(2.5rem,8vw,6.8rem)] leading-[0.8]">
+              {t({ es: "Sistema de herramientas", en: "Build system" })}
             </h2>
           </div>
-          <div className="flex items-end gap-6">
-            <Barcode className="hidden md:block" />
-            <p className="u-label max-w-[32ch] leading-relaxed md:text-right">
-              {t({
-                es: "TECNOLOGÍAS USADAS EN PRODUCCIÓN. SIN PORCENTAJES DECORATIVOS.",
-                en: "TECHNOLOGIES USED IN PRODUCTION. NO DECORATIVE PERCENTAGES.",
-              })}
-            </p>
+          <div className="stack-heading-count flex flex-col justify-between border border-ink bg-ink p-4 text-paper">
+            <SystemLabel>ACTIVE / MODULES</SystemLabel>
+            <span className="display text-[clamp(4.5rem,9vw,8rem)]">{STACK.length}</span>
+            <Barcode className="text-paper" />
           </div>
-        </div>
+          <div className="stack-heading-vertical flex items-center justify-center border border-ink">
+            <VerticalText>FRONTEND / BACKEND / DATA / MOTION</VerticalText>
+          </div>
+        </header>
 
-        <div
-          ref={gridRef}
-          className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:mt-4 lg:grid-cols-6"
-        >
+        <div className="stack-chaos-grid mt-2">
+          <div className="stack-piece stack-asset relative overflow-hidden border border-ink bg-paper">
+            <AssetFrame
+              src="/assets/stack-layers.png"
+              alt={t({ es: "Diagrama técnico de capas del sistema", en: "Technical system layers diagram" })}
+              className="scale-110"
+              imageClassName="mix-blend-multiply"
+              sizes="(max-width: 767px) 100vw, 42vw"
+            />
+            <SystemLabel className="absolute left-3 top-3">OBJECT / LAYERS–12</SystemLabel>
+            <SystemLabel className="absolute bottom-3 right-3 border border-ink bg-paper px-2 py-1">EXPLODED VIEW</SystemLabel>
+          </div>
+
           {STACK.map((item, index) => {
             const Icon = ICONS[item.name] ?? Braces;
-            const featured = FEATURED.includes(item.name);
+            const inverted = ["React", "GSAP"].includes(item.name);
+            const giant = ["React", "TypeScript", "GSAP", "Three.js"].includes(item.name);
+
             return (
               <div
                 key={item.name}
-                className={`tool-tile bento-reactive group relative flex aspect-square flex-col justify-between border border-ink p-4 ${
-                  featured ? "bg-ink text-paper" : ""
-                }`}
+                className={`stack-piece tool-cell group flex min-w-0 flex-col justify-between overflow-hidden border border-ink p-3 ${
+                  MATRIX_CLASS[index]
+                } ${inverted ? "bg-ink text-paper" : "bg-paper text-ink"}`}
               >
                 <div className="flex items-center justify-between">
-                  <SystemLabel className={featured ? "opacity-60" : "opacity-40"}>
-                    {String(index + 1).padStart(2, "0")}
-                  </SystemLabel>
-                  <Icon
-                    className="h-6 w-6 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
-                    strokeWidth={1.5}
-                  />
+                  <SystemLabel className="opacity-60">{String(index + 1).padStart(2, "0")} / {t(item.meta)}</SystemLabel>
+                  <Icon className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-6" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p className="display text-[clamp(0.95rem,1.6vw,1.25rem)] leading-tight">
+                  <p className={`display leading-[0.88] ${giant ? "text-[clamp(2rem,4.5vw,4.8rem)]" : "text-[clamp(1.3rem,2.4vw,2.4rem)]"}`}>
                     {item.name}
                   </p>
-                  <SystemLabel className={`mt-1 block ${featured ? "opacity-60" : "opacity-45"}`}>
-                    {t(item.meta)}
-                  </SystemLabel>
+                  <SystemLabel className="mt-2 block opacity-55">SYS / VERIFIED / PROD</SystemLabel>
                 </div>
               </div>
             );
           })}
+
+          <div className="stack-piece stack-empty flex items-center justify-between border border-ink bg-paper p-3">
+            <CrossMark />
+            <SystemLabel>FRAME / EMPTY / RESERVED</SystemLabel>
+            <CrossMark />
+          </div>
         </div>
       </div>
     </section>

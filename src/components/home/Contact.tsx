@@ -2,17 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import Signature from "@/components/art/Signature";
-import {
-  Barcode,
-  CrossMark,
-  SignalBars,
-  SystemLabel,
-  TechnicalGrid,
-} from "@/components/system/TechnicalLayer";
+import { AssetFrame } from "@/components/modular/AssetFrame";
+import { VerticalText } from "@/components/modular/VerticalText";
+import { Barcode, CrossMark, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Contact() {
   const { t } = useLang();
@@ -24,41 +20,28 @@ export default function Contact() {
     () => {
       const section = sectionRef.current;
       if (!section) return;
-      const q = gsap.utils.selector(section);
-
+      const pieces = gsap.utils.toArray<HTMLElement>(".transmission-piece", section);
       if (prefersReducedMotion()) {
-        gsap.set(q(".contact-word, .contact-meta"), { autoAlpha: 1, yPercent: 0 });
+        gsap.set(pieces, { x: 0, y: 0, clipPath: "inset(0%)" });
         return;
       }
-
-      gsap
-        .timeline({
-          scrollTrigger: { trigger: section, start: "top 62%", once: true },
-        })
-        .set(q(".contact-word"), { autoAlpha: 1 })
-        .fromTo(
-          q(".contact-word"),
-          { yPercent: 110, skewY: 2 },
-          {
-            yPercent: 0,
-            skewY: 0,
-            duration: 1,
-            stagger: 0.12,
-            ease: "power3.out",
-          }
-        )
-        .fromTo(
-          q(".contact-meta"),
-          { y: 18, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.72,
-            stagger: 0.06,
-            ease: "power3.out",
-          },
-          "-=0.48"
-        );
+      gsap.fromTo(
+        pieces,
+        {
+          x: (index) => (index % 2 ? 20 : -20),
+          y: (index) => (index % 3 ? 10 : 24),
+          clipPath: (index) => (index % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)"),
+        },
+        {
+          x: 0,
+          y: 0,
+          clipPath: "inset(0%)",
+          duration: 0.78,
+          stagger: 0.065,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section, start: "top 70%", once: true },
+        }
+      );
     },
     { scope: sectionRef }
   );
@@ -71,141 +54,149 @@ export default function Contact() {
   );
 
   const copyEmail = async () => {
+    let didCopy = false;
     try {
       await navigator.clipboard.writeText(SITE.email);
+      didCopy = true;
+    } catch {
+      const input = document.createElement("textarea");
+      input.value = SITE.email;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      didCopy = document.execCommand("copy");
+      input.remove();
+    }
+
+    if (didCopy) {
       setCopied(true);
       if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
       copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
-    } catch {
+    } else {
       window.location.href = `mailto:${SITE.email}`;
     }
   };
 
   return (
-    <section
-      ref={sectionRef}
-      id="contact"
-      className="relative flex min-h-[74dvh] flex-col overflow-hidden bg-ink p-3 text-paper md:p-4"
-    >
+    <section ref={sectionRef} id="contact" className="relative overflow-hidden bg-ink p-3 text-paper md:p-4">
       <TechnicalGrid className="opacity-20" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-3 border border-paper/35 md:inset-4"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-16 top-[8%] hidden h-[360px] w-[360px] opacity-[0.14] mix-blend-screen md:block lg:h-[480px] lg:w-[480px]"
-        style={{
-          maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 25%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 25%, transparent 70%)",
-        }}
-      >
-        <Image src="/assets/contact-tower.png" alt="" fill sizes="480px" className="object-contain" />
-      </div>
 
-      <div className="contact-meta relative z-10 grid grid-cols-2 border-b border-paper/35 px-3 py-3 md:grid-cols-4 md:px-4">
-        <SystemLabel>DIRECT TRANSMISSION</SystemLabel>
-        <SystemLabel className="hidden md:block">CHANNEL / OPEN</SystemLabel>
-        <SystemLabel className="hidden md:block">{SITE.locationShort}</SystemLabel>
-        <SystemLabel className="text-right">STATUS / AVAILABLE</SystemLabel>
-      </div>
-
-      <div className="relative z-10 flex flex-1 flex-col justify-center px-3 py-10 md:px-4 md:py-14">
-        <div className="contact-meta mb-6 flex items-center gap-3">
-          <CrossMark />
-          <SystemLabel>{t({ es: "INICIAR TRANSMISIÓN", en: "START TRANSMISSION" })}</SystemLabel>
-          <span className="h-px flex-1 bg-paper/35" />
+      <div className="transmission-grid relative z-10">
+        <div className="transmission-piece transmission-title border border-paper p-4 md:p-6">
+          <div className="flex items-center justify-between">
+            <SystemLabel>DIRECT TRANSMISSION / CHANNEL 01</SystemLabel>
+            <SignalBars className="text-paper" />
+          </div>
+          <h2 className="display mt-8 text-[clamp(2.4rem,7vw,6.5rem)] leading-[0.78]">
+            {t({ es: "Construyamos algo real", en: "Let's build something real" })}
+          </h2>
         </div>
 
-        <h2 aria-label={t({ es: "Construyamos", en: "Let's build" })}>
-          <span className="block overflow-hidden pb-[0.06em]">
-            <span
-              aria-hidden="true"
-              className="contact-word display block text-[clamp(2.5rem,8vw,6rem)] leading-[0.86]"
-              style={{ opacity: 0 }}
-            >
-              {t({ es: "CONSTRUYAMOS", en: "LET'S BUILD" })}
-            </span>
-          </span>
-          <span className="block overflow-hidden pb-[0.08em]">
-            <span
-              aria-hidden="true"
-              className="contact-word display block text-right text-[clamp(3rem,8vw,6rem)] leading-[0.86]"
-              style={{ opacity: 0 }}
-            >
-              {t({ es: "ALGO REAL", en: "SOMETHING REAL" })}
-            </span>
-          </span>
-        </h2>
+        <div className="transmission-piece transmission-asset relative min-h-80 overflow-hidden border border-paper bg-paper text-ink">
+          <AssetFrame
+            src="/assets/contact-tower.png"
+            alt={t({ es: "Antena de transmisión técnica", en: "Technical transmission tower" })}
+            className="scale-110"
+            imageClassName="mix-blend-multiply"
+            sizes="(max-width: 767px) 100vw, 42vw"
+          />
+          <SystemLabel className="absolute left-3 top-3 border border-ink bg-paper px-2 py-1">SIGNAL / TOWER–01</SystemLabel>
+        </div>
 
-        <div className="contact-meta mt-8 grid gap-4 border-t border-paper/35 pt-5 lg:grid-cols-[1fr_auto_auto_auto] lg:items-end">
-          <div>
-            <SystemLabel className="block text-paper/65">DIRECT LINE</SystemLabel>
-            <a
-              href={`mailto:${SITE.email}`}
-              className="mt-2 block break-all text-[clamp(1.15rem,2.6vw,2rem)] font-bold underline decoration-1 underline-offset-4"
-            >
-              {SITE.email}
-            </a>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={copyEmail}
-              className="u-label min-h-12 border border-paper bg-paper px-5 text-ink transition-colors hover:bg-ink hover:text-paper"
-            >
-              {copied
-                ? t({ es: "COPIADO ✓", en: "COPIED ✓" })
-                : t({ es: "COPIAR CORREO", en: "COPY EMAIL" })}
-            </button>
-            <a
-              href={`mailto:${SITE.email}`}
-              className="u-label flex min-h-12 items-center border border-paper px-5 transition-colors hover:bg-paper hover:text-ink"
-            >
-              {t({ es: "ENVIAR MENSAJE ↗", en: "SEND MESSAGE ↗" })}
-            </a>
-          </div>
-          <div className="hidden border border-paper/40 p-4 lg:block">
-            <div className="flex items-center gap-2">
-              <SignalBars className="text-paper" />
-              <SystemLabel className="text-paper/70">CHANNEL / OPEN</SystemLabel>
+        <div className="transmission-piece transmission-line border border-paper p-4 md:p-5">
+          <SystemLabel className="opacity-65">DIRECT LINE</SystemLabel>
+          <a
+            href={`mailto:${SITE.email}`}
+            className="mt-4 block break-all text-[clamp(1.25rem,3vw,2.5rem)] font-bold underline decoration-1 underline-offset-4"
+          >
+            {SITE.email}
+          </a>
+        </div>
+
+        <div className="transmission-piece transmission-channel flex flex-col justify-between border border-paper bg-paper p-4 text-ink">
+          <SystemLabel>CHANNEL / OPEN</SystemLabel>
+          <SignalBars className="text-ink" />
+          <SystemLabel>{SITE.locationShort} / UTC−6</SystemLabel>
+        </div>
+
+        <div className="transmission-piece transmission-status flex flex-col justify-between border border-paper p-4">
+          <span className="flex items-center gap-2"><PulseDot /><SystemLabel>AVAILABLE</SystemLabel></span>
+          <span className="display text-[clamp(3rem,5vw,5rem)]">ON</span>
+          <SystemLabel>STATUS / LIVE</SystemLabel>
+        </div>
+
+        <div className="transmission-piece transmission-qr flex flex-col items-center justify-between border border-paper bg-paper p-3 text-ink">
+          <Image
+            src="/qr-alanbuendia.svg"
+            alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
+            width={84}
+            height={84}
+          />
+          <SystemLabel>SCAN / OPEN</SystemLabel>
+        </div>
+
+        <div className="transmission-piece transmission-actions grid grid-cols-2 border border-paper">
+          <button
+            onClick={copyEmail}
+            className="u-label min-h-20 border-r border-paper px-4 text-left transition-colors hover:bg-paper hover:text-ink"
+          >
+            {copied ? t({ es: "CORREO COPIADO ✓", en: "EMAIL COPIED ✓" }) : t({ es: "COPIAR CORREO", en: "COPY EMAIL" })}
+          </button>
+          <a
+            href={`mailto:${SITE.email}`}
+            className="u-label flex min-h-20 items-center justify-between px-4 transition-colors hover:bg-paper hover:text-ink"
+          >
+            <span>{t({ es: "ENVIAR SEÑAL", en: "SEND SIGNAL" })}</span>
+            <span>↗</span>
+          </a>
+        </div>
+
+        <div className="transmission-piece transmission-meta grid grid-cols-3 border border-paper">
+          {[
+            ["RESPONSE", "24–48H"],
+            ["MODE", "REMOTE"],
+            ["BUILD", "2026"],
+          ].map(([key, value]) => (
+            <div key={key} className="border-r border-paper p-3 last:border-r-0">
+              <SystemLabel className="opacity-55">{key}</SystemLabel>
+              <p className="u-label mt-3">{value}</p>
             </div>
-            <p className="u-label mt-2 text-paper/60">{SITE.locationShort} · UTC−6</p>
-          </div>
-          <div className="hidden border border-paper/40 p-3 lg:flex lg:flex-col lg:items-center lg:gap-2">
-            <Image
-              src="/qr-alanbuendia.svg"
-              alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
-              width={64}
-              height={64}
-              className="invert"
-            />
-            <SystemLabel className="text-paper/60">SCAN</SystemLabel>
-          </div>
-          <p className="sr-only" aria-live="polite">
-            {copied ? t({ es: "Correo copiado", en: "Email copied" }) : ""}
-          </p>
+          ))}
+        </div>
+
+        <div className="transmission-piece transmission-vertical flex items-center justify-center border border-paper">
+          <VerticalText>SEND SIGNAL / DIRECT LINE / OPEN CHANNEL</VerticalText>
         </div>
       </div>
 
-      <footer className="contact-meta relative z-10 grid gap-5 border-t border-paper/35 px-3 py-4 md:grid-cols-[1fr_auto_1fr] md:items-end md:px-4">
+      <footer className="relative z-10 mt-2 grid gap-5 border border-paper px-4 py-4 md:grid-cols-[1fr_auto_1fr] md:items-end">
         <div>
-          <Signature className="text-paper" size="text-2xl" shadowColor="var(--color-accent)" />
-          <p className="u-label mt-2 text-paper/65">© 2026 {SITE.fullName}</p>
+          <Signature className="text-paper" size="text-2xl" shadowColor="var(--color-paper)" />
+          <p className="u-label mt-2 opacity-65">© 2026 {SITE.fullName}</p>
         </div>
         <Barcode className="hidden text-paper md:block" />
         <div className="u-label flex flex-wrap gap-5 md:justify-end">
           <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">CV ↗</a>
           <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">GITHUB ↗</a>
           <button
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-            className="link-line"
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: prefersReducedMotion() ? "auto" : "smooth",
+              })
+            }
+            className="link-line min-h-11"
           >
             {t({ es: "ARRIBA ↑", en: "BACK TO TOP ↑" })}
           </button>
         </div>
       </footer>
+
+      <p className="sr-only" aria-live="polite">
+        {copied ? t({ es: "Correo copiado", en: "Email copied" }) : ""}
+      </p>
     </section>
   );
 }

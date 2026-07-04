@@ -1,74 +1,115 @@
 "use client";
 
+import { useRef } from "react";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { EXPERIENCE } from "@/data/site";
-import { Barcode, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { AssetFrame } from "@/components/modular/AssetFrame";
+import { VerticalText } from "@/components/modular/VerticalText";
+import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+
+const OUTPUTS = [
+  ["CLIENTES", "04 ACTIVE"],
+  ["SISTEMAS QR", "SHIPPED"],
+  ["DASHBOARDS", "LIVE"],
+  ["RESERVAS", "24/7"],
+];
 
 export default function Experience() {
   const { t } = useLang();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      if (!section) return;
+      const records = gsap.utils.toArray<HTMLElement>(".experience-piece", section);
+      if (prefersReducedMotion()) {
+        gsap.set(records, { x: 0, clipPath: "inset(0%)" });
+        return;
+      }
+      gsap.fromTo(
+        records,
+        { x: (index) => (index % 2 ? 20 : -20), clipPath: "inset(0 100% 0 0)" },
+        {
+          x: 0,
+          clipPath: "inset(0%)",
+          duration: 0.76,
+          stagger: 0.07,
+          ease: "power3.out",
+          scrollTrigger: { trigger: section, start: "top 78%", once: true },
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <section id="experience" className="home-bento-section">
+    <section ref={sectionRef} id="experience" className="home-bento-section">
       <TechnicalGrid className="opacity-20" />
-      <div className="relative z-10 grid gap-8 border border-ink p-5 md:grid-cols-[0.8fr_1.2fr] md:items-end md:p-7">
-        <div>
-          <SystemLabel>PRODUCTION RECORD</SystemLabel>
-          <h2 className="display mt-5 text-[clamp(3.2rem,7vw,6rem)]">
+      <div className="experience-grid relative z-10">
+        <div className="experience-piece experience-title border border-ink p-4 md:p-6">
+          <div className="flex items-center justify-between">
+            <SystemLabel>PRODUCTION REGISTER / 2022–NOW</SystemLabel>
+            <CrossMark />
+          </div>
+          <h2 className="display mt-8 text-[clamp(3rem,8vw,7.5rem)] leading-[0.8]">
             {t({ es: "Experiencia", en: "Experience" })}
           </h2>
         </div>
-        <p className="max-w-[45ch] text-base font-semibold leading-snug md:justify-self-end">
-          {t({
-            es: "Trabajo enviado a producción para restaurantes, retail, clínicas y plataformas operativas.",
-            en: "Production work shipped for restaurants, retail, clinics and operational platforms.",
-          })}
-        </p>
-      </div>
 
-      <div className="relative z-10 mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-3 lg:[grid-auto-flow:dense]">
-        {EXPERIENCE.map((job, index) => {
-          const featured = index === 0;
-          return (
-            <article
-              key={job.company}
-              className={`bento-reactive grid border border-ink ${
-                featured ? "lg:col-span-2 lg:grid-cols-[8rem_1fr_1.2fr]" : "lg:grid-cols-1"
-              }`}
-            >
-              <div className="flex flex-row items-center justify-between border-b border-ink bg-ink p-4 text-paper lg:flex-col lg:items-start lg:justify-between lg:border-b-0 lg:border-r">
-                <span className="u-label">REC / {String(index + 1).padStart(2, "0")}</span>
-                <Barcode className="opacity-80 lg:mt-8" />
+        <div className="experience-piece experience-count flex flex-col justify-between border border-ink bg-ink p-4 text-paper">
+          <SystemLabel>RECORDS / ACTIVE</SystemLabel>
+          <span className="display text-[clamp(4rem,8vw,7rem)]">02</span>
+          <Barcode className="text-paper" />
+        </div>
+
+        <div className="experience-piece experience-vertical flex items-center justify-center border border-ink">
+          <VerticalText>OUTPUT / SHIPPED / CLIENT SYSTEMS</VerticalText>
+        </div>
+
+        <article className="experience-piece experience-primary grid border border-ink md:grid-cols-[5rem_0.9fr_1.1fr]">
+          <div className="flex items-center justify-between border-b border-ink bg-ink p-3 text-paper md:flex-col md:border-b-0 md:border-r">
+            <SystemLabel>REC / 01</SystemLabel>
+            <Barcode className="text-paper" />
+          </div>
+          <div className="border-b border-ink p-5 md:border-b-0 md:border-r md:p-6">
+            <SystemLabel>{t(EXPERIENCE[0].period)}</SystemLabel>
+            <h3 className="display mt-5 text-[clamp(1.9rem,4.2vw,4.2rem)] leading-[0.84]">{t(EXPERIENCE[0].role)}</h3>
+            <p className="mt-5 text-xl font-bold">{EXPERIENCE[0].company}</p>
+          </div>
+          <div className="grid grid-cols-2">
+            {OUTPUTS.map(([label, value]) => (
+              <div key={label} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
+                <SystemLabel className="opacity-55">{label}</SystemLabel>
+                <p className="display mt-3 text-2xl">{value}</p>
               </div>
-              <div className={`border-b border-ink p-5 lg:p-7 ${featured ? "lg:border-b-0 lg:border-r" : ""}`}>
-                <p className="u-label opacity-65">{t(job.period)}</p>
-                <h3
-                  className={`display mt-4 leading-none ${
-                    featured ? "text-[clamp(2rem,4.5vw,4rem)]" : "text-[clamp(1.6rem,3.4vw,2.6rem)]"
-                  }`}
-                >
-                  {t(job.role)}
-                </h3>
-                <p className="mt-4 text-lg font-bold">{job.company}</p>
-                {!featured && (
-                  <>
-                    <p className="mt-4 text-sm font-medium leading-relaxed opacity-80">{t(job.summary)}</p>
-                    <p className="u-label mt-5 border-t border-ink/35 pt-4 leading-relaxed opacity-70">
-                      OUTPUT / {t(job.highlight)}
-                    </p>
-                  </>
-                )}
-              </div>
-              {featured && (
-                <div className="p-5 lg:p-7">
-                  <p className="max-w-[52ch] text-sm font-medium leading-relaxed">{t(job.summary)}</p>
-                  <p className="u-label mt-7 border-t border-ink/35 pt-4 leading-relaxed">
-                    OUTPUT / {t(job.highlight)}
-                  </p>
-                </div>
-              )}
-            </article>
-          );
-        })}
+            ))}
+          </div>
+        </article>
+
+        <article className="experience-piece experience-secondary flex flex-col justify-between border border-ink bg-ink p-5 text-paper">
+          <div className="flex items-center justify-between">
+            <SystemLabel>REC / 02</SystemLabel>
+            <SystemLabel>{t(EXPERIENCE[1].period)}</SystemLabel>
+          </div>
+          <div className="py-8">
+            <span className="display text-[clamp(4rem,7vw,6rem)]">1.1S</span>
+            <h3 className="display mt-3 text-[clamp(2rem,4vw,4rem)]">{EXPERIENCE[1].company}</h3>
+            <p className="mt-5 max-w-[34ch] text-base font-semibold leading-snug">{t(EXPERIENCE[1].highlight)}</p>
+          </div>
+          <SystemLabel>PERFORMANCE / ARCHITECTURE / THESIS</SystemLabel>
+        </article>
+
+        <div className="experience-piece experience-asset relative min-h-72 overflow-hidden border border-ink">
+          <AssetFrame
+            src="/assets/about-hands.png"
+            alt=""
+            imageClassName="object-cover object-center mix-blend-multiply"
+            sizes="(max-width: 767px) 100vw, 34vw"
+          />
+          <SystemLabel className="absolute left-3 top-3 border border-ink bg-paper px-2 py-1">WORK / IN PROGRESS</SystemLabel>
+        </div>
       </div>
     </section>
   );

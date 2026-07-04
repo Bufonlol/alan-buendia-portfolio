@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { TechnicalGrid } from "@/components/system/TechnicalLayer";
@@ -10,15 +9,8 @@ export default function NotFound() {
   return (
     <main className="relative flex min-h-[100svh] flex-col items-center justify-center gap-6 overflow-hidden px-5 text-center">
       <TechnicalGrid className="opacity-20" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 opacity-[0.14] mix-blend-multiply md:h-[720px] md:w-[720px]"
-        style={{
-          maskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 35%, transparent 75%)",
-          WebkitMaskImage: "radial-gradient(circle farthest-side at 50% 50%, #000 35%, transparent 75%)",
-        }}
-      >
-        <Image src="/assets/notfound-maze.png" alt="" fill sizes="720px" className="object-contain" />
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.06]">
+        <span className="display block text-[clamp(18rem,55vw,50rem)] leading-none">404</span>
       </div>
       <p className="u-label relative z-10 text-muted">
         {t({ es: "404 — perdido en el vacío", en: "404 — lost in the void" })}
