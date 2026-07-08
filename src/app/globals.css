@@ -255,6 +255,11 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  /* Grid items default to min-width:auto, which refuses to shrink below
+     the content's intrinsic width — on the mobile 2-column layout that
+     pushed long words (e.g. "ENCANTADORAMENTE") past the cell's own edge,
+     visibly cut off by overflow:hidden instead of wrapping. */
+  min-width: 0;
   border: 2px solid var(--color-ink);
   background: var(--color-paper);
   /* A beveled "raised window" edge built from two blue tones (lighter
@@ -344,6 +349,7 @@ body {
   line-height: 1.35;
   letter-spacing: -0.01em;
   text-transform: uppercase;
+  overflow-wrap: break-word;
 }
 
 .hero-bento-meta {
@@ -665,14 +671,20 @@ a.hero-panel-row:focus-visible {
   grid-column: 1 / -1;
 }
 
-.project-record-feature { min-height: 42rem; }
-.project-record-medium-a { min-height: 35rem; }
-.project-record-blue { min-height: 29rem; }
-.project-record-medium-b { min-height: 32rem; }
+/* These min-heights only exist to give each record a sane stacked height
+   on mobile, where there's no grid-row span to size it — the desktop rule
+   below resets every one of them to 0 once the explicit row-spans take
+   over. The old values (24-42rem) were sized for desktop proportions and
+   left a huge blank gap under short mobile content; these are sized to
+   what a mobile card (image + one caption row) actually needs. */
+.project-record-feature { min-height: 20rem; }
+.project-record-medium-a { min-height: 16rem; }
+.project-record-blue { min-height: 14rem; }
+.project-record-medium-b { min-height: 16rem; }
 .project-record-frame,
 .project-record-vertical {
   grid-column: 1 / -1;
-  min-height: 24rem;
+  min-height: 12rem;
 }
 
 @media (min-width: 768px) {
@@ -761,7 +773,7 @@ a.hero-panel-row:focus-visible {
 }
 
 .archive-index-record {
-  min-height: 24rem;
+  min-height: 14rem;
 }
 
 .archive-index-record-1,
@@ -771,9 +783,11 @@ a.hero-panel-row:focus-visible {
   grid-column: 1 / -1;
 }
 
-.archive-index-record-1 { min-height: 42rem; }
-.archive-index-record-2 { min-height: 34rem; }
-.archive-index-record-3 { min-height: 29rem; }
+/* Same fix as .project-record-* above: mobile-stack heights, not desktop
+   proportions (reset to 0 once the desktop grid-row spans apply). */
+.archive-index-record-1 { min-height: 20rem; }
+.archive-index-record-2 { min-height: 16rem; }
+.archive-index-record-3 { min-height: 14rem; }
 
 .stack-heading,
 .process-heading {
@@ -831,8 +845,8 @@ a.hero-panel-row:focus-visible {
   gap: 0.5rem;
 }
 
-.process-node { min-height: 20rem; }
-.process-loop { min-height: 24rem; }
+.process-node { min-height: 14rem; }
+.process-loop { min-height: 14rem; }
 .process-connector { display: none; }
 
 .experience-grid,
@@ -870,14 +884,14 @@ a.hero-panel-row:focus-visible {
 .experience-secondary,
 .experience-asset {
   grid-column: 1 / -1;
-  min-height: 25rem;
+  min-height: 16rem;
 }
 
-.field-copy { min-height: 20rem; }
-.field-meta { min-height: 22rem; }
-.style-type { min-height: 16rem; }
+.field-copy { min-height: 12rem; }
+.field-meta { min-height: 12rem; }
+.style-type { min-height: 12rem; }
 .style-rules,
-.style-tokens { min-height: 18rem; }
+.style-tokens { min-height: 14rem; }
 
 .transmission-grid {
   display: grid;
