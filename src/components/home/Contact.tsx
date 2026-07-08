@@ -111,9 +111,9 @@ export default function Contact() {
             link, a "copy email" button, and a duplicate "send signal"
             mailto) all doing the same job. The email itself is the primary
             action; copy is a small secondary affordance beside it. */}
-        <div className="transmission-piece transmission-contact flex flex-col justify-between border border-paper p-4 md:p-6">
+        <div className="transmission-piece transmission-contact flex flex-col justify-center gap-4 border border-paper p-4 md:p-6">
           <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
-          <div className="mt-4 flex items-end justify-between gap-4">
+          <div className="flex items-end justify-between gap-4">
             <a
               href={`mailto:${SITE.email}`}
               className="block min-w-0 break-all text-[clamp(1.15rem,2.8vw,2.3rem)] font-bold underline decoration-1 underline-offset-4"
