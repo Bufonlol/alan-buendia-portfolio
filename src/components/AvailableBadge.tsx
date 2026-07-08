@@ -31,13 +31,13 @@ export default function AvailableBadge() {
       onClick={() => navigate("/#contact")}
       aria-label={t({ es: "Disponible para proyectos — ir a contacto", en: "Available for projects — go to contact" })}
       style={{ opacity: 0 }}
-      className="fixed bottom-6 right-5 z-[85] flex items-center gap-2.5 rounded-full border border-line bg-paper px-4 py-2.5 shadow-sm transition-shadow hover:shadow-lg md:bottom-8 md:right-8"
+      className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] right-3 z-[85] flex h-11 w-11 items-center justify-center rounded-full border border-line bg-paper shadow-sm transition-shadow hover:shadow-lg md:bottom-8 md:right-8 md:h-auto md:w-auto md:gap-2.5 md:px-4 md:py-2.5"
     >
       <span className="relative flex h-2 w-2 shrink-0">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-70" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
       </span>
-      <span className="u-label">
+      <span className="u-label hidden md:inline">
         {t({ es: "Disponible", en: "Available" })}
       </span>
     </button>

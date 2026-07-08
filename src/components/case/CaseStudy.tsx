@@ -67,11 +67,20 @@ export default function CaseStudy({
       if (!ready || !heroRef.current) return;
       const q = gsap.utils.selector(heroRef);
 
-      if (prefersReducedMotion()) {
+      const compactViewport = window.matchMedia("(max-width: 767px)").matches;
+
+      if (prefersReducedMotion() || compactViewport) {
         gsap.fromTo(
           [titleRef.current, ...q(".case-fade")],
-          { autoAlpha: 0 },
-          { autoAlpha: 1, duration: 0.8, stagger: 0.06, ease: "power2.out", delay: 0.3 }
+          { autoAlpha: 0, y: compactViewport ? 16 : 0 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.75,
+            stagger: 0.06,
+            ease: "power2.out",
+            delay: 0.2,
+          }
         );
         return;
       }
@@ -148,7 +157,7 @@ export default function CaseStudy({
 
         <h1
           ref={titleRef}
-          className="display relative z-10 mt-10 text-[clamp(3rem,11.5vw,10.5rem)] leading-[0.88]"
+          className="display relative z-10 mt-10 text-[clamp(2.2rem,10.6vw,10.5rem)] leading-[0.9] md:leading-[0.88]"
           style={{ opacity: 0 }}
         >
           {t(project.title)}

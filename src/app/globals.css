@@ -629,19 +629,28 @@ a.hero-panel-row:focus-visible {
 
 .archive-heading-mosaic {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "title title"
-    "count meta"
-    "vertical meta";
+    "title"
+    "count"
+    "meta"
+    "vertical";
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
-.archive-heading-title { grid-area: title; min-height: 18rem; }
-.archive-heading-count { grid-area: count; min-height: 13rem; }
+.archive-heading-title { grid-area: title; min-height: 17rem; }
+.archive-heading-count { grid-area: count; min-height: 11rem; }
 .archive-heading-meta { grid-area: meta; }
-.archive-heading-vertical { grid-area: vertical; min-height: 11rem; }
+.archive-heading-vertical { grid-area: vertical; min-height: 5rem; }
+
+@media (max-width: 767px) {
+  .archive-heading-vertical .u-label,
+  .archive-page-vertical .u-label {
+    writing-mode: horizontal-tb;
+    text-align: center;
+  }
+}
 
 .project-archive-mosaic {
   display: grid;
@@ -731,18 +740,19 @@ a.hero-panel-row:focus-visible {
 
 .archive-page-header {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "title title"
-    "count data"
-    "vertical data";
+    "title"
+    "count"
+    "data"
+    "vertical";
   gap: 0.5rem;
 }
 
-.archive-page-title { grid-area: title; min-height: 18rem; }
-.archive-page-count { grid-area: count; min-height: 13rem; }
+.archive-page-title { grid-area: title; min-height: 17rem; }
+.archive-page-count { grid-area: count; min-height: 11rem; }
 .archive-page-data { grid-area: data; }
-.archive-page-vertical { grid-area: vertical; min-height: 10rem; }
+.archive-page-vertical { grid-area: vertical; min-height: 5rem; }
 
 .archive-index-grid {
   display: grid;
