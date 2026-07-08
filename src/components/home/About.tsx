@@ -4,9 +4,8 @@ import { useRef } from "react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { ABOUT, FUN, SITE } from "@/data/site";
-import { AssetFrame } from "@/components/modular/AssetFrame";
 import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, CrossMark, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function About() {
   const { t } = useLang();
@@ -61,14 +60,13 @@ export default function About() {
           </h2>
         </div>
 
-        <div className="field-piece field-asset relative min-h-80 overflow-hidden border border-ink">
-          <AssetFrame
-            src="/assets/about-hands.png"
-            alt={t({ es: "Manos trabajando frente a un teclado", en: "Hands working at a keyboard" })}
-            imageClassName="object-cover object-center mix-blend-multiply"
-            sizes="(max-width: 767px) 100vw, 42vw"
-          />
-          <SystemLabel className="absolute left-3 top-3 border border-ink bg-paper px-2 py-1">SUBJECT / ACTIVE</SystemLabel>
+        <div className="field-piece field-asset relative flex min-h-80 flex-col justify-between overflow-hidden border border-ink p-5">
+          <div className="flex items-center justify-between">
+            <SystemLabel className="border border-ink bg-paper px-2 py-1">SUBJECT / ACTIVE</SystemLabel>
+            <CrossMark className="opacity-50" />
+          </div>
+          <span className="text-outline display self-center text-[clamp(6rem,14vw,11rem)] leading-none">AB</span>
+          <CrossMark className="self-end opacity-50" />
         </div>
 
         <div className="field-piece field-status flex flex-col justify-between border border-ink bg-ink p-4 text-paper">

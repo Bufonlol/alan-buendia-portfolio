@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STACK } from "@/data/site";
-import { AssetFrame } from "@/components/modular/AssetFrame";
 import { VerticalText } from "@/components/modular/VerticalText";
 import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 import {
@@ -111,16 +110,16 @@ export default function Stack() {
         </header>
 
         <div className="stack-chaos-grid mt-2">
-          <div className="stack-piece stack-asset relative overflow-hidden border border-ink bg-paper">
-            <AssetFrame
-              src="/assets/stack-layers.png"
-              alt={t({ es: "Diagrama técnico de capas del sistema", en: "Technical system layers diagram" })}
-              className="scale-110"
-              imageClassName="mix-blend-multiply"
-              sizes="(max-width: 767px) 100vw, 42vw"
-            />
-            <SystemLabel className="absolute left-3 top-3">OBJECT / LAYERS–12</SystemLabel>
-            <SystemLabel className="absolute bottom-3 right-3 border border-ink bg-paper px-2 py-1">EXPLODED VIEW</SystemLabel>
+          <div className="stack-piece stack-asset relative flex flex-col justify-between overflow-hidden border border-ink bg-paper p-5">
+            <SystemLabel>OBJECT / STACK</SystemLabel>
+            <div className="flex flex-1 items-center justify-center">
+              <div className="stack-nest">
+                <span className="stack-nest-ring stack-nest-ring--1" />
+                <span className="stack-nest-ring stack-nest-ring--2" />
+                <span className="stack-nest-ring stack-nest-ring--3" />
+              </div>
+            </div>
+            <SystemLabel className="self-end border border-ink bg-paper px-2 py-1">{STACK.length} TOOLS / VERIFIED</SystemLabel>
           </div>
 
           {STACK.map((item, index) => {

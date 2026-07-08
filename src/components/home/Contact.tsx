@@ -6,7 +6,6 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import Signature from "@/components/art/Signature";
-import { AssetFrame } from "@/components/modular/AssetFrame";
 import { VerticalText } from "@/components/modular/VerticalText";
 import { Barcode, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
@@ -90,15 +89,20 @@ export default function Contact() {
           </h2>
         </div>
 
-        <div className="transmission-piece transmission-asset relative min-h-80 overflow-hidden border border-paper bg-paper text-ink">
-          <AssetFrame
-            src="/assets/contact-tower.png"
-            alt={t({ es: "Antena de transmisión técnica", en: "Technical transmission tower" })}
-            className="scale-110"
-            imageClassName="mix-blend-multiply"
-            sizes="(max-width: 767px) 100vw, 42vw"
-          />
-          <SystemLabel className="absolute left-3 top-3 border border-ink bg-paper px-2 py-1">SIGNAL / TOWER–01</SystemLabel>
+        <div className="transmission-piece transmission-asset relative flex min-h-80 flex-col justify-between overflow-hidden border border-paper bg-paper p-5 text-ink">
+          <SystemLabel className="border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
+          <div className="flex flex-1 items-center justify-center">
+            <div className="signal-rings">
+              <span className="signal-ring signal-ring--1" />
+              <span className="signal-ring signal-ring--2" />
+              <span className="signal-ring signal-ring--3" />
+              <PulseDot className="signal-rings-core" />
+            </div>
+          </div>
+          <div className="flex items-end justify-between">
+            <SystemLabel>{SITE.coords}</SystemLabel>
+            <SignalBars className="text-ink" />
+          </div>
         </div>
 
         <div className="transmission-piece transmission-line border border-paper p-4 md:p-5">

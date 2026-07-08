@@ -1441,6 +1441,87 @@ a.hero-panel-row:focus-visible {
   50% { transform: scale(0.55); opacity: 0.6; }
 }
 
+/* Signal-source readout — replaces a stock radio-tower photo with a real
+   ping animation around the actual coordinates/status text next to it.
+   Pure CSS rings expanding outward, no image asset. */
+.signal-rings {
+  position: relative;
+  width: clamp(7rem, 15vw, 10rem);
+  aspect-ratio: 1;
+}
+
+.signal-ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  animation: signal-ring-pulse 3s ease-out infinite;
+}
+
+.signal-ring--2 {
+  animation-delay: 1s;
+}
+
+.signal-ring--3 {
+  animation-delay: 2s;
+}
+
+.signal-rings-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes signal-ring-pulse {
+  0% {
+    transform: scale(0.25);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-ring {
+    animation: none;
+    opacity: 0.35;
+  }
+}
+
+/* Nested-square system diagram — replaces a stock "exploded layers" photo
+   with a real architecture motif (nested squares = layered systems),
+   built from borders only, no image asset. */
+.stack-nest {
+  position: relative;
+  width: clamp(7rem, 15vw, 11rem);
+  aspect-ratio: 1;
+}
+
+.stack-nest-ring {
+  position: absolute;
+  border: 1px solid var(--color-ink);
+}
+
+.stack-nest-ring--1 {
+  inset: 0;
+  transform: rotate(-4deg);
+}
+
+.stack-nest-ring--2 {
+  inset: 18%;
+  opacity: 0.7;
+  transform: rotate(5deg);
+}
+
+.stack-nest-ring--3 {
+  inset: 36%;
+  opacity: 0.45;
+  transform: rotate(-6deg);
+}
+
 @keyframes eq-bar {
   0%, 100% { transform: scaleY(0.3); }
   50% { transform: scaleY(1); }
