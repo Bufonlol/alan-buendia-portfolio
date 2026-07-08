@@ -9,7 +9,7 @@ export default function ProjectVisual({
   image,
   caption,
   className = "",
-  fit = "cover",
+  fit = "contain",
 }: {
   project: Project;
   image?: string;
@@ -43,11 +43,12 @@ export default function ProjectVisual({
             src={image}
             alt={caption ?? t(project.title)}
             fill
-            sizes="(max-width: 768px) 100vw, 70vw"
-            quality={80}
+            sizes="(max-width: 768px) 100vw, (max-width: 1400px) 88vw, 1900px"
+            quality={100}
+            unoptimized
             className={`object-top ${
               fit === "contain"
-                ? "object-contain p-8"
+                ? "object-contain p-4 md:p-6"
                 : "object-cover object-top"
             }`}
           />

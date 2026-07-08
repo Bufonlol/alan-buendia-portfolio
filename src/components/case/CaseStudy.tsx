@@ -252,7 +252,7 @@ export default function CaseStudy({
                   image={s.image}
                   caption={t(s.caption)}
                   fit={s.fit}
-                  className="aspect-[4/3] w-full border border-line [container-type:inline-size]"
+                  className="aspect-[16/9] w-full border border-line [container-type:inline-size]"
                 />
               </Reveal>
             ))}

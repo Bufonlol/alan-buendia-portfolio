@@ -65,11 +65,12 @@ export default function ProjectArchiveMosaic({
                 src="/projects/dental-family/panel.png"
                 alt={t(feature.title)}
                 fill
-                sizes="(max-width: 767px) 100vw, 58vw"
-                quality={78}
-                className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.025]"
+                sizes="(max-width: 767px) 100vw, (max-width: 1400px) 62vw, 1200px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-3 transition-transform duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.012]"
               />
-              <div className="technical-grid pointer-events-none absolute inset-0 opacity-20" />
+              <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
               <span className="u-label absolute bottom-3 left-3 border border-paper bg-ink px-2 py-1 text-paper">
                 FRAME / {feature.index.padStart(4, "0")}
               </span>
@@ -114,14 +115,15 @@ export default function ProjectArchiveMosaic({
           </div>
           <div className="project-media relative min-h-52 flex-1 overflow-hidden">
             <Image
-              src={medium.cardImage!}
-              alt={t(medium.title)}
-              fill
-              sizes="(max-width: 767px) 100vw, 42vw"
-              quality={78}
-              className="object-cover object-top opacity-85 mix-blend-screen transition duration-700 group-hover:scale-[1.03] group-hover:opacity-100"
-            />
-            <div className="technical-grid pointer-events-none absolute inset-0 opacity-25" />
+                src={medium.cardImage!}
+                alt={t(medium.title)}
+                fill
+                sizes="(max-width: 767px) 100vw, (max-width: 1400px) 46vw, 900px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
+              />
+            <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
           </div>
           <div className="border-t border-paper/40 p-4">
             <SystemLabel className="opacity-85">{medium.year} / {t(medium.role)}</SystemLabel>
@@ -143,14 +145,15 @@ export default function ProjectArchiveMosaic({
           </div>
           <div className="project-media relative min-h-44 flex-1 overflow-hidden bg-paper">
             <Image
-              src="/projects/folio/landing.png"
-              alt={t(blue.title)}
-              fill
-              sizes="(max-width: 767px) 100vw, 42vw"
-              quality={78}
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
-            />
-            <div className="technical-grid pointer-events-none absolute inset-0 opacity-15" />
+                src="/projects/folio/landing.png"
+                alt={t(blue.title)}
+                fill
+                sizes="(max-width: 767px) 100vw, (max-width: 1400px) 46vw, 900px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
+              />
+            <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
           </div>
           <div className="grid grid-cols-[auto_1fr_auto] items-end gap-4 border-t border-paper/40 p-4">
             <span className="display text-5xl leading-none">{blue.index}</span>
@@ -169,13 +172,14 @@ export default function ProjectArchiveMosaic({
         <>
           <div className="project-media relative min-h-60 flex-1 overflow-hidden border-b border-ink bg-ink">
             <Image
-              src={imageRecord.cardImage!}
-              alt={t(imageRecord.title)}
-              fill
-              sizes="(max-width: 767px) 100vw, 42vw"
-              quality={78}
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
-            />
+                src={imageRecord.cardImage!}
+                alt={t(imageRecord.title)}
+                fill
+                sizes="(max-width: 767px) 100vw, (max-width: 1400px) 46vw, 900px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
+              />
             <SystemLabel className="absolute left-3 top-3 border border-paper bg-ink px-2 py-1 text-paper">
               IMAGE / CROPPED / {imageRecord.index}
             </SystemLabel>
@@ -200,13 +204,14 @@ export default function ProjectArchiveMosaic({
           </div>
           <div className="project-media relative min-h-52 flex-1 overflow-hidden border-b border-ink">
             <Image
-              src={frameRecord.cardImage!}
-              alt={t(frameRecord.title)}
-              fill
-              sizes="(max-width: 767px) 100vw, 28vw"
-              quality={78}
-              className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-            />
+                src={frameRecord.cardImage!}
+                alt={t(frameRecord.title)}
+                fill
+                sizes="(max-width: 767px) 100vw, (max-width: 1400px) 32vw, 650px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
+              />
           </div>
           <div className="p-4">
             <h3 className="display text-[clamp(1.8rem,3vw,3rem)] leading-[0.88]">{t(frameRecord.title)}</h3>
@@ -228,9 +233,10 @@ export default function ProjectArchiveMosaic({
                 src={vertical.cardImage!}
                 alt={t(vertical.title)}
                 fill
-                sizes="(max-width: 767px) 50vw, 24vw"
-                quality={78}
-                className="object-cover object-top mix-blend-multiply transition-transform duration-700 group-hover:scale-[1.035]"
+                sizes="(max-width: 767px) 50vw, (max-width: 1400px) 26vw, 520px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-2 transition-transform duration-700 group-hover:scale-[1.012]"
               />
             </div>
             <div className="flex w-14 items-center justify-center">

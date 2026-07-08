@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   outputFileTracingRoot: __dirname,
   images: {
-    qualities: [78],
+    qualities: [78, 90, 100],
   },
   experimental: {
     webpackBuildWorker: true,

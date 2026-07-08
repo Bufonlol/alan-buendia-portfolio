@@ -137,11 +137,12 @@ export default function ArchiveClient() {
                 src={entry.image}
                 alt={t(entry.title)}
                 fill
-                sizes="(max-width: 767px) 100vw, 50vw"
-                quality={78}
-                className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                sizes="(max-width: 767px) 100vw, (max-width: 1400px) 54vw, 1050px"
+                quality={100}
+                unoptimized
+                className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
               />
-              <div className="technical-grid pointer-events-none absolute inset-0 opacity-20" />
+              <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
             </div>
           ) : null;
 
@@ -153,7 +154,7 @@ export default function ArchiveClient() {
                   <SystemLabel>{entry.year}</SystemLabel>
                 </div>
                 <div className="grid min-h-0 flex-1 md:grid-cols-[0.9fr_1.1fr]">
-                  <div className="min-w-0 border-b border-ink md:border-b-0 md:border-r">{image}</div>
+                  <div className="min-w-0 border-b border-ink md:border-b-0 md:border-r [&_.project-media]:h-full">{image}</div>
                   <div className="flex min-w-0 flex-col justify-between p-5">
                     <div>
                       <SystemLabel>{t(entry.type)}</SystemLabel>
@@ -181,11 +182,12 @@ export default function ArchiveClient() {
                     src={entry.image!}
                     alt={t(entry.title)}
                     fill
-                    sizes="(max-width: 767px) 100vw, 42vw"
-                    quality={78}
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+                    sizes="(max-width: 767px) 100vw, (max-width: 1400px) 46vw, 900px"
+                    quality={100}
+                    unoptimized
+                    className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
                   />
-                  <div className="technical-grid pointer-events-none absolute inset-0 opacity-15" />
+                  <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
                 </div>
                 <div className="grid grid-cols-[auto_1fr_auto] items-end gap-4 border-t border-paper/40 p-4">
                   <span className="display text-5xl">{entry.index}</span>
