@@ -51,7 +51,7 @@ export default function Fun() {
 
         <div className="style-asset win-window win-window--ink bg-ink text-paper">
           <WinTitleBar label="SPECIMEN.FNT" />
-          <div className="win-body relative min-h-72 flex-1 overflow-hidden">
+          <div className="win-body relative flex-1 overflow-hidden">
             <div className="flex h-[calc(100%-5rem)] flex-col justify-center">
               <span className="display block text-[clamp(6rem,13vw,12rem)] leading-[0.7]">Aa</span>
               <span className="display mt-4 block text-[clamp(2.4rem,5vw,4.5rem)] leading-none opacity-65">

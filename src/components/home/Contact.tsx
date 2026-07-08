@@ -96,7 +96,7 @@ export default function Contact() {
 
         <div className="transmission-piece transmission-asset win-window win-window--paper bg-paper text-ink">
           <WinTitleBar label="SIGNAL.DAT" />
-          <div className="win-body relative flex min-h-80 flex-1 flex-col justify-between overflow-hidden">
+          <div className="win-body relative flex flex-1 flex-col justify-between overflow-hidden">
             <TechnicalGrid className="opacity-40" />
             <SystemLabel className="relative border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
             <div className="relative flex flex-1 items-center justify-center">
