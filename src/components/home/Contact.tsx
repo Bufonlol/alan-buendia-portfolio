@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { Check, Copy } from "lucide-react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import Signature from "@/components/art/Signature";
 import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Contact() {
   const { t } = useLang();
@@ -90,8 +91,9 @@ export default function Contact() {
         </div>
 
         <div className="transmission-piece transmission-asset relative flex min-h-80 flex-col justify-between overflow-hidden border border-paper bg-paper p-5 text-ink">
-          <SystemLabel className="border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
-          <div className="flex flex-1 items-center justify-center">
+          <TechnicalGrid className="opacity-40" />
+          <SystemLabel className="relative border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
+          <div className="relative flex flex-1 items-center justify-center">
             <div className="signal-rings">
               <span className="signal-ring signal-ring--1" />
               <span className="signal-ring signal-ring--2" />
@@ -99,32 +101,49 @@ export default function Contact() {
               <PulseDot className="signal-rings-core" />
             </div>
           </div>
-          <div className="flex items-end justify-between">
+          <div className="relative flex items-end justify-between bg-paper">
             <SystemLabel>{SITE.coords}</SystemLabel>
             <SignalBars className="text-ink" />
           </div>
         </div>
 
-        <div className="transmission-piece transmission-line border border-paper p-4 md:p-5">
+        {/* One contact block instead of three separate CTAs (the email
+            link, a "copy email" button, and a duplicate "send signal"
+            mailto) all doing the same job. The email itself is the primary
+            action; copy is a small secondary affordance beside it. */}
+        <div className="transmission-piece transmission-contact flex flex-col justify-between border border-paper p-4 md:p-6">
           <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
-          <a
-            href={`mailto:${SITE.email}`}
-            className="mt-4 block break-all text-[clamp(1.25rem,3vw,2.5rem)] font-bold underline decoration-1 underline-offset-4"
-          >
-            {SITE.email}
-          </a>
+          <div className="mt-4 flex items-end justify-between gap-4">
+            <a
+              href={`mailto:${SITE.email}`}
+              className="block min-w-0 break-all text-[clamp(1.15rem,2.8vw,2.3rem)] font-bold underline decoration-1 underline-offset-4"
+            >
+              {SITE.email}
+            </a>
+            <button
+              onClick={copyEmail}
+              aria-label={t({ es: "Copiar correo", en: "Copy email" })}
+              className="flex shrink-0 items-center gap-2 border border-paper px-3 py-2 transition-colors hover:bg-paper hover:text-ink"
+            >
+              {copied ? <Check size={14} /> : <Copy size={14} />}
+              <span className="u-label">
+                {copied ? t({ es: "COPIADO", en: "COPIED" }) : t({ es: "COPIAR", en: "COPY" })}
+              </span>
+            </button>
+          </div>
         </div>
 
-        <div className="transmission-piece transmission-channel flex flex-col justify-between border border-paper bg-paper p-4 text-ink">
-          <SystemLabel>CHANNEL / OPEN</SystemLabel>
-          <SignalBars className="text-ink" />
-          <SystemLabel>{SITE.locationShort} / UTC−6</SystemLabel>
-        </div>
-
-        <div className="transmission-piece transmission-status flex flex-col justify-between border border-paper p-4">
-          <span className="flex items-center gap-2"><PulseDot /><SystemLabel>AVAILABLE</SystemLabel></span>
-          <span className="display text-[clamp(3rem,5vw,5rem)]">ON</span>
-          <SystemLabel>STATUS / LIVE</SystemLabel>
+        {/* Real reachability facts consolidated into one cell instead of
+            spread across three ("CHANNEL/OPEN", "STATUS/LIVE", and a
+            separate meta row) that were all saying some version of
+            "available now". */}
+        <div className="transmission-piece transmission-status flex flex-col flex-wrap items-start justify-center gap-4 border border-paper p-4 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6">
+          <span className="flex items-center gap-2">
+            <PulseDot />
+            <SystemLabel>{t({ es: "DISPONIBLE PARA TRABAJAR", en: "AVAILABLE FOR WORK" })}</SystemLabel>
+          </span>
+          <span className="u-label opacity-85">{SITE.locationShort} / UTC−6</span>
+          <span className="u-label opacity-85">{t({ es: "RESPUESTA / 24–48H", en: "RESPONSE / 24–48H" })}</span>
         </div>
 
         <div className="transmission-piece transmission-qr flex flex-col items-center justify-between border border-paper bg-paper p-3 text-ink">
@@ -137,37 +156,8 @@ export default function Contact() {
           <SystemLabel>SCAN / OPEN</SystemLabel>
         </div>
 
-        <div className="transmission-piece transmission-actions grid grid-cols-2 border border-paper">
-          <button
-            onClick={copyEmail}
-            className="u-label min-h-20 border-r border-paper px-4 text-left transition-colors hover:bg-paper hover:text-ink"
-          >
-            {copied ? t({ es: "CORREO COPIADO ✓", en: "EMAIL COPIED ✓" }) : t({ es: "COPIAR CORREO", en: "COPY EMAIL" })}
-          </button>
-          <a
-            href={`mailto:${SITE.email}`}
-            className="u-label flex min-h-20 items-center justify-between px-4 transition-colors hover:bg-paper hover:text-ink"
-          >
-            <span>{t({ es: "ENVIAR SEÑAL", en: "SEND SIGNAL" })}</span>
-            <span>↗</span>
-          </a>
-        </div>
-
-        <div className="transmission-piece transmission-meta grid grid-cols-3 border border-paper">
-          {[
-            ["RESPONSE", "24–48H"],
-            ["MODE", "REMOTE"],
-            ["BUILD", "2026"],
-          ].map(([key, value]) => (
-            <div key={key} className="border-r border-paper p-3 last:border-r-0">
-              <SystemLabel className="opacity-85">{key}</SystemLabel>
-              <p className="u-label mt-3">{value}</p>
-            </div>
-          ))}
-        </div>
-
         <div className="transmission-piece transmission-vertical flex items-center justify-center border border-paper">
-          <VerticalText>SEND SIGNAL / DIRECT LINE / OPEN CHANNEL</VerticalText>
+          <VerticalText>DIRECT LINE / OPEN CHANNEL</VerticalText>
         </div>
       </div>
 

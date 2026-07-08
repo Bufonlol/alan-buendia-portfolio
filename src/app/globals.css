@@ -925,16 +925,14 @@ a.hero-panel-row:focus-visible {
 
 .transmission-title,
 .transmission-asset,
-.transmission-line,
-.transmission-actions,
-.transmission-meta {
+.transmission-contact,
+.transmission-status {
   grid-column: 1 / -1;
 }
 
 .transmission-title { min-height: 16rem; }
-.transmission-line { min-height: 10rem; }
-.transmission-channel,
-.transmission-status,
+.transmission-contact,
+.transmission-status { min-height: 12rem; }
 .transmission-qr,
 .transmission-vertical { min-height: 13rem; }
 
@@ -1115,13 +1113,10 @@ a.hero-panel-row:focus-visible {
   }
   .transmission-title { grid-column: 1 / span 8; grid-row: 1 / span 4; min-height: 0; }
   .transmission-asset { grid-column: 9 / span 4; grid-row: 1 / span 4; min-height: 0; }
-  .transmission-line { grid-column: 1 / span 7; grid-row: 5 / span 2; min-height: 0; }
-  .transmission-channel { grid-column: 8 / span 2; grid-row: 5 / span 2; min-height: 0; }
-  .transmission-status { grid-column: 10 / span 2; grid-row: 5 / span 2; min-height: 0; }
-  .transmission-qr { grid-column: 12; grid-row: 5 / span 2; min-height: 0; }
-  .transmission-actions { grid-column: 1 / span 5; grid-row: 7; min-height: 0; }
-  .transmission-meta { grid-column: 6 / span 6; grid-row: 7; min-height: 0; }
-  .transmission-vertical { grid-column: 12; grid-row: 7; min-height: 0; }
+  .transmission-contact { grid-column: 1 / span 8; grid-row: 5 / span 2; min-height: 0; }
+  .transmission-qr { grid-column: 9 / span 4; grid-row: 5 / span 2; min-height: 0; }
+  .transmission-status { grid-column: 1 / span 10; grid-row: 7; min-height: 0; }
+  .transmission-vertical { grid-column: 11 / span 2; grid-row: 7; min-height: 0; }
 
   .metric-mosaic {
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -1494,10 +1489,14 @@ a.hero-panel-row:focus-visible {
 
 /* Signal-source readout — replaces a stock radio-tower photo with a real
    ping animation around the actual coordinates/status text next to it.
-   Pure CSS rings expanding outward, no image asset. */
+   Pure CSS rings expanding outward, no image asset. Sized much bigger than
+   the first pass: this cell is a tall, narrow desktop column (a photo with
+   object-cover used to fill it automatically) and a small ring cluster
+   floating in the middle of it just left a huge empty white void top and
+   bottom — this needs to dominate the column, not sit inside it. */
 .signal-rings {
   position: relative;
-  width: clamp(7rem, 15vw, 10rem);
+  width: min(70%, 16rem);
   aspect-ratio: 1;
 }
 
