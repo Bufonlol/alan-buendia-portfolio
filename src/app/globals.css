@@ -63,6 +63,30 @@ body {
   overflow-x: clip;
 }
 
+/* Grid items default to min-width:auto, which refuses to shrink below the
+   width of their own content — on every bento/mosaic grid on this site that
+   let a long word (a Spanish adjective, a section label) push past its
+   cell's edge on narrow mobile columns instead of wrapping, getting cut off
+   by the cell's own overflow:hidden. Applying min-width:0 to every direct
+   child of these grid containers (not just the hero, where this was first
+   reported) is the real, general fix. */
+.home-bento-grid > *,
+.archive-heading-mosaic > *,
+.project-archive-mosaic > *,
+.archive-page-header > *,
+.archive-index-grid > *,
+.stack-heading > *,
+.process-heading > *,
+.stack-chaos-grid > *,
+.process-diagram > *,
+.experience-grid > *,
+.field-note-grid > *,
+.style-file-grid > *,
+.transmission-grid > *,
+.metric-mosaic > * {
+  min-width: 0;
+}
+
 /* Shared home-page rhythm: one compact, continuous Bento system. */
 .home-bento-section {
   position: relative;
@@ -1226,6 +1250,7 @@ a.hero-panel-row:focus-visible {
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    overflow-wrap: break-word;
   }
 
   /* Display headline base */
@@ -1236,6 +1261,7 @@ a.hero-panel-row:focus-visible {
     letter-spacing: -0.04em;
     font-weight: 850;
     text-wrap: balance;
+    overflow-wrap: break-word;
   }
 
   h1,
@@ -1246,6 +1272,7 @@ a.hero-panel-row:focus-visible {
 
   p {
     text-wrap: pretty;
+    overflow-wrap: break-word;
   }
 
   /* Outline (stroke-only) display type — editorial poster device */
