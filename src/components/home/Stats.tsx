@@ -5,9 +5,11 @@ import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { STATS } from "@/data/site";
 import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 import { VerticalText } from "@/components/modular/VerticalText";
 
 const STAT_CLASS = ["metric-years", "metric-projects", "metric-clients", "metric-language"];
+const STAT_LABEL = ["YEARS.DAT", "PROJECTS.DAT", "CLIENTS.DAT", "LANG.DAT"];
 
 export default function Stats() {
   const { t } = useLang();
@@ -52,18 +54,21 @@ export default function Stats() {
         {STATS.map((stat, index) => (
           <div
             key={stat.label.en}
-            className={`metric-cell flex flex-col justify-between border border-ink p-4 ${STAT_CLASS[index]} ${
+            className={`metric-cell win-window win-window--ink ${STAT_CLASS[index]} ${
               index === 0 ? "bg-ink text-paper" : "bg-paper text-ink"
             }`}
           >
-            <div className="flex items-center justify-between">
-              <SystemLabel>OUTPUT / 0{index + 1}</SystemLabel>
-              <CrossMark className="opacity-50" />
-            </div>
-            <p className="display text-[clamp(3.8rem,7vw,6.5rem)] leading-none">{stat.value}</p>
-            <div>
-              <SystemLabel className="block leading-relaxed">{t(stat.label)}</SystemLabel>
-              {index === 0 && <Barcode className="mt-4 text-paper" />}
+            <WinTitleBar label={STAT_LABEL[index]} />
+            <div className="win-body flex flex-1 flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <SystemLabel>OUTPUT / 0{index + 1}</SystemLabel>
+                <CrossMark className="opacity-50" />
+              </div>
+              <p className="display text-[clamp(3.8rem,7vw,6.5rem)] leading-none">{stat.value}</p>
+              <div>
+                <SystemLabel className="block leading-relaxed">{t(stat.label)}</SystemLabel>
+                {index === 0 && <Barcode className="mt-4 text-paper" />}
+              </div>
             </div>
           </div>
         ))}

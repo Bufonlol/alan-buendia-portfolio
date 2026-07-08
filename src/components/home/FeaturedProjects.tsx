@@ -8,6 +8,7 @@ import { PROJECTS } from "@/data/projects";
 import { tickLink } from "@/lib/sound";
 import ProjectArchiveMosaic from "@/components/modular/ProjectArchiveMosaic";
 import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 import { VerticalText } from "@/components/modular/VerticalText";
 
 export default function FeaturedProjects() {
@@ -54,42 +55,50 @@ export default function FeaturedProjects() {
 
       <div className="relative z-10">
         <div className="archive-heading-mosaic">
-          <div className="archive-heading-title border border-ink p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <SystemLabel>PROJECT ARCHIVE / LIVE INDEX</SystemLabel>
-              <CrossMark className="opacity-50" />
-            </div>
-            <h2 className="display mt-8 text-[clamp(4rem,9vw,8.5rem)] leading-[0.78]">
-              {t({ es: "Archivo", en: "Archive" })}
-            </h2>
-            <p className="mt-6 max-w-[38ch] text-base font-semibold leading-snug">
-              {t({
-                es: "Sistemas enviados, medidos y documentados como registros de producción.",
-                en: "Systems shipped, measured, and documented as production records.",
-              })}
-            </p>
-          </div>
-
-          <div className="archive-heading-count flex flex-col justify-between border border-ink bg-ink p-4 text-paper">
-            <SystemLabel>RECORDS / TOTAL</SystemLabel>
-            <span className="display text-[clamp(5rem,10vw,9rem)] leading-none">
-              {String(PROJECTS.length).padStart(2, "0")}
-            </span>
-            <Barcode className="text-paper" />
-          </div>
-
-          <div className="archive-heading-meta grid grid-cols-2 border border-ink">
-            {[
-              ["RANGE", "2024–2026"],
-              ["STATUS", "SHIPPED"],
-              ["ROLE", "DESIGN / CODE"],
-              ["OUTPUT", "REAL SYSTEMS"],
-            ].map(([label, value]) => (
-              <div key={label} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
-                <SystemLabel className="opacity-85">{label}</SystemLabel>
-                <p className="u-label mt-2 leading-relaxed">{value}</p>
+          <div className="archive-heading-title win-window win-window--ink">
+            <WinTitleBar label="ARCHIVE.SYS" />
+            <div className="win-body">
+              <div className="flex items-center justify-between">
+                <SystemLabel>PROJECT ARCHIVE / LIVE INDEX</SystemLabel>
+                <CrossMark className="opacity-50" />
               </div>
-            ))}
+              <h2 className="display mt-8 text-[clamp(4rem,9vw,8.5rem)] leading-[0.78]">
+                {t({ es: "Archivo", en: "Archive" })}
+              </h2>
+              <p className="mt-6 max-w-[38ch] text-base font-semibold leading-snug">
+                {t({
+                  es: "Sistemas enviados, medidos y documentados como registros de producción.",
+                  en: "Systems shipped, measured, and documented as production records.",
+                })}
+              </p>
+            </div>
+          </div>
+
+          <div className="archive-heading-count win-window win-window--ink bg-ink text-paper">
+            <WinTitleBar label="RECORDS.DAT" />
+            <div className="win-body flex flex-col justify-between">
+              <span className="display text-[clamp(5rem,10vw,9rem)] leading-none">
+                {String(PROJECTS.length).padStart(2, "0")}
+              </span>
+              <Barcode className="text-paper" />
+            </div>
+          </div>
+
+          <div className="archive-heading-meta win-window win-window--ink">
+            <WinTitleBar label="META.DAT" />
+            <div className="win-body grid grid-cols-2">
+              {[
+                ["RANGE", "2024–2026"],
+                ["STATUS", "SHIPPED"],
+                ["ROLE", "DESIGN / CODE"],
+                ["OUTPUT", "REAL SYSTEMS"],
+              ].map(([label, value]) => (
+                <div key={label} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
+                  <SystemLabel className="opacity-85">{label}</SystemLabel>
+                  <p className="u-label mt-2 leading-relaxed">{value}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="archive-heading-vertical flex items-center justify-center border border-ink bg-paper">

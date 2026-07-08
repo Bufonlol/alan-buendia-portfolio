@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 
 export default function NotFound() {
   const { t } = useLang();
@@ -20,13 +21,19 @@ export default function NotFound() {
         <span className="text-accent">✳</span>
       </h1>
       <div className="relative z-10 grid w-full max-w-md grid-cols-2 gap-3">
-        <div className="border border-ink p-4 text-left">
-          <p className="u-label opacity-85">STATUS</p>
-          <p className="display mt-2 text-2xl leading-none">404</p>
+        <div className="win-window win-window--ink text-left">
+          <WinTitleBar label="STATUS.SYS" />
+          <div className="win-body">
+            <p className="u-label opacity-85">STATUS</p>
+            <p className="display mt-2 text-2xl leading-none">404</p>
+          </div>
         </div>
-        <div className="border border-ink bg-ink p-4 text-left text-paper">
-          <p className="u-label opacity-85">ROUTE</p>
-          <p className="display mt-2 text-2xl leading-none">NULL</p>
+        <div className="win-window win-window--ink bg-ink text-left text-paper">
+          <WinTitleBar label="ROUTE.NUL" />
+          <div className="win-body">
+            <p className="u-label opacity-85">ROUTE</p>
+            <p className="display mt-2 text-2xl leading-none">NULL</p>
+          </div>
         </div>
       </div>
       <Link href="/" className="link-line u-label relative z-10 uppercase">

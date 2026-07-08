@@ -5,6 +5,7 @@ import LabCard from "@/components/lab/LabCard";
 import BreakoutGame from "@/components/arcade/BreakoutGame";
 import MiniFooter from "@/components/MiniFooter";
 import { SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 import { useLang } from "@/lib/i18n";
 
 export default function ArcadeClient() {
@@ -39,31 +40,37 @@ export default function ArcadeClient() {
             </div>
 
             <div className="grid content-start gap-6">
-              <div className="border border-line p-5">
-                <SystemLabel className="text-muted">CONTROLS</SystemLabel>
-                <ul className="mt-4 grid gap-3">
-                  <li className="u-label flex items-center justify-between border-b border-line pb-3">
-                    {t({ es: "MOVER", en: "MOVE" })}
-                    <span className="text-muted">{t({ es: "MOUSE / ← →", en: "MOUSE / ← →" })}</span>
-                  </li>
-                  <li className="u-label flex items-center justify-between border-b border-line pb-3">
-                    {t({ es: "LANZAR", en: "LAUNCH" })}
-                    <span className="text-muted">{t({ es: "CLICK / SPACE", en: "CLICK / SPACE" })}</span>
-                  </li>
-                  <li className="u-label flex items-center justify-between">
-                    {t({ es: "VIDAS", en: "LIVES" })}
-                    <span className="text-muted">3</span>
-                  </li>
-                </ul>
+              <div className="win-window win-window--ink">
+                <WinTitleBar label="CONTROLS.DAT" />
+                <div className="win-body">
+                  <SystemLabel className="text-muted">CONTROLS</SystemLabel>
+                  <ul className="mt-4 grid gap-3">
+                    <li className="u-label flex items-center justify-between border-b border-ink pb-3">
+                      {t({ es: "MOVER", en: "MOVE" })}
+                      <span className="text-muted">{t({ es: "MOUSE / ← →", en: "MOUSE / ← →" })}</span>
+                    </li>
+                    <li className="u-label flex items-center justify-between border-b border-ink pb-3">
+                      {t({ es: "LANZAR", en: "LAUNCH" })}
+                      <span className="text-muted">{t({ es: "CLICK / SPACE", en: "CLICK / SPACE" })}</span>
+                    </li>
+                    <li className="u-label flex items-center justify-between">
+                      {t({ es: "VIDAS", en: "LIVES" })}
+                      <span className="text-muted">3</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="border border-ink bg-ink p-5 text-paper">
-                <SystemLabel className="opacity-85">
-                  {t({ es: "SIN DEPENDENCIAS", en: "ZERO DEPENDENCIES" })}
-                </SystemLabel>
-                <p className="display mt-3 text-3xl leading-none">CANVAS 2D</p>
-                <p className="u-label mt-3 opacity-85">
-                  {t({ es: "SIN MOTOR / SIN LIBRERÍA", en: "NO ENGINE / NO LIBRARY" })}
-                </p>
+              <div className="win-window win-window--ink bg-ink text-paper">
+                <WinTitleBar label="RUNTIME.SYS" />
+                <div className="win-body">
+                  <SystemLabel className="opacity-85">
+                    {t({ es: "SIN DEPENDENCIAS", en: "ZERO DEPENDENCIES" })}
+                  </SystemLabel>
+                  <p className="display mt-3 text-3xl leading-none">CANVAS 2D</p>
+                  <p className="u-label mt-3 opacity-85">
+                    {t({ es: "SIN MOTOR / SIN LIBRERÍA", en: "NO ENGINE / NO LIBRARY" })}
+                  </p>
+                </div>
               </div>
               <p className="u-label text-muted">
                 {t({

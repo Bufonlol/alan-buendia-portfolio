@@ -9,6 +9,7 @@ import { SITE } from "@/data/site";
 import Signature from "@/components/art/Signature";
 import { VerticalText } from "@/components/modular/VerticalText";
 import { Barcode, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 
 export default function Contact() {
   const { t } = useLang();
@@ -84,26 +85,32 @@ export default function Contact() {
       <TechnicalGrid className="opacity-20" />
 
       <div className="transmission-grid relative z-10">
-        <div className="transmission-piece transmission-title flex flex-col justify-center border border-paper p-4 md:p-5">
-          <h2 className="display text-[clamp(2rem,5.5vw,4.2rem)] leading-[0.86]">
-            {t({ es: "Construyamos algo real", en: "Let's build something real" })}
-          </h2>
+        <div className="transmission-piece transmission-title win-window win-window--paper">
+          <WinTitleBar label="CONTACT.SYS" />
+          <div className="win-body flex flex-1 flex-col justify-center">
+            <h2 className="display text-[clamp(2rem,5.5vw,4.2rem)] leading-[0.86]">
+              {t({ es: "Construyamos algo real", en: "Let's build something real" })}
+            </h2>
+          </div>
         </div>
 
-        <div className="transmission-piece transmission-asset relative flex min-h-80 flex-col justify-between overflow-hidden border border-paper bg-paper p-4 text-ink">
-          <TechnicalGrid className="opacity-40" />
-          <SystemLabel className="relative border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
-          <div className="relative flex flex-1 items-center justify-center">
-            <div className="signal-rings">
-              <span className="signal-ring signal-ring--1" />
-              <span className="signal-ring signal-ring--2" />
-              <span className="signal-ring signal-ring--3" />
-              <PulseDot className="signal-rings-core" />
+        <div className="transmission-piece transmission-asset win-window win-window--paper bg-paper text-ink">
+          <WinTitleBar label="SIGNAL.DAT" />
+          <div className="win-body relative flex min-h-80 flex-1 flex-col justify-between overflow-hidden">
+            <TechnicalGrid className="opacity-40" />
+            <SystemLabel className="relative border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
+            <div className="relative flex flex-1 items-center justify-center">
+              <div className="signal-rings">
+                <span className="signal-ring signal-ring--1" />
+                <span className="signal-ring signal-ring--2" />
+                <span className="signal-ring signal-ring--3" />
+                <PulseDot className="signal-rings-core" />
+              </div>
             </div>
-          </div>
-          <div className="relative flex items-end justify-between bg-paper">
-            <SystemLabel>{SITE.coords}</SystemLabel>
-            <SignalBars className="text-ink" />
+            <div className="relative flex items-end justify-between bg-paper">
+              <SystemLabel>{SITE.coords}</SystemLabel>
+              <SignalBars className="text-ink" />
+            </div>
           </div>
         </div>
 
@@ -111,25 +118,28 @@ export default function Contact() {
             link, a "copy email" button, and a duplicate "send signal"
             mailto) all doing the same job. The email itself is the primary
             action; copy is a small secondary affordance beside it. */}
-        <div className="transmission-piece transmission-contact flex flex-col justify-center gap-3 border border-paper p-4">
-          <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
-          <div className="flex items-end justify-between gap-4">
-            <a
-              href={`mailto:${SITE.email}`}
-              className="block min-w-0 break-all text-[clamp(1rem,2.2vw,1.7rem)] font-bold underline decoration-1 underline-offset-4"
-            >
-              {SITE.email}
-            </a>
-            <button
-              onClick={copyEmail}
-              aria-label={t({ es: "Copiar correo", en: "Copy email" })}
-              className="flex shrink-0 items-center gap-2 border border-paper px-3 py-2 transition-colors hover:bg-paper hover:text-ink"
-            >
-              {copied ? <Check size={14} /> : <Copy size={14} />}
-              <span className="u-label">
-                {copied ? t({ es: "COPIADO", en: "COPIED" }) : t({ es: "COPIAR", en: "COPY" })}
-              </span>
-            </button>
+        <div className="transmission-piece transmission-contact win-window win-window--paper">
+          <WinTitleBar label="DIRECT.TXT" />
+          <div className="win-body flex flex-1 flex-col justify-center gap-3">
+            <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
+            <div className="flex items-end justify-between gap-4">
+              <a
+                href={`mailto:${SITE.email}`}
+                className="block min-w-0 break-all text-[clamp(1rem,2.2vw,1.7rem)] font-bold underline decoration-1 underline-offset-4"
+              >
+                {SITE.email}
+              </a>
+              <button
+                onClick={copyEmail}
+                aria-label={t({ es: "Copiar correo", en: "Copy email" })}
+                className="flex shrink-0 items-center gap-2 border border-paper px-3 py-2 transition-colors hover:bg-paper hover:text-ink"
+              >
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+                <span className="u-label">
+                  {copied ? t({ es: "COPIADO", en: "COPIED" }) : t({ es: "COPIAR", en: "COPY" })}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -137,23 +147,29 @@ export default function Contact() {
             spread across three ("CHANNEL/OPEN", "STATUS/LIVE", and a
             separate meta row) that were all saying some version of
             "available now". */}
-        <div className="transmission-piece transmission-status flex flex-col flex-wrap items-start justify-center gap-2 border border-paper p-3 md:flex-row md:items-center md:justify-between md:gap-6 md:p-3">
-          <span className="flex items-center gap-2">
-            <PulseDot />
-            <SystemLabel>{t({ es: "DISPONIBLE PARA TRABAJAR", en: "AVAILABLE FOR WORK" })}</SystemLabel>
-          </span>
-          <span className="u-label opacity-85">{SITE.locationShort} / UTC−6</span>
-          <span className="u-label opacity-85">{t({ es: "RESPUESTA / 24–48H", en: "RESPONSE / 24–48H" })}</span>
+        <div className="transmission-piece transmission-status win-window win-window--paper">
+          <WinTitleBar label="STATUS.DAT" />
+          <div className="win-body flex flex-1 flex-col flex-wrap items-start justify-center gap-2 md:flex-row md:items-center md:justify-between md:gap-6">
+            <span className="flex items-center gap-2">
+              <PulseDot />
+              <SystemLabel>{t({ es: "DISPONIBLE PARA TRABAJAR", en: "AVAILABLE FOR WORK" })}</SystemLabel>
+            </span>
+            <span className="u-label opacity-85">{SITE.locationShort} / UTC−6</span>
+            <span className="u-label opacity-85">{t({ es: "RESPUESTA / 24–48H", en: "RESPONSE / 24–48H" })}</span>
+          </div>
         </div>
 
-        <div className="transmission-piece transmission-qr flex flex-col items-center justify-center gap-2 border border-paper bg-paper p-2 text-ink">
-          <Image
-            src="/qr-alanbuendia.svg"
-            alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
-            width={64}
-            height={64}
-          />
-          <SystemLabel>SCAN / OPEN</SystemLabel>
+        <div className="transmission-piece transmission-qr win-window win-window--paper bg-paper text-ink">
+          <WinTitleBar label="QRCODE.SVG" />
+          <div className="win-body flex flex-1 flex-col items-center justify-center gap-2">
+            <Image
+              src="/qr-alanbuendia.svg"
+              alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
+              width={64}
+              height={64}
+            />
+            <SystemLabel>SCAN / OPEN</SystemLabel>
+          </div>
         </div>
 
         <div className="transmission-piece transmission-vertical flex items-center justify-center border border-paper">

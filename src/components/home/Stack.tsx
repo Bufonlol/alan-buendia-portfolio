@@ -6,6 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { STACK } from "@/data/site";
 import { VerticalText } from "@/components/modular/VerticalText";
 import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 import {
   Atom,
   Box,
@@ -35,6 +36,21 @@ const ICONS: Record<string, LucideIcon> = {
   Git: GitBranch,
   GSAP: Sparkles,
   "Three.js": Box,
+};
+
+const FILE_LABEL: Record<string, string> = {
+  React: "REACT.DLL",
+  "Next.js": "NEXT.EXE",
+  TypeScript: "TYPESCRIPT.SYS",
+  "Node.js": "NODE.EXE",
+  Angular: "ANGULAR.EXE",
+  "Spring Boot": "SPRING.JAR",
+  PostgreSQL: "POSTGRES.DB",
+  MySQL: "MYSQL.DB",
+  Supabase: "SUPABASE.API",
+  Git: "GIT.SYS",
+  GSAP: "GSAP.DLL",
+  "Three.js": "THREE.DLL",
 };
 
 const MATRIX_CLASS = [
@@ -94,15 +110,20 @@ export default function Stack() {
 
       <div className="relative z-10">
         <header className="stack-heading">
-          <div className="stack-heading-title border border-ink p-4 md:p-6">
-            <h2 className="display text-[clamp(2.5rem,8vw,6.8rem)] leading-[0.8]">
-              {t({ es: "Sistema de herramientas", en: "Build system" })}
-            </h2>
+          <div className="stack-heading-title win-window win-window--ink">
+            <WinTitleBar label="BUILD.SYS" />
+            <div className="win-body">
+              <h2 className="display text-[clamp(2.5rem,8vw,6.8rem)] leading-[0.8]">
+                {t({ es: "Sistema de herramientas", en: "Build system" })}
+              </h2>
+            </div>
           </div>
-          <div className="stack-heading-count flex flex-col justify-between border border-ink bg-ink p-4 text-paper">
-            <SystemLabel>ACTIVE / MODULES</SystemLabel>
-            <span className="display text-[clamp(4.5rem,9vw,8rem)]">{STACK.length}</span>
-            <Barcode className="text-paper" />
+          <div className="stack-heading-count win-window win-window--ink bg-ink text-paper">
+            <WinTitleBar label="MODULES.DAT" />
+            <div className="win-body flex flex-col justify-between">
+              <span className="display text-[clamp(4.5rem,9vw,8rem)]">{STACK.length}</span>
+              <Barcode className="text-paper" />
+            </div>
           </div>
           <div className="stack-heading-vertical flex items-center justify-center border border-ink">
             <VerticalText>FRONTEND / BACKEND / DATA / MOTION</VerticalText>
@@ -110,16 +131,18 @@ export default function Stack() {
         </header>
 
         <div className="stack-chaos-grid mt-2">
-          <div className="stack-piece stack-asset relative flex flex-col justify-between overflow-hidden border border-ink bg-paper p-5">
-            <SystemLabel>OBJECT / STACK</SystemLabel>
-            <div className="flex flex-1 items-center justify-center">
-              <div className="stack-nest">
-                <span className="stack-nest-ring stack-nest-ring--1" />
-                <span className="stack-nest-ring stack-nest-ring--2" />
-                <span className="stack-nest-ring stack-nest-ring--3" />
+          <div className="stack-piece stack-asset win-window win-window--ink bg-paper">
+            <WinTitleBar label="OBJECT.DAT" />
+            <div className="win-body relative flex flex-1 flex-col justify-between overflow-hidden">
+              <div className="flex flex-1 items-center justify-center">
+                <div className="stack-nest">
+                  <span className="stack-nest-ring stack-nest-ring--1" />
+                  <span className="stack-nest-ring stack-nest-ring--2" />
+                  <span className="stack-nest-ring stack-nest-ring--3" />
+                </div>
               </div>
+              <SystemLabel className="self-end border border-ink bg-paper px-2 py-1">{STACK.length} TOOLS / VERIFIED</SystemLabel>
             </div>
-            <SystemLabel className="self-end border border-ink bg-paper px-2 py-1">{STACK.length} TOOLS / VERIFIED</SystemLabel>
           </div>
 
           {STACK.map((item, index) => {
@@ -130,28 +153,34 @@ export default function Stack() {
             return (
               <div
                 key={item.name}
-                className={`stack-piece tool-cell group flex min-w-0 flex-col justify-between overflow-hidden border border-ink p-3 ${
+                className={`stack-piece tool-cell group win-window win-window--ink ${
                   MATRIX_CLASS[index]
                 } ${inverted ? "bg-ink text-paper" : "bg-paper text-ink"}`}
               >
-                <div className="flex items-center justify-between">
-                  <SystemLabel className="opacity-85">{String(index + 1).padStart(2, "0")} / {t(item.meta)}</SystemLabel>
-                  <Icon className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-6" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <p className={`display leading-[0.88] ${giant ? "text-[clamp(2rem,4.5vw,4.8rem)]" : "text-[clamp(1.3rem,2.4vw,2.4rem)]"}`}>
-                    {item.name}
-                  </p>
-                  <SystemLabel className="mt-2 block opacity-85">SYS / VERIFIED / PROD</SystemLabel>
+                <WinTitleBar label={FILE_LABEL[item.name] ?? `${item.name.toUpperCase()}.SYS`} />
+                <div className="win-body flex flex-1 flex-col justify-between">
+                  <div className="flex items-center justify-between">
+                    <SystemLabel className="opacity-85">{String(index + 1).padStart(2, "0")} / {t(item.meta)}</SystemLabel>
+                    <Icon className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-6" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className={`display leading-[0.88] ${giant ? "text-[clamp(2rem,4.5vw,4.8rem)]" : "text-[clamp(1.3rem,2.4vw,2.4rem)]"}`}>
+                      {item.name}
+                    </p>
+                    <SystemLabel className="mt-2 block opacity-85">SYS / VERIFIED / PROD</SystemLabel>
+                  </div>
                 </div>
               </div>
             );
           })}
 
-          <div className="stack-piece stack-empty flex items-center justify-between border border-ink bg-paper p-3">
-            <CrossMark />
-            <SystemLabel>FRAME / EMPTY / RESERVED</SystemLabel>
-            <CrossMark />
+          <div className="stack-piece stack-empty win-window win-window--ink bg-paper">
+            <WinTitleBar label="EMPTY.DAT" />
+            <div className="win-body flex flex-1 items-center justify-between">
+              <CrossMark />
+              <SystemLabel>FRAME / EMPTY / RESERVED</SystemLabel>
+              <CrossMark />
+            </div>
           </div>
         </div>
       </div>

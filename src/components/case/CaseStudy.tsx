@@ -11,6 +11,7 @@ import Reveal from "@/components/Reveal";
 import MiniFooter from "@/components/MiniFooter";
 import { Contours, CropMarks } from "@/components/art/EditorialArt";
 import { TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 
 /** Counts metric values up when they scroll into view ("30s" → 0→30 + "s"). */
 function Metric({ metric, label }: { metric: string; label: string }) {
@@ -202,50 +203,62 @@ export default function CaseStudy({
         <TechnicalGrid className="opacity-15" />
         <div className="relative z-10">
         <div className="grid gap-6 border-t border-line py-14 md:grid-cols-2 md:py-20">
-          <Reveal>
-            <div className="h-full border border-line p-6 md:p-8">
-              <span className="u-label text-accent">{t({ es: "El problema", en: "The problem" })}</span>
-              <p className="mt-6 text-lg leading-relaxed text-ink-soft md:text-xl">
-                {t(project.problem)}
-              </p>
+          <Reveal className="h-full">
+            <div className="win-window win-window--ink h-full">
+              <WinTitleBar label="PROBLEM.TXT" />
+              <div className="win-body">
+                <span className="u-label text-accent">{t({ es: "El problema", en: "The problem" })}</span>
+                <p className="mt-6 text-lg leading-relaxed text-ink-soft md:text-xl">
+                  {t(project.problem)}
+                </p>
+              </div>
             </div>
           </Reveal>
-          <Reveal delay={0.05}>
-            <div className="h-full border border-line bg-ink p-6 text-paper md:p-8">
-              <span className="u-label opacity-85">{t({ es: "Investigación", en: "Research" })}</span>
-              <p className="mt-6 text-lg leading-relaxed opacity-90 md:text-xl">
-                {t(project.research)}
-              </p>
+          <Reveal delay={0.05} className="h-full">
+            <div className="win-window win-window--ink h-full bg-ink text-paper">
+              <WinTitleBar label="RESEARCH.TXT" />
+              <div className="win-body">
+                <span className="u-label opacity-85">{t({ es: "Investigación", en: "Research" })}</span>
+                <p className="mt-6 text-lg leading-relaxed opacity-90 md:text-xl">
+                  {t(project.research)}
+                </p>
+              </div>
             </div>
           </Reveal>
         </div>
 
         <div className="grid gap-6 border-t border-line py-14 md:grid-cols-3 md:items-start md:py-20">
           <Reveal className="md:col-span-2">
-            <div className="border border-line p-6 md:p-8">
-              <span className="u-label text-accent">{t({ es: "La solución", en: "The solution" })}</span>
-              <ul className="mt-6 flex flex-col">
-                {project.solution.map((s, i) => (
-                  <li key={i} className="flex items-start gap-4 border-b border-line py-4 last:border-b-0">
-                    <span className="u-label mt-1 text-accent">→</span>
-                    <span className="leading-relaxed">{t(s)}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="win-window win-window--ink">
+              <WinTitleBar label="SOLUTION.EXE" />
+              <div className="win-body">
+                <span className="u-label text-accent">{t({ es: "La solución", en: "The solution" })}</span>
+                <ul className="mt-6 flex flex-col">
+                  {project.solution.map((s, i) => (
+                    <li key={i} className="flex items-start gap-4 border-b border-line py-4 last:border-b-0">
+                      <span className="u-label mt-1 text-accent">→</span>
+                      <span className="leading-relaxed">{t(s)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Reveal>
           <Reveal delay={0.05}>
-            <div className="border border-line bg-ink p-6 text-paper md:p-8">
-              <span className="u-label opacity-85">{t({ es: "Stack técnico", en: "Tech stack" })}</span>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {project.stack.map((s) => (
-                  <span
-                    key={s}
-                    className="display inline-flex items-center leading-none border border-paper/40 px-4 py-3 text-[clamp(1rem,2vw,1.4rem)] transition-colors duration-300 hover:border-paper hover:text-accent"
-                  >
-                    {s}
-                  </span>
-                ))}
+            <div className="win-window win-window--ink bg-ink text-paper">
+              <WinTitleBar label="TECHSTACK.EXE" />
+              <div className="win-body">
+                <span className="u-label opacity-85">{t({ es: "Stack técnico", en: "Tech stack" })}</span>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {project.stack.map((s) => (
+                    <span
+                      key={s}
+                      className="display inline-flex items-center leading-none border border-paper/40 px-4 py-3 text-[clamp(1rem,2vw,1.4rem)] transition-colors duration-300 hover:border-paper hover:text-accent"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </Reveal>
@@ -270,44 +283,53 @@ export default function CaseStudy({
 
         <div className="border-t border-line py-14 md:py-20">
           <span className="u-label text-accent">{t({ es: "Resultados", en: "Results" })}</span>
-          <div className="mt-6 grid gap-6 border border-line p-6 sm:grid-cols-3 md:p-8">
-            {project.results.map((r) => (
-              <Metric key={r.label.en} metric={t(r.metric)} label={t(r.label)} />
-            ))}
+          <div className="win-window win-window--ink mt-6">
+            <WinTitleBar label="RESULTS.DAT" />
+            <div className="win-body grid gap-6 sm:grid-cols-3">
+              {project.results.map((r) => (
+                <Metric key={r.label.en} metric={t(r.metric)} label={t(r.label)} />
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="grid gap-6 border-t border-line py-14 md:grid-cols-3 md:items-start md:py-20">
           <Reveal className={project.live || project.repo ? "md:col-span-2" : "md:col-span-3"}>
-            <div className="border border-line p-6 md:p-8">
-              <span className="u-label text-accent">{t({ es: "Aprendizajes", en: "Learnings" })}</span>
-              <ol className="mt-6 flex flex-col gap-6">
-                {project.learnings.map((l, i) => (
-                  <li key={i} className="flex gap-5">
-                    <span className="display text-2xl text-accent">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <p className="leading-relaxed text-ink-soft">{t(l)}</p>
-                  </li>
-                ))}
-              </ol>
+            <div className="win-window win-window--ink">
+              <WinTitleBar label="LEARNINGS.TXT" />
+              <div className="win-body">
+                <span className="u-label text-accent">{t({ es: "Aprendizajes", en: "Learnings" })}</span>
+                <ol className="mt-6 flex flex-col gap-6">
+                  {project.learnings.map((l, i) => (
+                    <li key={i} className="flex gap-5">
+                      <span className="display text-2xl text-accent">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <p className="leading-relaxed text-ink-soft">{t(l)}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </Reveal>
           {(project.live || project.repo) && (
-            <Reveal delay={0.05}>
-              <div className="flex h-full flex-col justify-between gap-6 border border-line bg-ink p-6 text-paper md:p-8">
-                <span className="u-label opacity-85">{t({ es: "ENLACES", en: "LINKS" })}</span>
-                <div className="u-label flex flex-col gap-4">
-                  {project.live && (
-                    <a href={project.live} target="_blank" rel="noreferrer" className="link-line">
-                      {t({ es: "Ver sitio en vivo ↗", en: "Visit live site ↗" })}
-                    </a>
-                  )}
-                  {project.repo && (
-                    <a href={project.repo} target="_blank" rel="noreferrer" className="link-line">
-                      {t({ es: "Código ↗", en: "Source ↗" })}
-                    </a>
-                  )}
+            <Reveal delay={0.05} className="h-full">
+              <div className="win-window win-window--ink h-full bg-ink text-paper">
+                <WinTitleBar label="LINKS.EXE" />
+                <div className="win-body flex flex-1 flex-col justify-between gap-6">
+                  <span className="u-label opacity-85">{t({ es: "ENLACES", en: "LINKS" })}</span>
+                  <div className="u-label flex flex-col gap-4">
+                    {project.live && (
+                      <a href={project.live} target="_blank" rel="noreferrer" className="link-line">
+                        {t({ es: "Ver sitio en vivo ↗", en: "Visit live site ↗" })}
+                      </a>
+                    )}
+                    {project.repo && (
+                      <a href={project.repo} target="_blank" rel="noreferrer" className="link-line">
+                        {t({ es: "Código ↗", en: "Source ↗" })}
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </Reveal>

@@ -109,15 +109,6 @@ body {
   border: 1px solid currentColor;
 }
 
-.chaos-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0.35rem;
-  border: 1px solid currentColor;
-  opacity: 0.13;
-  pointer-events: none;
-}
-
 /* ================================================================
    HERO — brutalist tech-poster composition. Anton condensed display type,
    hard rectangular cut blocks, halftone/hatch texture. 80% typography,
@@ -350,6 +341,33 @@ body {
   color: var(--color-ink);
 }
 
+/* WIN-WINDOW — the same beveled system-dialog card used in the hero's bento
+   grid, generalized for reuse across every bordered block on the site
+   (project records, stat tiles, stack items, case-study blocks, etc). Pair
+   with WinTitleBar + .win-body. --ink for cells on a paper background,
+   --paper for cells sitting on an ink background. */
+.win-window {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.win-window--ink {
+  border: 2px solid var(--color-ink);
+  box-shadow:
+    inset 1px 1px 0 color-mix(in srgb, var(--color-ink) 18%, white 82%),
+    3px 3px 0 color-mix(in srgb, var(--color-ink) 78%, black 20%);
+}
+
+.win-window--paper {
+  border: 2px solid var(--color-paper);
+  box-shadow:
+    inset 1px 1px 0 color-mix(in srgb, var(--color-paper) 18%, black 82%),
+    3px 3px 0 color-mix(in srgb, var(--color-paper) 78%, white 20%);
+}
+
 .win-body {
   flex: 1;
   padding: 0.75rem 0.85rem;
@@ -359,6 +377,20 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
+}
+
+/* Cells whose content already manages its own inner padding per-cell (a
+   grid of sub-cells, a card that already has media/footer padding baked
+   in) — zero out win-body's own padding so it doesn't add a second ring. */
+.archive-heading-meta .win-body,
+.experience-primary .win-body,
+.field-meta .win-body,
+.style-rules .win-body,
+.manifesto-notice .win-body,
+.archive-page-data .win-body,
+.archive-index-record .win-body,
+.lab-card-body {
+  padding: 0;
 }
 
 .hero-bento-quote {

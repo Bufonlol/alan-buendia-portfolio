@@ -4,7 +4,8 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import type { Project } from "@/data/projects";
 import { useLang } from "@/lib/i18n";
-import { Barcode, CrossMark, SystemLabel } from "@/components/system/TechnicalLayer";
+import { Barcode, SystemLabel } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 import { VerticalText } from "@/components/modular/VerticalText";
 
 type ProjectArchiveMosaicProps = {
@@ -32,7 +33,7 @@ export default function ProjectArchiveMosaic({
   const [feature, medium, blue, imageRecord, frameRecord, vertical] = records;
 
   const projectLink = (project: Project, className: string, children: ReactNode) => (
-    <article className={`project-record archive-card bento-reactive relative overflow-hidden border border-ink ${className}`}>
+    <article className={`project-record archive-card bento-reactive win-window win-window--ink ${className}`}>
       <a
         href={`/projects/${project.slug}`}
         onClick={(event) => {
@@ -55,10 +56,7 @@ export default function ProjectArchiveMosaic({
         feature,
         "project-record-feature bg-paper text-ink",
         <>
-          <div className="grid grid-cols-[1fr_auto] border-b border-ink px-4 py-3">
-            <SystemLabel>PROJECT_{feature.index} / PRIMARY RECORD</SystemLabel>
-            <SystemLabel>{feature.year} / {t(feature.status)}</SystemLabel>
-          </div>
+          <WinTitleBar label={`PROJECT${feature.index}.EXE`} />
           <div className="grid min-h-0 flex-1 md:grid-cols-[1.45fr_0.55fr]">
             <div className="project-media relative min-h-72 overflow-hidden border-b border-ink bg-ink md:border-b-0 md:border-r">
               <Image
@@ -77,7 +75,9 @@ export default function ProjectArchiveMosaic({
             </div>
             <div className="flex flex-col justify-between p-4 md:p-5">
               <div>
-                <SystemLabel className="opacity-85">{t(feature.role)}</SystemLabel>
+                <SystemLabel className="opacity-85">
+                  {t(feature.role)} · {feature.year} · {t(feature.status)}
+                </SystemLabel>
                 <h3 className="display mt-4 text-[clamp(2.7rem,5vw,5.5rem)] leading-[0.82]">
                   {t(feature.title)}
                 </h3>
@@ -109,10 +109,7 @@ export default function ProjectArchiveMosaic({
         medium,
         "project-record-medium-a bg-ink text-paper",
         <>
-          <div className="flex items-center justify-between border-b border-paper/40 px-4 py-3">
-            <SystemLabel>REC / {medium.index}</SystemLabel>
-            <CrossMark />
-          </div>
+          <WinTitleBar label={`REC${medium.index}.EXE`} />
           <div className="project-media relative min-h-52 flex-1 overflow-hidden">
             <Image
                 src={medium.cardImage!}
@@ -139,10 +136,7 @@ export default function ProjectArchiveMosaic({
         blue,
         "project-record-blue bg-ink text-paper",
         <>
-          <div className="flex items-center justify-between border-b border-paper/40 px-4 py-3">
-            <SystemLabel>VISUAL RECORD / {blue.index}</SystemLabel>
-            <SystemLabel>{blue.year}</SystemLabel>
-          </div>
+          <WinTitleBar label={`VISUAL${blue.index}.DAT`} />
           <div className="project-media relative min-h-44 flex-1 overflow-hidden bg-paper">
             <Image
                 src="/projects/folio/landing.png"
@@ -170,6 +164,7 @@ export default function ProjectArchiveMosaic({
         imageRecord,
         "project-record-medium-b bg-paper text-ink",
         <>
+          <WinTitleBar label={`IMAGE${imageRecord.index}.PNG`} />
           <div className="project-media relative min-h-60 flex-1 overflow-hidden border-b border-ink bg-ink">
             <Image
                 src={imageRecord.cardImage!}
@@ -198,10 +193,7 @@ export default function ProjectArchiveMosaic({
         frameRecord,
         "project-record-frame bg-paper text-ink",
         <>
-          <div className="flex items-center justify-between border-b border-ink px-3 py-3">
-            <SystemLabel>FRAME / {frameRecord.index.padStart(4, "0")}</SystemLabel>
-            <SystemLabel>{frameRecord.year}</SystemLabel>
-          </div>
+          <WinTitleBar label={`FRAME${frameRecord.index.padStart(4, "0")}.DAT`} />
           <div className="project-media relative min-h-52 flex-1 overflow-hidden border-b border-ink">
             <Image
                 src={frameRecord.cardImage!}
@@ -227,6 +219,7 @@ export default function ProjectArchiveMosaic({
         vertical,
         "project-record-vertical bg-paper text-ink",
         <>
+          <WinTitleBar label={`REC${vertical.index}.EXE`} />
           <div className="flex flex-1">
             <div className="relative min-h-56 flex-1 overflow-hidden border-r border-ink">
               <Image

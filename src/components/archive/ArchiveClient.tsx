@@ -8,6 +8,7 @@ import { useLang } from "@/lib/i18n";
 import { ARCHIVE, type ArchiveEntry } from "@/data/archive";
 import MiniFooter from "@/components/MiniFooter";
 import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { WinTitleBar } from "@/components/system/WinTitleBar";
 import { VerticalText } from "@/components/modular/VerticalText";
 
 export default function ArchiveClient() {
@@ -51,7 +52,7 @@ export default function ArchiveClient() {
   };
 
   const recordShell = (entry: ArchiveEntry, index: number, children: ReactNode) => {
-    const className = `archive-index-record archive-index-record-${index + 1} group relative overflow-hidden border border-ink ${
+    const className = `archive-index-record archive-index-record-${index + 1} group win-window win-window--ink ${
       index === 2 ? "bg-ink text-paper" : "bg-paper text-ink"
     }`;
 
@@ -88,40 +89,48 @@ export default function ArchiveClient() {
       <TechnicalGrid className="opacity-20" />
 
       <header className="archive-page-header relative z-10 p-3 md:p-4">
-        <div className="archive-page-title border border-ink p-4 md:p-6">
-          <div className="flex items-center justify-between">
-            <SystemLabel>MASTER INDEX / ALANBUENDIA.DEV</SystemLabel>
-            <CrossMark />
-          </div>
-          <h1 className="display mt-10 text-[clamp(4rem,10vw,9rem)] leading-[0.78]">
-            {t({ es: "Archivo", en: "Archive" })}
-          </h1>
-          <p className="mt-7 max-w-[38ch] text-base font-semibold leading-snug">
-            {t({
-              es: "Cada sistema conserva su contexto, stack, estado y recibo de producción.",
-              en: "Every system keeps its context, stack, status, and production receipt.",
-            })}
-          </p>
-        </div>
-
-        <div className="archive-page-count flex flex-col justify-between border border-ink bg-ink p-4 text-paper">
-          <SystemLabel>FILES / TOTAL</SystemLabel>
-          <span className="display text-[clamp(5rem,10vw,9rem)]">{String(ARCHIVE.length).padStart(2, "0")}</span>
-          <Barcode className="text-paper" />
-        </div>
-
-        <div className="archive-page-data grid grid-cols-2 border border-ink">
-          {[
-            ["RANGE", "2024–2026"],
-            ["FILTER", "ALL"],
-            ["STATE", "MIXED"],
-            ["BASE", "ORIZABA, MX"],
-          ].map(([key, value]) => (
-            <div key={key} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
-              <SystemLabel className="opacity-85">{key}</SystemLabel>
-              <p className="u-label mt-2">{value}</p>
+        <div className="archive-page-title win-window win-window--ink">
+          <WinTitleBar label="ARCHIVE.SYS" />
+          <div className="win-body">
+            <div className="flex items-center justify-between">
+              <SystemLabel>MASTER INDEX / ALANBUENDIA.DEV</SystemLabel>
+              <CrossMark />
             </div>
-          ))}
+            <h1 className="display mt-10 text-[clamp(4rem,10vw,9rem)] leading-[0.78]">
+              {t({ es: "Archivo", en: "Archive" })}
+            </h1>
+            <p className="mt-7 max-w-[38ch] text-base font-semibold leading-snug">
+              {t({
+                es: "Cada sistema conserva su contexto, stack, estado y recibo de producción.",
+                en: "Every system keeps its context, stack, status, and production receipt.",
+              })}
+            </p>
+          </div>
+        </div>
+
+        <div className="archive-page-count win-window win-window--ink bg-ink text-paper">
+          <WinTitleBar label="FILES.DAT" />
+          <div className="win-body flex flex-col justify-between">
+            <span className="display text-[clamp(5rem,10vw,9rem)]">{String(ARCHIVE.length).padStart(2, "0")}</span>
+            <Barcode className="text-paper" />
+          </div>
+        </div>
+
+        <div className="archive-page-data win-window win-window--ink">
+          <WinTitleBar label="META.DAT" />
+          <div className="win-body grid grid-cols-2">
+            {[
+              ["RANGE", "2024–2026"],
+              ["FILTER", "ALL"],
+              ["STATE", "MIXED"],
+              ["BASE", "ORIZABA, MX"],
+            ].map(([key, value]) => (
+              <div key={key} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
+                <SystemLabel className="opacity-85">{key}</SystemLabel>
+                <p className="u-label mt-2">{value}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="archive-page-vertical flex items-center justify-center border border-ink">
@@ -148,16 +157,13 @@ export default function ArchiveClient() {
 
           if (index === 0) {
             return recordShell(entry, index, (
-              <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b border-ink px-4 py-3">
-                  <SystemLabel>PROJECT_{entry.index} / FEATURED</SystemLabel>
-                  <SystemLabel>{entry.year}</SystemLabel>
-                </div>
-                <div className="grid min-h-0 flex-1 md:grid-cols-[0.9fr_1.1fr]">
+              <>
+                <WinTitleBar label={`PROJECT${entry.index}.EXE`} />
+                <div className="win-body grid min-h-0 flex-1 md:grid-cols-[0.9fr_1.1fr]">
                   <div className="min-w-0 border-b border-ink md:border-b-0 md:border-r [&_.project-media]:h-full">{image}</div>
                   <div className="flex min-w-0 flex-col justify-between p-5">
                     <div>
-                      <SystemLabel>{t(entry.type)}</SystemLabel>
+                      <SystemLabel>{t(entry.type)} · {entry.year}</SystemLabel>
                       <h2 className="display mt-5 text-[clamp(2.5rem,3.6vw,3.6rem)] leading-[0.82]">{t(entry.title)}</h2>
                     </div>
                     <div className="mt-8 border-t border-ink pt-4">
@@ -166,79 +172,76 @@ export default function ArchiveClient() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </>
             ));
           }
 
           if (index === 2) {
             return recordShell(entry, index, (
-              <div className="flex h-full min-h-0 flex-col">
-                <div className="flex items-center justify-between border-b border-paper/40 px-4 py-3">
-                  <SystemLabel>VISUAL RECORD / {entry.index}</SystemLabel>
-                  <CrossMark />
-                </div>
-                <div className="project-media relative min-h-44 flex-1 overflow-hidden bg-paper">
-                  <Image
-                    src={entry.image!}
-                    alt={t(entry.title)}
-                    fill
-                    sizes="(max-width: 767px) 100vw, (max-width: 1400px) 46vw, 900px"
-                    quality={100}
-                    unoptimized
-                    className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
-                  />
-                  <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
-                </div>
-                <div className="grid grid-cols-[auto_1fr_auto] items-end gap-4 border-t border-paper/40 p-4">
-                  <span className="display text-5xl">{entry.index}</span>
-                  <div>
-                    <h2 className="display text-[clamp(1.65rem,4vw,4rem)] leading-[0.84]">{t(entry.title)}</h2>
-                    <SystemLabel className="mt-2 block">{entry.stack}</SystemLabel>
+              <>
+                <WinTitleBar label={`VISUAL${entry.index}.DAT`} />
+                <div className="win-body flex min-h-0 flex-1 flex-col">
+                  <div className="project-media relative min-h-44 flex-1 overflow-hidden bg-paper">
+                    <Image
+                      src={entry.image!}
+                      alt={t(entry.title)}
+                      fill
+                      sizes="(max-width: 767px) 100vw, (max-width: 1400px) 46vw, 900px"
+                      quality={100}
+                      unoptimized
+                      className="object-contain object-top p-3 transition-transform duration-700 group-hover:scale-[1.012]"
+                    />
+                    <div className="technical-grid pointer-events-none absolute inset-0 opacity-10" />
                   </div>
-                  <span className="text-2xl">↗</span>
+                  <div className="grid grid-cols-[auto_1fr_auto] items-end gap-4 border-t border-paper/40 p-4">
+                    <span className="display text-5xl">{entry.index}</span>
+                    <div>
+                      <h2 className="display text-[clamp(1.65rem,4vw,4rem)] leading-[0.84]">{t(entry.title)}</h2>
+                      <SystemLabel className="mt-2 block">{entry.stack}</SystemLabel>
+                    </div>
+                    <span className="text-2xl">↗</span>
+                  </div>
                 </div>
-              </div>
+              </>
             ));
           }
 
           if (index === 5) {
             return recordShell(entry, index, (
-              <div className="flex h-full min-h-0 flex-col">
-                <div className="flex items-center justify-between border-b border-ink px-4 py-3">
-                  <SystemLabel>RETIRED / FRAME {entry.index}</SystemLabel>
-                  <SystemLabel>{entry.year}</SystemLabel>
+              <>
+                <WinTitleBar label={`RETIRED${entry.index}.OLD`} />
+                <div className="win-body flex min-h-0 flex-1 flex-col">
+                  <div className="project-media relative flex min-h-44 flex-1 items-center justify-center overflow-hidden border-b border-ink bg-ink p-4 text-paper">
+                    <span className="display text-[clamp(6rem,13vw,12rem)] leading-none">V1</span>
+                    <SystemLabel className="absolute left-4 top-4">ARCHIVE / RETIRED</SystemLabel>
+                    <Barcode className="absolute bottom-4 right-4 text-paper" />
+                  </div>
+                  <div className="p-4">
+                    <h2 className="display text-[clamp(2rem,4vw,4rem)]">{t(entry.title)}</h2>
+                    {entry.tag && <p className="u-label mt-3 max-w-[28ch] leading-relaxed">{t(entry.tag)}</p>}
+                  </div>
                 </div>
-                <div className="project-media relative flex min-h-44 flex-1 items-center justify-center overflow-hidden border-b border-ink bg-ink p-4 text-paper">
-                  <span className="display text-[clamp(6rem,13vw,12rem)] leading-none">V1</span>
-                  <SystemLabel className="absolute left-4 top-4">ARCHIVE / RETIRED</SystemLabel>
-                  <Barcode className="absolute bottom-4 right-4 text-paper" />
-                </div>
-                <div className="p-4">
-                  <h2 className="display text-[clamp(2rem,4vw,4rem)]">{t(entry.title)}</h2>
-                  {entry.tag && <p className="u-label mt-3 max-w-[28ch] leading-relaxed">{t(entry.tag)}</p>}
-                </div>
-              </div>
+              </>
             ));
           }
 
           return recordShell(entry, index, (
-            <div className="flex h-full min-h-0 flex-col">
-              <div className="flex items-center justify-between border-b border-current px-4 py-3">
-                <SystemLabel>REC / {entry.index}</SystemLabel>
-                <SystemLabel>{entry.year}</SystemLabel>
-              </div>
-              {image}
-              <div className="flex flex-1 flex-col justify-between p-4">
-                <div>
-                  <SystemLabel>{t(entry.type)}</SystemLabel>
-                  <h2 className="display mt-3 text-[clamp(2rem,4vw,4rem)] leading-[0.86]">{t(entry.title)}</h2>
+            <>
+              <WinTitleBar label={`REC${entry.index}.EXE`} />
+              <div className="win-body flex min-h-0 flex-1 flex-col">
+                {image}
+                <div className="flex flex-1 flex-col justify-between p-4">
+                  <div>
+                    <SystemLabel>{t(entry.type)} · {entry.year}</SystemLabel>
+                    <h2 className="display mt-3 text-[clamp(2rem,4vw,4rem)] leading-[0.86]">{t(entry.title)}</h2>
+                  </div>
+                  <div className="mt-6 flex items-end justify-between border-t border-current pt-3">
+                    <SystemLabel>{entry.stack}</SystemLabel>
+                    <span className="text-2xl">↗</span>
+                  </div>
                 </div>
-                <div className="mt-6 flex items-end justify-between border-t border-current pt-3">
-                  <SystemLabel>{entry.stack}</SystemLabel>
-                  <span className="text-2xl">↗</span>
-                </div>
               </div>
-            </div>
+            </>
           ));
         })}
       </section>
