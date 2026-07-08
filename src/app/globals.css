@@ -1107,16 +1107,20 @@ a.hero-panel-row:focus-visible {
   .style-rules { grid-column: 9 / span 4; grid-row: 4 / span 4; min-height: 0; }
   .style-tokens { grid-column: 1 / span 5; grid-row: 6 / span 2; min-height: 0; }
 
+  /* Compressed from repeat(7, 7rem) (49rem/784px total, taller than most
+     viewports and forcing a scroll to see the whole section) to a shorter
+     row unit and fewer rows for the headline block — the section should
+     read as one screen, not require scrolling to reach the QR/status row. */
   .transmission-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(7, 7rem);
+    grid-template-rows: repeat(6, 4.5rem);
   }
-  .transmission-title { grid-column: 1 / span 8; grid-row: 1 / span 4; min-height: 0; }
-  .transmission-asset { grid-column: 9 / span 4; grid-row: 1 / span 4; min-height: 0; }
-  .transmission-contact { grid-column: 1 / span 8; grid-row: 5 / span 2; min-height: 0; }
-  .transmission-qr { grid-column: 9 / span 4; grid-row: 5 / span 2; min-height: 0; }
-  .transmission-status { grid-column: 1 / span 10; grid-row: 7; min-height: 0; }
-  .transmission-vertical { grid-column: 11 / span 2; grid-row: 7; min-height: 0; }
+  .transmission-title { grid-column: 1 / span 8; grid-row: 1 / span 3; min-height: 0; }
+  .transmission-asset { grid-column: 9 / span 4; grid-row: 1 / span 3; min-height: 0; }
+  .transmission-contact { grid-column: 1 / span 8; grid-row: 4 / span 2; min-height: 0; }
+  .transmission-qr { grid-column: 9 / span 4; grid-row: 4 / span 2; min-height: 0; }
+  .transmission-status { grid-column: 1 / span 10; grid-row: 6; min-height: 0; }
+  .transmission-vertical { grid-column: 11 / span 2; grid-row: 6; min-height: 0; }
 
   .metric-mosaic {
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -1496,7 +1500,7 @@ a.hero-panel-row:focus-visible {
    bottom — this needs to dominate the column, not sit inside it. */
 .signal-rings {
   position: relative;
-  width: min(70%, 16rem);
+  width: min(60%, 8rem);
   aspect-ratio: 1;
 }
 

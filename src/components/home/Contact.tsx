@@ -84,13 +84,13 @@ export default function Contact() {
       <TechnicalGrid className="opacity-20" />
 
       <div className="transmission-grid relative z-10">
-        <div className="transmission-piece transmission-title border border-paper p-4 md:p-6">
-          <h2 className="display text-[clamp(2.4rem,7vw,6.5rem)] leading-[0.78]">
+        <div className="transmission-piece transmission-title flex flex-col justify-center border border-paper p-4 md:p-5">
+          <h2 className="display text-[clamp(2rem,5.5vw,4.2rem)] leading-[0.86]">
             {t({ es: "Construyamos algo real", en: "Let's build something real" })}
           </h2>
         </div>
 
-        <div className="transmission-piece transmission-asset relative flex min-h-80 flex-col justify-between overflow-hidden border border-paper bg-paper p-5 text-ink">
+        <div className="transmission-piece transmission-asset relative flex min-h-80 flex-col justify-between overflow-hidden border border-paper bg-paper p-4 text-ink">
           <TechnicalGrid className="opacity-40" />
           <SystemLabel className="relative border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
           <div className="relative flex flex-1 items-center justify-center">
@@ -111,12 +111,12 @@ export default function Contact() {
             link, a "copy email" button, and a duplicate "send signal"
             mailto) all doing the same job. The email itself is the primary
             action; copy is a small secondary affordance beside it. */}
-        <div className="transmission-piece transmission-contact flex flex-col justify-center gap-4 border border-paper p-4 md:p-6">
+        <div className="transmission-piece transmission-contact flex flex-col justify-center gap-3 border border-paper p-4">
           <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
           <div className="flex items-end justify-between gap-4">
             <a
               href={`mailto:${SITE.email}`}
-              className="block min-w-0 break-all text-[clamp(1.15rem,2.8vw,2.3rem)] font-bold underline decoration-1 underline-offset-4"
+              className="block min-w-0 break-all text-[clamp(1rem,2.2vw,1.7rem)] font-bold underline decoration-1 underline-offset-4"
             >
               {SITE.email}
             </a>
@@ -137,7 +137,7 @@ export default function Contact() {
             spread across three ("CHANNEL/OPEN", "STATUS/LIVE", and a
             separate meta row) that were all saying some version of
             "available now". */}
-        <div className="transmission-piece transmission-status flex flex-col flex-wrap items-start justify-center gap-4 border border-paper p-4 md:flex-row md:items-center md:justify-between md:gap-6 md:p-6">
+        <div className="transmission-piece transmission-status flex flex-col flex-wrap items-start justify-center gap-2 border border-paper p-3 md:flex-row md:items-center md:justify-between md:gap-6 md:p-3">
           <span className="flex items-center gap-2">
             <PulseDot />
             <SystemLabel>{t({ es: "DISPONIBLE PARA TRABAJAR", en: "AVAILABLE FOR WORK" })}</SystemLabel>
@@ -146,12 +146,12 @@ export default function Contact() {
           <span className="u-label opacity-85">{t({ es: "RESPUESTA / 24–48H", en: "RESPONSE / 24–48H" })}</span>
         </div>
 
-        <div className="transmission-piece transmission-qr flex flex-col items-center justify-between border border-paper bg-paper p-3 text-ink">
+        <div className="transmission-piece transmission-qr flex flex-col items-center justify-center gap-2 border border-paper bg-paper p-2 text-ink">
           <Image
             src="/qr-alanbuendia.svg"
             alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
-            width={84}
-            height={84}
+            width={64}
+            height={64}
           />
           <SystemLabel>SCAN / OPEN</SystemLabel>
         </div>
@@ -161,7 +161,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <footer className="relative z-10 mt-2 grid gap-5 border border-paper px-4 py-4 md:grid-cols-[1fr_auto_1fr] md:items-end">
+      <footer className="relative z-10 mt-2 grid gap-3 border border-paper px-4 py-3 md:grid-cols-[1fr_auto_1fr] md:items-end">
         <div>
           <Signature className="text-paper" size="text-2xl" shadowColor="var(--color-paper)" />
           <p className="u-label mt-2 opacity-85">© 2026 {SITE.fullName}</p>
