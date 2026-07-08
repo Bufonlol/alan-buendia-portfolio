@@ -195,7 +195,7 @@ export default function CaseStudy({
         <div className="grid gap-6 border-t border-line py-14 md:grid-cols-2 md:py-20">
           <Reveal>
             <div className="h-full border border-line p-6 md:p-8">
-              <span className="u-label text-accent">01 / {t({ es: "El problema", en: "The problem" })}</span>
+              <span className="u-label text-accent">{t({ es: "El problema", en: "The problem" })}</span>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft md:text-xl">
                 {t(project.problem)}
               </p>
@@ -203,7 +203,7 @@ export default function CaseStudy({
           </Reveal>
           <Reveal delay={0.05}>
             <div className="h-full border border-line bg-ink p-6 text-paper md:p-8">
-              <span className="u-label opacity-70">02 / {t({ es: "Investigación", en: "Research" })}</span>
+              <span className="u-label opacity-85">{t({ es: "Investigación", en: "Research" })}</span>
               <p className="mt-6 text-lg leading-relaxed opacity-90 md:text-xl">
                 {t(project.research)}
               </p>
@@ -214,7 +214,7 @@ export default function CaseStudy({
         <div className="grid gap-6 border-t border-line py-14 md:grid-cols-3 md:items-start md:py-20">
           <Reveal className="md:col-span-2">
             <div className="border border-line p-6 md:p-8">
-              <span className="u-label text-accent">03 / {t({ es: "La solución", en: "The solution" })}</span>
+              <span className="u-label text-accent">{t({ es: "La solución", en: "The solution" })}</span>
               <ul className="mt-6 flex flex-col">
                 {project.solution.map((s, i) => (
                   <li key={i} className="flex items-start gap-4 border-b border-line py-4 last:border-b-0">
@@ -227,7 +227,7 @@ export default function CaseStudy({
           </Reveal>
           <Reveal delay={0.05}>
             <div className="border border-line bg-ink p-6 text-paper md:p-8">
-              <span className="u-label opacity-70">04 / {t({ es: "Stack técnico", en: "Tech stack" })}</span>
+              <span className="u-label opacity-85">{t({ es: "Stack técnico", en: "Tech stack" })}</span>
               <div className="mt-6 flex flex-wrap gap-2">
                 {project.stack.map((s) => (
                   <span
@@ -243,7 +243,7 @@ export default function CaseStudy({
         </div>
 
         <div className="border-t border-line py-14 md:py-20">
-          <span className="u-label text-accent">05 / {t({ es: "Pantallas", en: "Screens" })}</span>
+          <span className="u-label text-accent">{t({ es: "Pantallas", en: "Screens" })}</span>
           <div className="mt-6 grid gap-5 md:grid-cols-2">
             {project.screens.map((s, i) => (
               <Reveal key={i} delay={i * 0.05}>
@@ -260,7 +260,7 @@ export default function CaseStudy({
         </div>
 
         <div className="border-t border-line py-14 md:py-20">
-          <span className="u-label text-accent">06 / {t({ es: "Resultados", en: "Results" })}</span>
+          <span className="u-label text-accent">{t({ es: "Resultados", en: "Results" })}</span>
           <div className="mt-6 grid gap-6 border border-line p-6 sm:grid-cols-3 md:p-8">
             {project.results.map((r) => (
               <Metric key={r.label.en} metric={t(r.metric)} label={t(r.label)} />
@@ -271,7 +271,7 @@ export default function CaseStudy({
         <div className="grid gap-6 border-t border-line py-14 md:grid-cols-3 md:items-start md:py-20">
           <Reveal className={project.live || project.repo ? "md:col-span-2" : "md:col-span-3"}>
             <div className="border border-line p-6 md:p-8">
-              <span className="u-label text-accent">07 / {t({ es: "Aprendizajes", en: "Learnings" })}</span>
+              <span className="u-label text-accent">{t({ es: "Aprendizajes", en: "Learnings" })}</span>
               <ol className="mt-6 flex flex-col gap-6">
                 {project.learnings.map((l, i) => (
                   <li key={i} className="flex gap-5">
@@ -287,7 +287,7 @@ export default function CaseStudy({
           {(project.live || project.repo) && (
             <Reveal delay={0.05}>
               <div className="flex h-full flex-col justify-between gap-6 border border-line bg-ink p-6 text-paper md:p-8">
-                <span className="u-label opacity-70">{t({ es: "ENLACES", en: "LINKS" })}</span>
+                <span className="u-label opacity-85">{t({ es: "ENLACES", en: "LINKS" })}</span>
                 <div className="u-label flex flex-col gap-4">
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noreferrer" className="link-line">
@@ -314,7 +314,7 @@ export default function CaseStudy({
           data-cursor="view"
           className="group block w-full border-t border-line px-5 py-16 text-left transition-colors duration-500 hover:bg-ink hover:text-paper md:px-8 md:py-24"
         >
-          <span className="u-label text-muted transition-colors group-hover:text-paper/60">
+          <span className="u-label text-muted transition-colors group-hover:text-paper/85">
             {t({ es: "Siguiente proyecto", en: "Next project" })} — {next.index}
           </span>
           <span className="display mt-4 flex items-baseline gap-6 text-[clamp(2.6rem,9vw,7.5rem)] leading-none">

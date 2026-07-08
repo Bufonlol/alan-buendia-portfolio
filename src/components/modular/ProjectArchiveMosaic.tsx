@@ -76,7 +76,7 @@ export default function ProjectArchiveMosaic({
             </div>
             <div className="flex flex-col justify-between p-4 md:p-5">
               <div>
-                <SystemLabel className="opacity-65">{t(feature.role)}</SystemLabel>
+                <SystemLabel className="opacity-85">{t(feature.role)}</SystemLabel>
                 <h3 className="display mt-4 text-[clamp(2.7rem,5vw,5.5rem)] leading-[0.82]">
                   {t(feature.title)}
                 </h3>
@@ -90,7 +90,7 @@ export default function ProjectArchiveMosaic({
                       className="grid grid-cols-[auto_1fr] items-center gap-3 border-b border-ink p-2 last:border-b-0"
                     >
                       <span className="display block text-2xl">{t(result.metric)}</span>
-                      <SystemLabel className="block leading-tight opacity-60">{t(result.label)}</SystemLabel>
+                      <SystemLabel className="block leading-tight opacity-85">{t(result.label)}</SystemLabel>
                     </div>
                   ))}
                 </div>
@@ -124,7 +124,7 @@ export default function ProjectArchiveMosaic({
             <div className="technical-grid pointer-events-none absolute inset-0 opacity-25" />
           </div>
           <div className="border-t border-paper/40 p-4">
-            <SystemLabel className="opacity-65">{medium.year} / {t(medium.role)}</SystemLabel>
+            <SystemLabel className="opacity-85">{medium.year} / {t(medium.role)}</SystemLabel>
             <div className="mt-2 flex items-end justify-between gap-4">
               <h3 className="display text-[clamp(2.1rem,4vw,4rem)] leading-[0.86]">{t(medium.title)}</h3>
               <span className="text-2xl">↗</span>

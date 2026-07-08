@@ -65,7 +65,7 @@ export default function Manifesto() {
                 className="flex items-center justify-between border-b border-paper/50 px-3 last:border-b-0"
               >
                 <span className="display text-[clamp(2.5rem,5vw,5rem)] leading-none">{letter}</span>
-                <SystemLabel className="opacity-55">0{index + 1}</SystemLabel>
+                <SystemLabel className="opacity-85">0{index + 1}</SystemLabel>
               </div>
             ))}
           </div>
@@ -86,7 +86,7 @@ export default function Manifesto() {
           </h2>
           <div className="mt-8 flex items-center gap-4">
             <Barcode className="text-paper" />
-            <SystemLabel className="opacity-70">FORM / FUNCTION / FEELING</SystemLabel>
+            <SystemLabel className="opacity-85">FORM / FUNCTION / FEELING</SystemLabel>
           </div>
         </div>
 
@@ -101,7 +101,7 @@ export default function Manifesto() {
 
         <div className="manifesto-piece col-span-3 flex min-h-36 flex-col justify-between border-b border-r border-paper p-4 md:col-span-2">
           <SystemLabel>NO / 02</SystemLabel>
-          <SystemLabel className="max-w-[16ch] leading-relaxed opacity-75">
+          <SystemLabel className="max-w-[16ch] leading-relaxed opacity-85">
             {t({ es: "MOVIMIENTO SIN PROPÓSITO", en: "MOTION WITHOUT PURPOSE" })}
           </SystemLabel>
         </div>
@@ -113,7 +113,7 @@ export default function Manifesto() {
             t({ es: "SIN RELLENO.", en: "NO FILLER." }),
           ].map((line, index) => (
             <div key={line} className="min-h-24 border-r border-paper p-3 last:border-r-0 md:min-h-28">
-              <SystemLabel className="opacity-50">0{index + 1}</SystemLabel>
+              <SystemLabel className="opacity-85">0{index + 1}</SystemLabel>
               <p className="u-label mt-5 leading-relaxed">{line}</p>
             </div>
           ))}

@@ -8,7 +8,7 @@ import { SITE } from "@/data/site";
 import Signature from "@/components/art/Signature";
 import { AssetFrame } from "@/components/modular/AssetFrame";
 import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, CrossMark, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Contact() {
   const { t } = useLang();
@@ -85,11 +85,7 @@ export default function Contact() {
 
       <div className="transmission-grid relative z-10">
         <div className="transmission-piece transmission-title border border-paper p-4 md:p-6">
-          <div className="flex items-center justify-between">
-            <SystemLabel>DIRECT TRANSMISSION / CHANNEL 01</SystemLabel>
-            <SignalBars className="text-paper" />
-          </div>
-          <h2 className="display mt-8 text-[clamp(2.4rem,7vw,6.5rem)] leading-[0.78]">
+          <h2 className="display text-[clamp(2.4rem,7vw,6.5rem)] leading-[0.78]">
             {t({ es: "Construyamos algo real", en: "Let's build something real" })}
           </h2>
         </div>
@@ -106,7 +102,7 @@ export default function Contact() {
         </div>
 
         <div className="transmission-piece transmission-line border border-paper p-4 md:p-5">
-          <SystemLabel className="opacity-65">DIRECT LINE</SystemLabel>
+          <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
           <a
             href={`mailto:${SITE.email}`}
             className="mt-4 block break-all text-[clamp(1.25rem,3vw,2.5rem)] font-bold underline decoration-1 underline-offset-4"
@@ -160,7 +156,7 @@ export default function Contact() {
             ["BUILD", "2026"],
           ].map(([key, value]) => (
             <div key={key} className="border-r border-paper p-3 last:border-r-0">
-              <SystemLabel className="opacity-55">{key}</SystemLabel>
+              <SystemLabel className="opacity-85">{key}</SystemLabel>
               <p className="u-label mt-3">{value}</p>
             </div>
           ))}
@@ -174,7 +170,7 @@ export default function Contact() {
       <footer className="relative z-10 mt-2 grid gap-5 border border-paper px-4 py-4 md:grid-cols-[1fr_auto_1fr] md:items-end">
         <div>
           <Signature className="text-paper" size="text-2xl" shadowColor="var(--color-paper)" />
-          <p className="u-label mt-2 opacity-65">© 2026 {SITE.fullName}</p>
+          <p className="u-label mt-2 opacity-85">© 2026 {SITE.fullName}</p>
         </div>
         <Barcode className="hidden text-paper md:block" />
         <div className="u-label flex flex-wrap gap-5 md:justify-end">

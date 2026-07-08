@@ -21,11 +21,11 @@ export default function NotFound() {
       </h1>
       <div className="relative z-10 grid w-full max-w-md grid-cols-2 gap-3">
         <div className="border border-ink p-4 text-left">
-          <p className="u-label opacity-60">STATUS</p>
+          <p className="u-label opacity-85">STATUS</p>
           <p className="display mt-2 text-2xl leading-none">404</p>
         </div>
         <div className="border border-ink bg-ink p-4 text-left text-paper">
-          <p className="u-label opacity-70">ROUTE</p>
+          <p className="u-label opacity-85">ROUTE</p>
           <p className="display mt-2 text-2xl leading-none">NULL</p>
         </div>
       </div>

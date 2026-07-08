@@ -9,9 +9,7 @@ import Experience from "@/components/home/Experience";
 import About from "@/components/home/About";
 import Fun from "@/components/home/Fun";
 import Contact from "@/components/home/Contact";
-import Marquee from "@/components/Marquee";
 import { SITE } from "@/data/site";
-import { MARQUEE_ITEMS } from "@/data/site";
 
 export const metadata: Metadata = {
   title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
@@ -43,7 +41,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <Marquee items={MARQUEE_ITEMS} />
       <Manifesto />
       <FeaturedProjects />
       <Stats />

@@ -6,7 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { EXPERIENCE } from "@/data/site";
 import { AssetFrame } from "@/components/modular/AssetFrame";
 import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, CrossMark, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 const OUTPUTS = [
   ["CLIENTES", "04 ACTIVE"],
@@ -49,11 +49,7 @@ export default function Experience() {
       <TechnicalGrid className="opacity-20" />
       <div className="experience-grid relative z-10">
         <div className="experience-piece experience-title border border-ink p-4 md:p-6">
-          <div className="flex items-center justify-between">
-            <SystemLabel>PRODUCTION REGISTER / 2022–NOW</SystemLabel>
-            <CrossMark />
-          </div>
-          <h2 className="display mt-8 text-[clamp(3rem,8vw,7.5rem)] leading-[0.8]">
+          <h2 className="display text-[clamp(3rem,8vw,7.5rem)] leading-[0.8]">
             {t({ es: "Experiencia", en: "Experience" })}
           </h2>
         </div>
@@ -81,7 +77,7 @@ export default function Experience() {
           <div className="grid grid-cols-2">
             {OUTPUTS.map(([label, value]) => (
               <div key={label} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
-                <SystemLabel className="opacity-55">{label}</SystemLabel>
+                <SystemLabel className="opacity-85">{label}</SystemLabel>
                 <p className="display mt-3 text-2xl">{value}</p>
               </div>
             ))}
@@ -104,7 +100,7 @@ export default function Experience() {
         <div className="experience-piece experience-asset relative min-h-72 overflow-hidden border border-ink">
           <AssetFrame
             src="/assets/about-hands.png"
-            alt=""
+            alt={t({ es: "Manos trabajando frente a un teclado", en: "Hands working at a keyboard" })}
             imageClassName="object-cover object-center mix-blend-multiply"
             sizes="(max-width: 767px) 100vw, 34vw"
           />

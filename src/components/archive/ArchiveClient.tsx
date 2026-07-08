@@ -118,7 +118,7 @@ export default function ArchiveClient() {
             ["BASE", "ORIZABA, MX"],
           ].map(([key, value]) => (
             <div key={key} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
-              <SystemLabel className="opacity-55">{key}</SystemLabel>
+              <SystemLabel className="opacity-85">{key}</SystemLabel>
               <p className="u-label mt-2">{value}</p>
             </div>
           ))}

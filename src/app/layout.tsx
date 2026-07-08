@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Anton, Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
 import { SITE } from "@/data/site";
@@ -7,6 +7,13 @@ import { SITE } from "@/data/site";
 const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
+  display: "swap",
+});
+
+const anton = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-anton",
   display: "swap",
 });
 
@@ -64,7 +71,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${archivo.variable} ${plexMono.variable}`}
+      className={`${archivo.variable} ${anton.variable} ${plexMono.variable}`}
     >
       <body className="bg-paper font-sans text-ink antialiased">
         <AppShell>{children}</AppShell>

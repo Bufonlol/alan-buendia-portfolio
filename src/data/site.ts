@@ -60,57 +60,6 @@ export const STACK: { name: string; meta: L }[] = [
   { name: "Three.js", meta: { es: "3D / WebGL", en: "3D / WebGL" } },
 ];
 
-export const UI_LIBRARIES: { name: string; tag: L; note: L }[] = [
-  {
-    name: "Aceternity UI",
-    tag: { es: "Backgrounds", en: "Backgrounds" },
-    note: {
-      es: "Grids con máscara radial, spotlights y aurora.",
-      en: "Radial-masked grids, spotlights and aurora glows.",
-    },
-  },
-  {
-    name: "Magic UI",
-    tag: { es: "Efectos", en: "Effects" },
-    note: {
-      es: "Retro grid en perspectiva y barridos de gradiente.",
-      en: "Perspective retro grids and gradient sweeps.",
-    },
-  },
-  {
-    name: "React Bits",
-    tag: { es: "Texto", en: "Text" },
-    note: {
-      es: "Scramble, conteos y glows reactivos.",
-      en: "Scramble text, counters and reactive glows.",
-    },
-  },
-  {
-    name: "motion-primitives",
-    tag: { es: "Motion", en: "Motion" },
-    note: {
-      es: "Transiciones y reveals con curvas finas.",
-      en: "Transitions and reveals with crafted easing.",
-    },
-  },
-  {
-    name: "cult-ui",
-    tag: { es: "Cards", en: "Cards" },
-    note: {
-      es: "Cards con borde vivo y tilt 3D.",
-      en: "Living-border cards and 3D tilt.",
-    },
-  },
-  {
-    name: "Animata",
-    tag: { es: "Micro", en: "Micro" },
-    note: {
-      es: "Micro-interacciones y detalles juguetones.",
-      en: "Micro-interactions and playful details.",
-    },
-  },
-];
-
 export const EXPERIENCE: {
   company: string;
   role: L;

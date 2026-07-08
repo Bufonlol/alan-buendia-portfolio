@@ -6,7 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { ABOUT, FUN, SITE } from "@/data/site";
 import { AssetFrame } from "@/components/modular/AssetFrame";
 import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, CrossMark, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function About() {
   const { t } = useLang();
@@ -52,11 +52,7 @@ export default function About() {
 
       <div className="field-note-grid relative z-10">
         <div className="field-piece field-title border border-ink p-4 md:p-6">
-          <div className="flex items-center justify-between">
-            <SystemLabel>FIELD NOTE / SUBJECT 001</SystemLabel>
-            <CrossMark />
-          </div>
-          <h2 className="display mt-8 text-[clamp(3.7rem,8vw,7.5rem)] leading-[0.78]">
+          <h2 className="display text-[clamp(3.7rem,8vw,7.5rem)] leading-[0.78]">
             {t({ es: "Soy Alan.", en: "I'm Alan." })}
             <br />
             Frontend engineer.
@@ -91,7 +87,7 @@ export default function About() {
         <dl className="field-piece field-meta grid grid-cols-2 border border-ink">
           {metadata.map(([key, value]) => (
             <div key={key} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
-              <dt className="u-label opacity-50">{key}</dt>
+              <dt className="u-label opacity-85">{key}</dt>
               <dd className="u-label mt-3 leading-relaxed">{value}</dd>
             </div>
           ))}

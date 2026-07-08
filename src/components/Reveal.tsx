@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 
 /**
  * Generic scroll-reveal: children rise + fade in when entering the viewport.
@@ -24,6 +24,12 @@ export default function Reveal({
   useGSAP(
     () => {
       if (!ref.current) return;
+
+      if (prefersReducedMotion()) {
+        gsap.set(ref.current, { y: 0, autoAlpha: 1 });
+        return;
+      }
+
       gsap.fromTo(
         ref.current,
         { y, autoAlpha: 0 },

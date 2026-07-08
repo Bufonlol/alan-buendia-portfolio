@@ -13,6 +13,9 @@ import { LangProvider } from "@/lib/i18n";
 import Navbar from "@/components/Navbar";
 import GrainOverlay from "@/components/GrainOverlay";
 import Cursor from "@/components/Cursor";
+import BootIntro from "@/components/BootIntro";
+import AvailableBadge from "@/components/AvailableBadge";
+import EasterEggs from "@/components/EasterEggs";
 
 type AppContextType = {
   /** true once the preloader has finished — entrance animations key off this */
@@ -157,9 +160,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <LangProvider>
       <AppContext.Provider value={{ ready: true, navigate }}>
+        <BootIntro />
         <GrainOverlay />
         <Cursor />
         <Navbar />
+        <AvailableBadge />
+        <EasterEggs />
         <div id="page-root">{children}</div>
       {/* Route transition curtain */}
       <div

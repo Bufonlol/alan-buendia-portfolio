@@ -6,7 +6,10 @@
   --color-ink: #0647ff;
   --color-ink-soft: #0647ff;
   --color-accent: #0647ff;
-  --color-muted: rgba(6, 71, 255, 0.62);
+  /* 0.62 measured ~2.97:1 against --color-paper — fails WCAG AA (4.5:1) and
+     was used on real copy (LabCard notes, ArcadeClient sentences), not just
+     decorative labels. 0.85 measures ~4.58:1, comfortably over the line. */
+  --color-muted: rgba(6, 71, 255, 0.85);
   --color-line: rgba(6, 71, 255, 0.2);
   --color-line-paper: rgba(247, 246, 239, 0.28);
 }
@@ -16,6 +19,7 @@
   --font-sans: var(--font-archivo);
   --font-serif: var(--font-archivo);
   --font-mono: var(--font-plex-mono);
+  --font-poster: var(--font-anton);
 }
 
 :root {
@@ -81,33 +85,6 @@ body {
   border: 1px solid currentColor;
 }
 
-/* Phase 01 — modular archive canvas. Dense by design, ordered by named areas. */
-.modular-canvas {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas:
-    "title title"
-    "asset asset"
-    "index status"
-    "project project"
-    "tools tools"
-    "about vertical"
-    "micro vertical"
-    "contact contact";
-  gap: 0.5rem;
-}
-
-.hero-title-frame { grid-area: title; min-height: 24rem; }
-.hero-index { grid-area: index; min-height: 9rem; }
-.hero-status { grid-area: status; min-height: 9rem; }
-.hero-asset { grid-area: asset; min-height: 23rem; }
-.hero-project { grid-area: project; min-height: 18rem; }
-.hero-tools { grid-area: tools; min-height: 16rem; }
-.hero-about { grid-area: about; }
-.hero-micro { grid-area: micro; }
-.hero-contact { grid-area: contact; min-height: 7rem; }
-.hero-vertical { grid-area: vertical; min-height: 14rem; }
-
 .chaos-frame::before {
   content: "";
   position: absolute;
@@ -115,6 +92,535 @@ body {
   border: 1px solid currentColor;
   opacity: 0.13;
   pointer-events: none;
+}
+
+/* ================================================================
+   HERO — brutalist tech-poster composition. Anton condensed display type,
+   hard rectangular cut blocks, halftone/hatch texture. 80% typography,
+   20% system chrome.
+   ================================================================ */
+
+/* Thin technical index strip, flush under the nav border — a row of small
+   labelled cells rather than a heavy banner, so it reads as a poster
+   index line rather than another UI toolbar. */
+.hero-tech-strip {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--color-ink);
+}
+
+.hero-tech-strip-cell {
+  border-right: 1px solid color-mix(in srgb, var(--color-ink) 35%, transparent);
+  padding: 0.3rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hero-tech-strip-cell:last-child {
+  border-right: 0;
+}
+
+@media (max-width: 767px) {
+  .hero-tech-strip-cell:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+.hero-poster {
+  height: auto;
+  min-height: calc(100dvh - 2.5rem);
+}
+
+@media (min-width: 768px) {
+  .hero-poster {
+    /* Size to content rather than a fixed viewport-based height — a fixed
+       cap combined with overflow:hidden silently clips content (the tag
+       list) whenever the type scale changes. min-height keeps it feeling
+       like a full opening screen without ever hard-cropping content.
+       No 44rem ceiling: on tall viewports that cap left the next section's
+       full-bleed blue background peeking in above the fold, which read as
+       part of the hero itself instead of a clean scroll transition.
+       Trimmed further (was -2.75rem) — the bento's now-taller "window" cells
+       (title bar + beveled body) fill more of the section on their own, so
+       the old ceiling was pooling more empty cream above ALAN than needed. */
+    height: auto;
+    min-height: calc(100dvh - 8rem);
+  }
+}
+
+/* The composition stage — ALAN and BUENDÍA share this coordinate space so
+   the connecting mass block and both words' cut regions can line up.
+   The stage always grows to fill leftover height (hero-poster forces a
+   full-viewport min-height on every breakpoint so the next section's
+   full-bleed color never peeks in above the fold). Anchoring to the bottom
+   (not centering) pools any extra space above the name instead of between
+   the name and the badges below it — the poster reads as compact and
+   bottom-heavy like the reference, not centered-with-a-gap. */
+.hero-stage {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* ALAN stays fully solid ink — the reference reads as "blue type on cream"
+   here. A decorative block was tried behind the letters at one point but it
+   visually cut a confusing notch into "N" (an unrecognizable step-shape, not
+   a letter) — removed rather than repositioned again, since ALAN's
+   legibility is not worth trading for one more graphic flourish. */
+
+/* Shared display-type base. */
+.hero-name {
+  display: block;
+  width: max-content;
+  font-family: var(--font-archivo);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.68;
+}
+
+.hero-name-alan {
+  position: relative;
+  z-index: 3;
+  color: var(--color-ink);
+  font-size: clamp(8rem, 22vw, 23rem);
+  letter-spacing: -0.04em;
+}
+
+/* BUENDÍA as one solid ink block with white text — not a split word with a
+   JS-measured cutout half sitting on its own clip-path plate (that broke in
+   a new way almost every pass: torn edges, skew drift, checkerboard bleed).
+   `background-color` on the text itself needs zero measurement and can't
+   drift out of alignment, ever. Padding is in `em` so it scales with the
+   clamp()'d font-size instead of needing a fixed value per breakpoint. */
+.hero-name-buendia {
+  position: relative;
+  z-index: 3;
+  font-size: clamp(7rem, 18vw, 20rem);
+  letter-spacing: -0.035em;
+  color: var(--color-paper);
+  background-color: var(--color-ink);
+  padding: 0.04em 0.1em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.hero-name-group {
+  position: relative;
+  isolation: isolate;
+  /* A block-level div defaults to full container width; without this every
+     percentage-based child positions itself against the stage's width
+     instead of the word's actual rendered width. */
+  width: max-content;
+}
+
+.hero-name-group--alan {
+  z-index: 3;
+}
+
+.hero-name-group--buendia {
+  z-index: 4;
+  margin-left: clamp(0.25rem, 1.5vw, 1.5rem);
+}
+
+/* Bento row — Swiss grid discipline (strict column tracks) carrying a
+   Windows-95-error-dialog reference: each cell is its own beveled "system
+   window" with a blue title bar, instead of one fused hairline grid. The
+   slight independent rotation + stacked z-index on three of the five reads
+   as "too many dialogs open at once" (maximalist, punk) while the grid
+   underneath keeps everything on a strict Swiss track. Blue and white only. */
+.hero-bento {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 0.9fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "quote quote stamp panel"
+    "desc  tags  stamp panel";
+  gap: 0.65rem;
+  padding: 0.65rem;
+  border-top: 1px solid var(--color-ink);
+}
+
+.hero-bento-cell {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--color-ink);
+  background: var(--color-paper);
+  /* A beveled "raised window" edge built from two blue tones (lighter
+     inset highlight, darker outset shadow) instead of the usual system
+     gray, so the Windows-dialog reference stays strictly blue/white. */
+  box-shadow:
+    inset 1px 1px 0 color-mix(in srgb, var(--color-ink) 18%, white 82%),
+    3px 3px 0 color-mix(in srgb, var(--color-ink) 78%, black 20%);
+}
+
+.hero-bento-cell--quote { grid-area: quote; z-index: 3; transform: rotate(-0.6deg); }
+.hero-bento-cell--desc { grid-area: desc; }
+.hero-bento-cell--tags { grid-area: tags; }
+.hero-bento-cell--stamp { grid-area: stamp; z-index: 4; transform: rotate(1deg); }
+.hero-bento-cell--panel { grid-area: panel; z-index: 2; transform: rotate(-0.8deg); }
+
+/* Title bar — the literal Windows-error reference: a solid ink strip
+   naming the cell's real content like a filename, plus the three stock
+   window-control glyphs. Decorative as chrome, but the label itself is
+   never invented (see Hero.tsx for what each cell actually is). */
+.win-titlebar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 0.3rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.win-titlebar-controls {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.win-titlebar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.95em;
+  height: 0.95em;
+  border: 1px solid var(--color-paper);
+  font-size: 7px;
+  line-height: 1;
+}
+
+.win-body {
+  flex: 1;
+  padding: 0.75rem 0.85rem;
+}
+
+.hero-bento-cell--panel .win-body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-bento-quote {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.hero-bento-barcode {
+  height: 0.65rem;
+  width: 3.5rem;
+  margin-top: 0.5rem;
+  opacity: 0.7;
+}
+
+.hero-bento-desc-text {
+  margin-top: 0.5rem;
+  font-size: clamp(0.95rem, 1.7vw, 1.15rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.hero-bento-meta {
+  margin-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+@media (max-width: 767px) {
+  .hero-bento {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "quote quote"
+      "stamp stamp"
+      "desc  tags"
+      "panel panel";
+  }
+  /* No overlapping "scattered windows" on small screens — rotated,
+     stacked cells would just crowd and clip in a single narrow column. */
+  .hero-bento-cell--quote,
+  .hero-bento-cell--stamp,
+  .hero-bento-cell--panel {
+    transform: none;
+  }
+}
+
+/* Status readout — no longer a floating panel with its own border; it's
+   a bento cell, so the parent .hero-bento-cell supplies the frame. */
+.hero-panel {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  background: var(--color-paper);
+}
+
+.hero-panel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-ink);
+  padding: 0.45rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: inherit;
+  text-decoration: none;
+}
+
+a.hero-panel-row:hover,
+a.hero-panel-row:focus-visible {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.hero-panel-row:last-child {
+  border-bottom: 0;
+}
+
+.hero-panel-row--ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Tech tags — hard rectangles, borders only, no pill radius. */
+.hero-tag {
+  border: 1px solid color-mix(in srgb, var(--color-ink) 50%, transparent);
+  padding: 0.25rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Reusable masking-tape strip — diagonal stripes, a hard drop shadow, and a
+   slight rotation, pinning a corner of the stamp cell like a torn-and-taped
+   zine collage piece. Pure CSS gradient, no image asset, blue-only. */
+.tape-strip {
+  position: absolute;
+  z-index: 5;
+  width: 3.4rem;
+  height: 1.1rem;
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--color-ink) 55%, transparent) 0 3px,
+    color-mix(in srgb, var(--color-ink) 30%, transparent) 3px 6px
+  );
+  background-color: color-mix(in srgb, var(--color-paper) 82%, var(--color-ink) 18%);
+  box-shadow: 0 2px 3px rgba(6, 71, 255, 0.25);
+  pointer-events: none;
+}
+
+/* The availability stamp — a rotated, dashed-ring badge. Real, actionable
+   content (status + email + location), just wearing a stamp instead of a
+   clean Swiss card, to match the collage register of this redesign. */
+.hero-stamp {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-align: center;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.hero-stamp-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  width: clamp(6rem, 13vw, 8rem);
+  aspect-ratio: 1;
+  padding: 0.9rem;
+  border: 2px dashed var(--color-ink);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+.hero-stamp:hover .hero-stamp-ring,
+.hero-stamp:focus-visible .hero-stamp-ring {
+  transform: rotate(0deg);
+  background-color: var(--color-ink);
+}
+
+.hero-stamp:hover .hero-stamp-status,
+.hero-stamp:hover .hero-stamp-email,
+.hero-stamp:focus-visible .hero-stamp-status,
+.hero-stamp:focus-visible .hero-stamp-email {
+  color: var(--color-paper);
+}
+
+.hero-stamp-status {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  transition: color 200ms ease;
+}
+
+.hero-stamp-email {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 200ms ease;
+}
+
+.hero-stamp-location {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* A handful of static, low-opacity scratch marks — offset-print wear on
+   top of the sitewide grain. Static (no animation cost), never enough to
+   threaten legibility. */
+.hero-scratch {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, currentColor 40%, currentColor 60%, transparent);
+  opacity: 0.1;
+  color: var(--color-ink);
+}
+
+.hero-scratch-a {
+  left: 8%;
+  top: 18%;
+  width: 34%;
+  height: 1px;
+  transform: rotate(-3deg);
+}
+
+.hero-scratch-b {
+  left: 55%;
+  top: 62%;
+  width: 22%;
+  height: 1px;
+  transform: rotate(2deg);
+}
+
+.hero-scratch-c {
+  left: 20%;
+  top: 80%;
+  width: 40%;
+  height: 1px;
+  transform: rotate(-1deg);
+}
+
+.hero-scratch-d {
+  left: 68%;
+  top: 40%;
+  width: 18%;
+  height: 1px;
+  transform: rotate(4deg);
+}
+
+.hero-scratch-e {
+  left: 5%;
+  top: 48%;
+  width: 16%;
+  height: 1px;
+  transform: rotate(-5deg);
+}
+
+/* Light ink stains — soft, irregular radial blotches at very low opacity.
+   Reads as uneven print pressure, not dirt: kept subtle so it never muddies
+   the flat color fields or competes with the type. */
+.hero-blotch {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-ink) 0%, transparent 70%);
+  opacity: 0.08;
+  filter: blur(2px);
+}
+
+.hero-blotch-a {
+  left: 12%;
+  top: 55%;
+  width: 14%;
+  aspect-ratio: 1;
+  transform: scaleX(1.6) rotate(-8deg);
+}
+
+.hero-blotch-b {
+  left: 78%;
+  top: 15%;
+  width: 10%;
+  aspect-ratio: 1;
+  transform: scaleX(1.3) rotate(12deg);
+}
+
+.hero-blotch-c {
+  left: 45%;
+  top: 68%;
+  width: 12%;
+  aspect-ratio: 1;
+  transform: scaleX(1.4) rotate(-15deg);
+}
+
+@media (max-width: 767px) {
+  .hero-name-alan {
+    font-size: clamp(3.6rem, 17vw, 5.5rem);
+  }
+  .hero-name-buendia {
+    font-size: clamp(3.2rem, 15.5vw, 4.75rem);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-panel-row {
+    padding: 0.55rem 0.85rem;
+    font-size: 10px;
+  }
 }
 
 .manifesto-poster {
@@ -580,49 +1086,23 @@ body {
   .metric-vertical { grid-column: 12; grid-row: 1 / span 2; min-height: 0; }
 }
 
-@media (min-width: 768px) {
-  .modular-canvas {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(8, minmax(4.5rem, auto));
-    grid-template-areas:
-      "title title title title title title title asset asset asset asset vertical"
-      "title title title title title title title asset asset asset asset vertical"
-      "title title title title title title title asset asset asset asset vertical"
-      "title title title title title title title asset asset asset asset vertical"
-      "index index status status status project project project project project project vertical"
-      "index index . . . project project project project project project vertical"
-      "about about about about micro tools tools tools contact contact contact vertical"
-      "about about about about micro tools tools tools contact contact contact vertical";
-    gap: clamp(0.5rem, 0.8vw, 0.75rem);
-  }
-
-  .hero-title-frame,
-  .hero-asset,
-  .hero-project,
-  .hero-tools,
-  .hero-index,
-  .hero-status,
-  .hero-contact,
-  .hero-vertical {
-    min-height: 0;
-  }
-
-  .hero-title-frame { min-height: clamp(28rem, 40vw, 36rem); }
-  .hero-project { transform: translate(0.6rem, -0.65rem); z-index: 3; }
-  .hero-tools { transform: translate(-0.35rem, 0.45rem); z-index: 4; }
-  .hero-micro { transform: translateY(-0.3rem); }
-  .hero-vertical { transform: translateX(-0.25rem); z-index: 5; }
-}
-
-@media (min-width: 1280px) {
-  .modular-canvas {
-    grid-template-rows: repeat(8, minmax(5rem, auto));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .chaos-piece,
+  .chaos-piece-top,
+  .chaos-piece-title,
+  .chaos-piece-panel,
+  .chaos-piece-rest,
+  .chaos-piece-bottom,
   .manifesto-piece {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .boot-line,
+  .boot-word,
+  .boot-enter,
+  .boot-panel {
     opacity: 1 !important;
     transform: none !important;
     clip-path: none !important;
@@ -826,202 +1306,12 @@ body {
     color: var(--color-accent);
   }
 
-  /* === Stat soft bloom on hover (Aceternity UI-inspired) ===
-     A circular, fully-faded glow behind the number — no overflow clip,
-     so it never shows a hard rectangular edge near the element bounds. */
-  .stat-item {
-    position: relative;
-    isolation: isolate;
-  }
-  .stat-item::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 42%;
-    width: 240px;
-    height: 240px;
-    z-index: -1;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(221, 74, 18, 0.14) 0%,
-      transparent 65%
-    );
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0;
-    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-  }
-  .stat-item:hover::before {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  /* Number glow on stat hover (React Bits / cult-ui inspired) */
-  .stat-item p[data-count] {
-    transition: text-shadow 0.4s ease;
-  }
-  .stat-item:hover p[data-count] {
-    text-shadow:
-      0 0 20px rgba(221, 74, 18, 0.45),
-      0 0 55px rgba(221, 74, 18, 0.18);
-  }
-
   /* === Dot grid background (Aceternity UI-inspired) === */
   .dot-grid {
     background-image: radial-gradient(
       circle, rgba(24, 21, 17, 0.16) 1px, transparent 1px
     );
     background-size: 26px 26px;
-  }
-
-  /* === Aceternity-style grid background with radial fade mask === */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(24, 21, 17, 0.07) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(24, 21, 17, 0.07) 1px, transparent 1px);
-    background-size: 48px 48px;
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
-  }
-  /* dark variant for ink sections */
-  .bg-grid-paper {
-    background-image:
-      linear-gradient(to right, rgba(243, 239, 230, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(243, 239, 230, 0.06) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-
-  /* === Magic UI-style retro perspective grid (for dark sections) === */
-  .retro-grid {
-    perspective: 200px;
-    -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 85%);
-    mask-image: linear-gradient(to top, #000 0%, transparent 85%);
-  }
-  .retro-grid::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    transform: rotateX(58deg);
-    transform-origin: bottom center;
-    background-image:
-      linear-gradient(to right, rgba(221, 74, 18, 0.35) 1px, transparent 0),
-      linear-gradient(to bottom, rgba(221, 74, 18, 0.35) 1px, transparent 0);
-    background-size: 60px 60px;
-    background-repeat: repeat;
-    height: 200%;
-    width: 200%;
-    margin-left: -50%;
-    animation: retro-grid-scroll 14s linear infinite;
-  }
-
-  /* === Aceternity-style aurora glow (subtle orange blobs) === */
-  .aurora {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-  .aurora::before,
-  .aurora::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(70px);
-    opacity: 0.5;
-  }
-  .aurora::before {
-    width: 45vw;
-    height: 45vw;
-    top: -10%;
-    left: -5%;
-    background: radial-gradient(circle, rgba(221, 74, 18, 0.22), transparent 65%);
-    animation: aurora-drift-a 18s ease-in-out infinite alternate;
-  }
-  .aurora::after {
-    width: 40vw;
-    height: 40vw;
-    bottom: -15%;
-    right: -8%;
-    background: radial-gradient(circle, rgba(221, 74, 18, 0.14), transparent 65%);
-    animation: aurora-drift-b 22s ease-in-out infinite alternate;
-  }
-
-  /* === Cursor spotlight card (Aceternity / cult-ui inspired) === */
-  .spotlight-card {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .spotlight-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: radial-gradient(
-      circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(221, 74, 18, 0.12) 0%,
-      transparent 70%
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-  }
-  .spotlight-card:hover::before { opacity: 1; }
-  .spotlight-card:hover {
-    border-color: rgba(221, 74, 18, 0.4);
-    transform: translateY(-3px);
-  }
-
-  /* === Border beam (Magic UI-inspired) — a light arc travels the border === */
-  .border-beam {
-    position: relative;
-  }
-  .border-beam::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1.5px;
-    background: conic-gradient(
-      from var(--beam-angle),
-      transparent 0deg,
-      transparent 300deg,
-      var(--beam-color, var(--color-accent)) 335deg,
-      var(--beam-color, var(--color-accent)) 345deg,
-      transparent 360deg
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    animation: border-beam-spin 5s linear infinite;
-    animation-delay: var(--beam-delay, 0s);
-  }
-
-  /* === Meteors (Magic UI-inspired) === */
-  .meteor {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    border-radius: 9999px;
-    background: var(--color-accent);
-    box-shadow: 0 0 6px 1px rgba(221, 74, 18, 0.5);
-    transform: rotate(215deg);
-    animation: meteor-fall linear infinite;
-  }
-  .meteor::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 60px;
-    height: 1px;
-    transform: translateY(-50%);
-    background: linear-gradient(90deg, var(--color-accent), transparent);
   }
 
   /* === Gradient sweep on section headings (Magic UI-inspired) === */
@@ -1161,46 +1451,10 @@ body {
   to   { --gradient-pos: 130%; }
 }
 
-@keyframes retro-grid-scroll {
-  0% { transform: rotateX(58deg) translateY(0); }
-  100% { transform: rotateX(58deg) translateY(60px); }
-}
-
-@keyframes aurora-drift-a {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(8%, 12%) scale(1.15); }
-}
-
-@keyframes aurora-drift-b {
-  0% { transform: translate(0, 0) scale(1.1); }
-  100% { transform: translate(-10%, -8%) scale(0.95); }
-}
-
-@keyframes border-beam-spin {
-  to { --beam-angle: 360deg; }
-}
-
-@keyframes meteor-fall {
-  0% { transform: rotate(215deg) translateX(0); opacity: 1; }
-  70% { opacity: 1; }
-  100% { transform: rotate(215deg) translateX(-600px); opacity: 0; }
-}
-
 /* Permanent subtle glow on ◆ accent glyphs inside headings (cult-ui inspired) */
 h1 .text-accent,
 h2 .text-accent {
-  text-shadow: 0 0 14px rgba(221, 74, 18, 0.28);
-}
-
-/* CTA button orange glow on hover — outside @layer so it wins over Tailwind utilities */
-.btn-accent-glow {
-  transition: transform 0.3s ease, box-shadow 0.4s ease;
-}
-.btn-accent-glow:hover {
-  box-shadow:
-    0 0 0 1px rgba(221, 74, 18, 0.25),
-    0 8px 28px rgba(221, 74, 18, 0.38),
-    0 0 60px rgba(221, 74, 18, 0.12);
+  text-shadow: 0 0 14px rgba(6, 71, 255, 0.32);
 }
 
 /* === Editorial collage pass: notched-corner cards (clip-path, not border-radius) === */
@@ -1225,17 +1479,8 @@ h2 .text-accent {
   .technical-noise {
     display: none;
   }
-  /* aurora blur + retro-grid perspective are expensive — drop them on small screens */
-  .aurora,
-  .aurora-blob,
-  .retro-grid,
-  .meteors {
+  .aurora-blob {
     display: none;
-  }
-  /* keep the static border but stop the per-frame conic repaint on mobile */
-  .border-beam::after {
-    animation: none;
-    opacity: 0.5;
   }
 }
 

@@ -101,7 +101,7 @@ export default function Process() {
             <div className="mt-8">
               <span className="display text-[clamp(3.8rem,7vw,6rem)] leading-none">{step.step}</span>
               <h3 className="display mt-2 text-[clamp(2rem,4vw,4rem)] leading-[0.86]">{t(step.name)}</h3>
-              <p className="mt-5 max-w-[42ch] text-sm font-semibold leading-relaxed opacity-75">{t(step.desc)}</p>
+              <p className="mt-5 max-w-[42ch] text-sm font-semibold leading-relaxed opacity-85">{t(step.desc)}</p>
             </div>
           </article>
         ))}

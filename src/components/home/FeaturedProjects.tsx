@@ -86,7 +86,7 @@ export default function FeaturedProjects() {
               ["OUTPUT", "REAL SYSTEMS"],
             ].map(([label, value]) => (
               <div key={label} className="border-b border-r border-ink p-3 even:border-r-0 [&:nth-last-child(-n+2)]:border-b-0">
-                <SystemLabel className="opacity-55">{label}</SystemLabel>
+                <SystemLabel className="opacity-85">{label}</SystemLabel>
                 <p className="u-label mt-2 leading-relaxed">{value}</p>
               </div>
             ))}

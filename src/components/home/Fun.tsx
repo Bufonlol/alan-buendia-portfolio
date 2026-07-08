@@ -45,7 +45,7 @@ export default function Fun() {
           </div>
           <div className="flex h-[calc(100%-5rem)] flex-col justify-center">
             <span className="display block text-[clamp(6rem,13vw,12rem)] leading-[0.7]">Aa</span>
-            <span className="display mt-4 block text-[clamp(2.4rem,5vw,4.5rem)] leading-none opacity-35">
+            <span className="display mt-4 block text-[clamp(2.4rem,5vw,4.5rem)] leading-none opacity-65">
               012345
             </span>
           </div>
@@ -61,7 +61,7 @@ export default function Fun() {
         <div className="style-rules border border-ink">
           {STYLE.rules.map((rule, index) => (
             <div key={rule.name.en} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-ink p-4 last:border-b-0">
-              <SystemLabel className="opacity-50">0{index + 1}</SystemLabel>
+              <SystemLabel className="opacity-85">0{index + 1}</SystemLabel>
               <div>
                 <h3 className="display text-2xl">{t(rule.name)}</h3>
                 <p className="mt-2 text-sm font-semibold leading-relaxed">{t(rule.note)}</p>

@@ -96,11 +96,7 @@ export default function Stack() {
       <div className="relative z-10">
         <header className="stack-heading">
           <div className="stack-heading-title border border-ink p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <SystemLabel>PRODUCTION TOOLCHAIN / MATRIX</SystemLabel>
-              <CrossMark />
-            </div>
-            <h2 className="display mt-8 text-[clamp(2.5rem,8vw,6.8rem)] leading-[0.8]">
+            <h2 className="display text-[clamp(2.5rem,8vw,6.8rem)] leading-[0.8]">
               {t({ es: "Sistema de herramientas", en: "Build system" })}
             </h2>
           </div>
@@ -140,14 +136,14 @@ export default function Stack() {
                 } ${inverted ? "bg-ink text-paper" : "bg-paper text-ink"}`}
               >
                 <div className="flex items-center justify-between">
-                  <SystemLabel className="opacity-60">{String(index + 1).padStart(2, "0")} / {t(item.meta)}</SystemLabel>
+                  <SystemLabel className="opacity-85">{String(index + 1).padStart(2, "0")} / {t(item.meta)}</SystemLabel>
                   <Icon className="h-5 w-5 transition-transform duration-300 group-hover:-rotate-6" strokeWidth={1.5} />
                 </div>
                 <div>
                   <p className={`display leading-[0.88] ${giant ? "text-[clamp(2rem,4.5vw,4.8rem)]" : "text-[clamp(1.3rem,2.4vw,2.4rem)]"}`}>
                     {item.name}
                   </p>
-                  <SystemLabel className="mt-2 block opacity-55">SYS / VERIFIED / PROD</SystemLabel>
+                  <SystemLabel className="mt-2 block opacity-85">SYS / VERIFIED / PROD</SystemLabel>
                 </div>
               </div>
             );

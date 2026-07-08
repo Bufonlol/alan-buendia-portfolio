@@ -47,7 +47,7 @@ export default function EasterEggs() {
         const size = gsap.utils.random(16, 44);
         s.style.cssText = `position:absolute;top:-60px;left:${gsap.utils.random(
           0, 100
-        )}%;font-size:${size}px;color:${i % 3 === 0 ? "#DD4A12" : "#181511"}`;
+        )}%;font-size:${size}px;color:${i % 3 === 0 ? "#0647FF" : "#181511"}`;
         burst.appendChild(s);
         gsap.to(s, {
           y: window.innerHeight + 120,

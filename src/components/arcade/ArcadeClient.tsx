@@ -57,11 +57,11 @@ export default function ArcadeClient() {
                 </ul>
               </div>
               <div className="border border-ink bg-ink p-5 text-paper">
-                <SystemLabel className="opacity-70">
+                <SystemLabel className="opacity-85">
                   {t({ es: "SIN DEPENDENCIAS", en: "ZERO DEPENDENCIES" })}
                 </SystemLabel>
                 <p className="display mt-3 text-3xl leading-none">CANVAS 2D</p>
-                <p className="u-label mt-3 opacity-70">
+                <p className="u-label mt-3 opacity-85">
                   {t({ es: "SIN MOTOR / SIN LIBRERÍA", en: "NO ENGINE / NO LIBRARY" })}
                 </p>
               </div>

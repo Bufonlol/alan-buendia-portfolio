@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { useApp } from "@/components/AppShell";
 
@@ -12,6 +12,12 @@ export default function AvailableBadge() {
 
   useGSAP(() => {
     if (!ref.current) return;
+
+    if (prefersReducedMotion()) {
+      gsap.set(ref.current, { y: 0, autoAlpha: 1 });
+      return;
+    }
+
     gsap.fromTo(
       ref.current,
       { y: 16, autoAlpha: 0 },
