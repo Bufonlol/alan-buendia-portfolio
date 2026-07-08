@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
-import { assemble, stampLabel } from "@/lib/archiveMotion";
+import { windowPop } from "@/lib/archiveMotion";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import { TechnicalGrid, Barcode } from "@/components/system/TechnicalLayer";
@@ -11,6 +11,20 @@ import { InfoPanel } from "@/components/home/hero/InfoPanel";
 import { TechTags } from "@/components/home/hero/TechTags";
 import { TechStrip } from "@/components/home/hero/TechStrip";
 import { TextureLayer } from "@/components/home/hero/TextureLayer";
+
+/** A stubborn "x" — the window rattles as if it refuses to close, like a
+    real error dialog that just won't go away. */
+function refuseToClose(event: React.MouseEvent<HTMLSpanElement>) {
+  if (prefersReducedMotion()) return;
+  const cell = event.currentTarget.closest<HTMLElement>(".hero-bento-cell");
+  if (!cell) return;
+  gsap
+    .timeline()
+    .to(cell, { x: -8, duration: 0.05, ease: "power1.inOut" })
+    .to(cell, { x: 8, duration: 0.08, ease: "power1.inOut" })
+    .to(cell, { x: -5, duration: 0.08, ease: "power1.inOut" })
+    .to(cell, { x: 0, duration: 0.08, ease: "power1.inOut", clearProps: "x" });
+}
 
 /** The Windows-error-dialog title bar reused on every bento cell: a real
     filename-style label for that cell's content, plus the three stock
@@ -22,7 +36,7 @@ function WinTitleBar({ label }: { label: string }) {
       <span className="win-titlebar-controls">
         <span className="win-titlebar-btn">-</span>
         <span className="win-titlebar-btn">□</span>
-        <span className="win-titlebar-btn">x</span>
+        <span className="win-titlebar-btn" onClick={refuseToClose}>x</span>
       </span>
     </span>
   );
@@ -39,15 +53,15 @@ export default function Hero() {
 
       const mass = gsap.utils.toArray<HTMLElement>(".chaos-piece-mass", section);
       const word = gsap.utils.toArray<HTMLElement>(".chaos-piece-word", section);
-      const panel = gsap.utils.toArray<HTMLElement>(".chaos-piece-panel", section);
-      const desc = gsap.utils.toArray<HTMLElement>(".chaos-piece-desc", section);
+      const windows = gsap.utils.toArray<HTMLElement>(".hero-bento-cell", section);
 
       if (prefersReducedMotion()) {
-        gsap.set([...mass, ...word, ...panel, ...desc], {
+        gsap.set([...mass, ...word, ...windows], {
           autoAlpha: 1,
           x: 0,
           y: 0,
           scaleX: 1,
+          scale: 1,
           clipPath: "inset(0% 0% 0% 0%)",
         });
         return;
@@ -66,8 +80,9 @@ export default function Hero() {
         { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.7, stagger: 0.12 },
         0.15
       );
-      assemble(tl, panel, { position: 0.4, stagger: 0.04, duration: 0.5 });
-      stampLabel(tl, desc, { position: 0.55, stagger: 0.05 });
+      // Each window pops in with a springy overshoot, then rattles once —
+      // like a cascade of system-error dialogs firing off in sequence.
+      windowPop(tl, windows, { position: 0.4, stagger: 0.13, shake: 7 });
     },
     { scope: sectionRef }
   );
@@ -91,7 +106,7 @@ export default function Hero() {
             window (title bar + body), scattered a few degrees off-grid like
             too many error boxes open on a desktop at once. */}
         <div className="hero-bento">
-          <div className="hero-bento-cell hero-bento-cell--quote chaos-piece-panel">
+          <div className="hero-bento-cell hero-bento-cell--quote">
             <WinTitleBar label="QUOTE.TXT" />
             <div className="win-body">
               <p className="hero-bento-quote">&ldquo;{t(SITE.tagline)}&rdquo;</p>
@@ -99,7 +114,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="hero-bento-cell hero-bento-cell--desc chaos-piece-desc">
+          <div className="hero-bento-cell hero-bento-cell--desc">
             <WinTitleBar label="ABOUT.EXE" />
             <div className="win-body">
               <p className="u-label">FRONTEND ENGINEER</p>
@@ -113,7 +128,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="hero-bento-cell hero-bento-cell--tags chaos-piece-desc">
+          <div className="hero-bento-cell hero-bento-cell--tags">
             <WinTitleBar label="STACK.EXE" />
             <div className="win-body">
               <p className="u-label">STACK</p>
@@ -121,7 +136,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="hero-bento-cell hero-bento-cell--stamp chaos-piece-panel">
+          <div className="hero-bento-cell hero-bento-cell--stamp">
             <WinTitleBar label="CONTACT.EXE" />
             <a
               href={`mailto:${SITE.email}`}
@@ -141,7 +156,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <div className="hero-bento-cell hero-bento-cell--panel chaos-piece-panel">
+          <div className="hero-bento-cell hero-bento-cell--panel">
             <WinTitleBar label="STATUS.EXE" />
             <div className="win-body">
               <InfoPanel />

@@ -339,6 +339,17 @@ body {
   line-height: 1;
 }
 
+/* The close glyph is the only one wired up (see Hero.tsx's refuseToClose) —
+   it rattles the window instead of closing it, so it needs to read as
+   clickable even though the rest of the title bar stays decorative chrome. */
+.win-titlebar-btn:last-child {
+  cursor: pointer;
+}
+.win-titlebar-btn:last-child:hover {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
 .win-body {
   flex: 1;
   padding: 0.75rem 0.85rem;

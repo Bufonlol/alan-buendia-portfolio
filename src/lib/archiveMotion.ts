@@ -145,6 +145,40 @@ export function disrupt(
   return tl;
 }
 
+/** WINDOW POP — a system-dialog entrance: each target scales up with a
+ * springy overshoot, then immediately rattles side to side like a Windows
+ * error box announcing itself, before settling. Clears its own inline
+ * transform afterward so the element's own CSS rotation (the hero's bento
+ * windows sit a degree or two off-axis) takes back over untouched. */
+export function windowPop(
+  tl: gsap.core.Timeline,
+  targets: Targets,
+  opts: { position?: number; stagger?: number; shake?: number } = {}
+) {
+  const { position = 0, stagger = 0.15, shake = 7 } = opts;
+
+  if (prefersReducedMotion()) {
+    tl.set(targets, { autoAlpha: 1, scale: 1, x: 0 }, position);
+    return tl;
+  }
+
+  const els = gsap.utils.toArray<HTMLElement>(targets);
+  els.forEach((el, i) => {
+    const base = position + i * stagger;
+    tl.fromTo(
+      el,
+      { scale: 0.72, autoAlpha: 0 },
+      { scale: 1, autoAlpha: 1, duration: 0.32, ease: "back.out(2.6)" },
+      base
+    )
+      .to(el, { x: -shake, duration: 0.05, ease: "power1.inOut" }, base + 0.3)
+      .to(el, { x: shake, duration: 0.08, ease: "power1.inOut" }, base + 0.35)
+      .to(el, { x: -shake * 0.55, duration: 0.08, ease: "power1.inOut" }, base + 0.43)
+      .to(el, { x: 0, duration: 0.09, ease: "power1.inOut", clearProps: "x" }, base + 0.51);
+  });
+  return tl;
+}
+
 /** LOCK — final settle: a no-overshoot snap to identity transform signalling the composition is fixed. */
 export function lock(
   tl: gsap.core.Timeline,
