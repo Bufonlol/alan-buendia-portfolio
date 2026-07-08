@@ -8,7 +8,7 @@ import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
 import Signature from "@/components/art/Signature";
 import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, PulseDot, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
+import { Barcode, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
 
 export default function Contact() {
   const { t } = useLang();
