@@ -32,20 +32,17 @@ export default function FeaturedProjects() {
       if (!el || prefersReducedMotion()) return;
 
       /* T1 — diagonal wipe on scroll mode only (the deck brings its own
-         transition between pages). */
+         transition between pages). One-shot on enter so it reads as a
+         deliberate page transition on mobile, not a subtle scrub. */
       if (!isDeckCapable()) {
         gsap.fromTo(
           el,
-          { clipPath: "polygon(0% 0px, 100% 150px, 100% 100%, 0% 100%)" },
+          { clipPath: "polygon(0% 0px, 100% 130px, 100% 100%, 0% 100%)" },
           {
             clipPath: "polygon(0% 0px, 100% 0px, 100% 100%, 0% 100%)",
-            ease: "none",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 95%",
-              end: "top 40%",
-              scrub: 0.4,
-            },
+            duration: 0.9,
+            ease: "power3.inOut",
+            scrollTrigger: { trigger: el, start: "top 82%", once: true },
           }
         );
       }

@@ -17,7 +17,7 @@ export default function About() {
     () => {
       const el = root.current;
       if (!el || prefersReducedMotion() || isDeckCapable()) return;
-      /* scrubbed geometric expansion tied to the section's entry */
+      /* one-shot geometric explosion on enter */
       gsap.fromTo(
         ".about-geo",
         { scale: 0.35, rotate: -18, autoAlpha: 0, transformOrigin: "center" },
@@ -25,13 +25,9 @@ export default function About() {
           scale: 1,
           rotate: 0,
           autoAlpha: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 90%",
-            end: "top 35%",
-            scrub: 0.4,
-          },
+          duration: 0.95,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 72%", once: true },
         }
       );
     },

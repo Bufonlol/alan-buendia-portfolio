@@ -24,21 +24,15 @@ export default function Contact() {
         gsap.set(band, { display: "none" });
         return;
       }
-      /* scrubbed: the acid band crosses the section with the scroll */
-      gsap.fromTo(
-        band,
-        { xPercent: -180 },
-        {
-          xPercent: 500,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 90%",
-            end: "top 10%",
-            scrub: 0.4,
-          },
-        }
-      );
+      /* one-shot: the acid band sweeps across the section on enter */
+      gsap
+        .timeline({ scrollTrigger: { trigger: el, start: "top 72%", once: true } })
+        .fromTo(
+          band,
+          { xPercent: -180 },
+          { xPercent: 520, duration: 1.1, ease: "power3.inOut" }
+        )
+        .set(band, { display: "none" });
     },
     { scope: root }
   );

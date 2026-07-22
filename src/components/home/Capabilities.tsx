@@ -24,29 +24,23 @@ export default function Capabilities() {
       const el = root.current;
       if (!el || prefersReducedMotion() || isDeckCapable()) return;
 
-      /* scrubbed typographic cut: the two halves slide together
-         as the section enters, and apart again when leaving */
+      /* one-shot typographic cut on enter: the two halves slide together */
       gsap
         .timeline({
-          scrollTrigger: {
-            trigger: el,
-            start: "top 92%",
-            end: "top 40%",
-            scrub: 0.4,
-          },
-          defaults: { ease: "none" },
+          scrollTrigger: { trigger: el, start: "top 74%", once: true },
+          defaults: { duration: 0.85, ease: "power4.out" },
         })
         .fromTo(
           ".cut-top",
-          { xPercent: -14, autoAlpha: 0.2 },
+          { xPercent: -16, autoAlpha: 0 },
           { xPercent: 0, autoAlpha: 1 },
           0
         )
         .fromTo(
           ".cut-bottom",
-          { xPercent: 14, autoAlpha: 0.2 },
+          { xPercent: 16, autoAlpha: 0 },
           { xPercent: 0, autoAlpha: 1 },
-          0
+          0.05
         );
 
       gsap.fromTo(

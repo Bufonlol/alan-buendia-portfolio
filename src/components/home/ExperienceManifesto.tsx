@@ -27,23 +27,17 @@ export default function ExperienceManifesto() {
         gsap.set(overlay, { display: "none" });
         return;
       }
-      /* scrubbed: the paper blocks retract in stagger as the seam
-         crosses the viewport — visible on the way in and out */
-      gsap.fromTo(
-        ".wipe-block",
-        { yPercent: 0 },
-        {
-          yPercent: -101,
-          stagger: 0.14,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            end: "top 15%",
-            scrub: 0.4,
-          },
-        }
-      );
+      /* one-shot on enter: the paper blocks cover the section, then
+         retract in stagger — a deliberate sliding-blocks page transition */
+      gsap
+        .timeline({ scrollTrigger: { trigger: el, start: "top 72%", once: true } })
+        .set(overlay, { display: "grid" })
+        .fromTo(
+          ".wipe-block",
+          { yPercent: 0 },
+          { yPercent: -101, duration: 0.7, stagger: 0.1, ease: "power3.inOut" }
+        )
+        .set(overlay, { display: "none" });
     },
     { scope: root }
   );
