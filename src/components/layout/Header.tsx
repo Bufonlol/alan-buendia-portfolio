@@ -170,7 +170,7 @@ export default function Header() {
           {/* mobile trigger */}
           <button
             type="button"
-            className="flex h-10 w-10 flex-col items-end justify-center gap-1.5 md:hidden"
+            className="mobile-menu-trigger flex h-10 w-10 flex-col items-end justify-center gap-1.5 md:hidden"
             onClick={() => setMenuOpen((v) => !v)}
             aria-expanded={menuOpen}
             aria-label={

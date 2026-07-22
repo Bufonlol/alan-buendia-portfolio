@@ -74,6 +74,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
+      data-scroll-behavior="smooth"
       className={`${archivo.variable} ${anton.variable} ${plexMono.variable}`}
     >
       <body className="bg-ink font-sans text-paper antialiased">

@@ -377,79 +377,6 @@
   }
 }
 
-/* ─────────────────── technical viewport frame ─────────────────── */
-
-/* Persistent registration frame. mix-blend-difference keeps every part
-   visible over ink OR paper slides, so the frame holds while the pages
-   transition inside it — a raw, brutalist structural device. */
-.tech-frame {
-  position: fixed;
-  inset: 9px;
-  z-index: 95;
-  pointer-events: none;
-  mix-blend-mode: difference;
-}
-
-.tech-frame__c {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border: 0 solid #fff;
-}
-.tech-frame__c--tl {
-  top: 0;
-  left: 0;
-  border-top-width: 1px;
-  border-left-width: 1px;
-}
-.tech-frame__c--tr {
-  top: 0;
-  right: 0;
-  border-top-width: 1px;
-  border-right-width: 1px;
-}
-.tech-frame__c--bl {
-  bottom: 0;
-  left: 0;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-}
-.tech-frame__c--br {
-  bottom: 0;
-  right: 0;
-  border-bottom-width: 1px;
-  border-right-width: 1px;
-}
-
-.tech-frame__edge {
-  position: absolute;
-  color: #fff;
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.tech-frame__edge--l {
-  left: -0.35rem;
-  top: 50%;
-  transform: rotate(-90deg) translateX(50%);
-  transform-origin: left center;
-}
-.tech-frame__edge--r {
-  right: -0.35rem;
-  top: 50%;
-  transform: rotate(90deg) translateX(-50%);
-  transform-origin: right center;
-}
-
-/* the edge labels crowd the compact mobile viewport — corners only there */
-@media (max-width: 640px) {
-  .tech-frame__edge {
-    display: none;
-  }
-}
-
 /* ─────────────────── deck (fullpage) mode ─────────────────── */
 
 /* While the home deck is mounted, the document must not scroll and
@@ -461,6 +388,101 @@ html[data-deck] body {
 
 html[data-deck] .site-footer {
   display: none;
+}
+
+html[data-case-deck] body {
+  height: 100svh;
+  overflow: hidden;
+}
+
+html[data-case-deck] .site-footer {
+  display: none;
+}
+
+.case-arrow {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-paper);
+  border: 1px solid currentColor;
+  transition: border-color 180ms ease-out, transform 140ms ease-out;
+}
+
+.case-arrow::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-left: 1px solid currentColor;
+  border-top: 1px solid currentColor;
+}
+
+.case-arrow--up::before {
+  transform: translate(-50%, -30%) rotate(45deg);
+}
+
+.case-arrow--down::before {
+  transform: translate(-50%, -70%) rotate(225deg);
+}
+
+.case-arrow:hover:not(:disabled),
+.case-arrow:focus-visible {
+  border-color: var(--color-acid);
+}
+
+.case-arrow:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.case-arrow:disabled {
+  opacity: 0.25;
+}
+
+.case-pagination {
+  color: var(--color-paper);
+}
+
+.case-progress-segment {
+  background: rgb(232 228 218 / 0.35);
+}
+
+.case-progress-segment.is-active {
+  background: var(--color-acid);
+}
+
+html[data-case-tone="light"] header > .frame,
+html[data-case-tone="light"] .case-pagination {
+  color: var(--color-ink);
+}
+
+html[data-case-tone="light"] .mobile-menu-trigger > span {
+  background: var(--color-ink);
+}
+
+html[data-case-tone="light"] .case-arrow {
+  color: var(--color-ink);
+}
+
+html[data-case-tone="light"] .case-progress-segment {
+  background: rgb(11 11 10 / 0.28);
+}
+
+html[data-case-tone="light"] .case-progress-segment.is-active {
+  background: var(--color-ink);
+}
+
+.result-rings {
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background-image: repeating-radial-gradient(
+    circle at center,
+    transparent 0,
+    transparent 11px,
+    currentColor 11px,
+    currentColor 12px
+  );
 }
 
 /* Pre-JS paint: only the first slide is visible. Once the deck boots
@@ -541,6 +563,18 @@ html[data-deck] .site-footer {
   transition: opacity 0.15s ease;
 }
 
+html[data-case-bg="acid"] .cursor-dot {
+  background: var(--color-ink);
+}
+
+html[data-case-bg="acid"] .cursor-ring {
+  border-color: var(--color-ink);
+}
+
+html[data-case-bg="acid"] .cursor-ring .cursor-arrow {
+  border-color: var(--color-ink);
+}
+
 .cursor-is-link .cursor-ring {
   opacity: 1;
 }
@@ -567,7 +601,7 @@ html[data-deck] .site-footer {
 .route-curtain__ink {
   position: absolute;
   inset: 0;
-  transform: translateY(101%);
+  will-change: transform;
 }
 
 .route-curtain__acid {

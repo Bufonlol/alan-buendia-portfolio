@@ -1,6 +1,8 @@
 "use client";
 
 import { useApp } from "@/components/AppShell";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -11,6 +13,13 @@ type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
 /** Internal link routed through the block-wipe page transition. */
 export default function TLink({ href, children, onClick, ...rest }: Props) {
   const { navigate } = useApp();
+  const router = useRouter();
+
+  useEffect(() => {
+    const path = href.split("#")[0];
+    if (path.startsWith("/")) router.prefetch(path || "/");
+  }, [href, router]);
+
   return (
     <a
       href={href}

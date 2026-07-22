@@ -13,7 +13,6 @@ import { LangProvider } from "@/lib/i18n";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
-import TechFrame from "@/components/TechFrame";
 import Cursor from "@/components/Cursor";
 
 type AppContextType = {
@@ -64,9 +63,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       }
 
       navigatingRef.current = true;
+      document.documentElement.dataset.routeTransition = "1";
       pendingHashRef.current = hash ? `#${hash}` : null;
       const curtain = curtainRef.current;
       if (!curtain) {
+        delete document.documentElement.dataset.routeTransition;
         router.push(href);
         return;
       }
@@ -90,6 +91,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         if (!navigatingRef.current) return;
         navigatingRef.current = false;
         pendingHashRef.current = null;
+        delete document.documentElement.dataset.routeTransition;
         gsap.to([ink, acid], {
           yPercent: 101,
           duration: prefersReducedMotion() ? 0.01 : 0.5,
@@ -97,7 +99,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           stagger: 0.08,
           onComplete: () => gsap.set(curtain, { display: "none" }),
         });
-      }, 4000);
+      }, 8000);
     },
     [pathname, router, scrollToHash]
   );
@@ -127,7 +129,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         gsap
           .timeline({
             delay: prefersReducedMotion() ? 0 : 0.12,
-            onComplete: () => gsap.set(curtain, { display: "none" }),
+            onStart: () => window.dispatchEvent(new CustomEvent("route:reveal")),
+            onComplete: () => {
+              delete document.documentElement.dataset.routeTransition;
+              gsap.set(curtain, { display: "none" });
+              ScrollTrigger.refresh();
+            },
           })
           .to(ink, { yPercent: -101, duration: d, ease: "power3.inOut" }, 0)
           .to(acid, { yPercent: -101, duration: d, ease: "power3.inOut" }, 0.08);
@@ -167,7 +174,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <LangProvider>
       <AppContext.Provider value={{ navigate }}>
         <GrainOverlay />
-        <TechFrame />
         <Cursor />
         <Header />
         <div id="page-root">{children}</div>
