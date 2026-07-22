@@ -620,6 +620,30 @@ html[data-case-bg="acid"] .cursor-ring .cursor-arrow {
   }
 }
 
+@keyframes geo-pulse {
+  0%,
+  100% {
+    transform: scale(0.78);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.about-geo__pulse {
+  animation: geo-pulse 2.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-geo__pulse {
+    animation: none;
+  }
+}
+
 .stamp-spin {
   animation: stamp-spin 18s linear infinite;
   transform-origin: center;

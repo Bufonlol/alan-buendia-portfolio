@@ -3,11 +3,11 @@
 import { useRef } from "react";
 import { gsap, useGSAP, prefersReducedMotion, isDeckCapable } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
-import { ABOUT, SITE } from "@/data/site";
+import { ABOUT } from "@/data/site";
 import Reveal from "@/components/motion/Reveal";
 
-/** About — no photography: big statements, an abstract map of
- *  Orizaba coordinates and editorial data columns.
+/** About — no photography: big statements, a geographic locator
+ *  for Orizaba and editorial data columns.
  *  Section transition: the geometry expands from its center. */
 export default function About() {
   const { t } = useLang();
@@ -47,7 +47,6 @@ export default function About() {
               <span className="block">{t({ es: "Sobre mí", en: "About me" })}</span>
             </Reveal>
           </h2>
-          <span className="u-num text-ink/40">{SITE.coords}</span>
         </div>
 
         <Reveal type="line" className="rule mt-10 deck:mt-5" />
@@ -67,50 +66,45 @@ export default function About() {
             </Reveal>
           </div>
 
-          {/* abstract map — expands from its center as the section enters */}
+          {/* Veracruz locator — expands from its center as the section enters */}
           <Reveal type="rise" delay={0.15} className="lg:col-span-3">
-            <div className="about-geo relative mx-auto aspect-square max-w-[260px] deck:max-w-[200px]">
+            <div className="about-geo relative mx-auto aspect-[13/15] w-full max-w-[260px] deck:max-w-[200px]">
               <svg
-                viewBox="0 0 200 200"
+                viewBox="0 0 260 300"
                 className="h-full w-full text-ink"
-                aria-hidden="true"
+                role="img"
+                aria-labelledby="veracruz-map-title veracruz-map-desc"
               >
-                <circle cx="100" cy="100" r="96" stroke="currentColor" strokeWidth="1" fill="none" opacity="0.4" />
-                <circle cx="100" cy="100" r="60" stroke="currentColor" strokeWidth="0.75" fill="none" opacity="0.2" strokeDasharray="3 4" />
-                <line x1="100" y1="0" x2="100" y2="200" stroke="currentColor" strokeWidth="0.75" opacity="0.3" />
-                <line x1="0" y1="100" x2="200" y2="100" stroke="currentColor" strokeWidth="0.75" opacity="0.3" />
-                {/* simplified silhouette of Veracruz state: a long crescent
-                    running NW→SE along the Gulf, with the Tuxtlas bulge south */}
-                <path
-                  d="M62 26
-                     Q74 28 80 38
-                     Q88 50 92 64
-                     Q97 80 102 94
-                     Q107 108 114 120
-                     Q122 132 136 140
-                     Q150 146 157 155
-                     Q161 165 152 172
-                     Q142 178 134 172
-                     Q124 162 112 150
-                     Q100 138 92 124
-                     Q83 108 76 90
-                     Q68 70 60 50
-                     Q56 36 62 26 Z"
-                  stroke="currentColor"
-                  strokeWidth="1.1"
-                  fill="currentColor"
-                  fillOpacity="0.06"
-                  opacity="0.6"
-                  strokeLinejoin="round"
+                <title id="veracruz-map-title">Orizaba, Veracruz</title>
+                <desc id="veracruz-map-desc">
+                  Silueta del estado de Veracruz con la ubicación de Orizaba señalada.
+                </desc>
+
+                <circle cx="130" cy="112" r="101" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.38" />
+                <circle cx="130" cy="112" r="67" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.16" strokeDasharray="3 5" />
+                <path d="M18 112H242M130 0V224" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.2" />
+                <path d="M25 20h22M25 20v22M235 20h-22M235 20v22M25 204h22M25 204v-22M235 204h-22M235 204v-22" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.38" />
+
+                <image
+                  href="/assets/veracruz-outline.svg"
+                  x="60"
+                  y="39"
+                  width="140"
+                  height="146"
+                  preserveAspectRatio="xMidYMid meet"
                 />
-                <circle cx="86" cy="104" r="4" fill="#C7F000" />
-                <circle cx="86" cy="104" r="9" stroke="#C7F000" strokeWidth="1" fill="none" opacity="0.6" />
+
+                <g transform="translate(105 137)">
+                  <circle r="11" fill="none" stroke="#C7F000" strokeWidth="1.2" />
+                  <circle className="about-geo__pulse" r="5.5" fill="#C7F000" />
+                  <path d="M-18 0H18M0-18V18" stroke="#C7F000" strokeWidth="0.9" />
+                </g>
+
+                <path d="M105 148V225H80" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.32" strokeDasharray="2 4" />
+                <text x="80" y="250" fill="currentColor" fontSize="12" fontFamily="monospace" letterSpacing="2.1">ORIZABA</text>
+                <text x="80" y="270" fill="currentColor" fontSize="12" fontFamily="monospace" letterSpacing="2.1">VERACRUZ</text>
+                <text x="214" y="270" fill="currentColor" fontSize="22" fontFamily="sans-serif" fontWeight="800" textAnchor="end">MX</text>
               </svg>
-              <p className="u-label absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-ink/60">
-                Orizaba
-                <br />
-                Veracruz
-              </p>
             </div>
           </Reveal>
 
