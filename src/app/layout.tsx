@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   description:
     "Desarrollador web frontend en Orizaba, México. Experiencias digitales rápidas, accesibles y con atención a los detalles. React, TypeScript, Next.js y GSAP.",
-  icons: { icon: "/favicon.png" },
+  icons: { icon: [{ url: "/favicon.svg", type: "image/svg+xml" }] },
   openGraph: {
     title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
     description:
