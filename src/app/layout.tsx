@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: `%s — ${SITE.name}`,
   },
   description:
-    "Frontend developer from Orizaba, México / desarrollador frontend de Orizaba, México. I build interfaces that feel inevitable — fast, accessible, and a little bit playful. React, TypeScript, GSAP & Three.js.",
+    "Desarrollador web frontend en Orizaba, México. Experiencias digitales rápidas, accesibles y con atención a los detalles. React, TypeScript, Next.js y GSAP.",
   icons: { icon: "/favicon.png" },
   openGraph: {
     title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
@@ -65,7 +65,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#F7F6EF",
+  themeColor: "#0B0B0A",
 };
 
 export default function RootLayout({
@@ -76,7 +76,7 @@ export default function RootLayout({
       lang="es"
       className={`${archivo.variable} ${anton.variable} ${plexMono.variable}`}
     >
-      <body className="bg-paper font-sans text-ink antialiased">
+      <body className="bg-ink font-sans text-paper antialiased">
         <AppShell>{children}</AppShell>
       </body>
     </html>

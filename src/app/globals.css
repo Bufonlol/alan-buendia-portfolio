@@ -1,1685 +1,543 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+   ALANBUENDIA.DEV — editorial brutalism design tokens
+   Palette is deliberately tiny: warm black, editorial paper,
+   acid green (accent only) and muted paper for secondary text.
+   ───────────────────────────────────────────────────────────── */
+
 @theme {
-  --color-paper: #f7f6ef;
-  --color-paper-soft: #ffffff;
-  --color-ink: #0647ff;
-  --color-ink-soft: #0647ff;
-  --color-accent: #0647ff;
-  /* 0.62 measured ~2.97:1 against --color-paper — fails WCAG AA (4.5:1) and
-     was used on real copy (LabCard notes, ArcadeClient sentences), not just
-     decorative labels. 0.85 measures ~4.58:1, comfortably over the line. */
-  --color-muted: rgba(6, 71, 255, 0.85);
-  --color-line: rgba(6, 71, 255, 0.2);
-  --color-line-paper: rgba(247, 246, 239, 0.28);
+  --color-ink: #0b0b0a;
+  --color-paper: #e8e4da;
+  --color-acid: #c7f000;
+  --color-mute: #bdb9af;
 }
 
 @theme inline {
-  --font-display: var(--font-archivo);
+  --font-display: var(--font-anton);
   --font-sans: var(--font-archivo);
-  --font-serif: var(--font-archivo);
   --font-mono: var(--font-plex-mono);
-  --font-poster: var(--font-anton);
 }
 
-:root {
-  --color-blue: #0647ff;
-  --color-white: #f7f6ef;
-  --color-ink: #0647ff;
-  --grid-line: rgba(6, 71, 255, 0.16);
-  --noise-opacity: 0.045;
-  --border-thin: 1px solid var(--color-blue);
-  --space-page: clamp(1rem, 4vw, 4rem);
-  --space-section: clamp(6rem, 12vw, 11rem);
-  --duration-fast: 240ms;
-  --duration-base: 700ms;
-  --duration-slow: 1100ms;
-  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --z-texture: 1;
-  --z-content: 10;
-  --z-nav: 90;
-}
-
-@property --gradient-pos {
-  syntax: '<percentage>';
-  initial-value: -30%;
-  inherits: false;
-}
-
-@property --beam-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-ink) var(--color-paper);
-}
-
-body {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  overflow-x: clip;
-}
-
-/* Grid items default to min-width:auto, which refuses to shrink below the
-   width of their own content — on every bento/mosaic grid on this site that
-   let a long word (a Spanish adjective, a section label) push past its
-   cell's edge on narrow mobile columns instead of wrapping, getting cut off
-   by the cell's own overflow:hidden. Applying min-width:0 to every direct
-   child of these grid containers (not just the hero, where this was first
-   reported) is the real, general fix. */
-.home-bento-grid > *,
-.archive-heading-mosaic > *,
-.project-archive-mosaic > *,
-.archive-page-header > *,
-.archive-index-grid > *,
-.stack-heading > *,
-.process-heading > *,
-.stack-chaos-grid > *,
-.process-diagram > *,
-.experience-grid > *,
-.field-note-grid > *,
-.style-file-grid > *,
-.transmission-grid > *,
-.metric-mosaic > * {
-  min-width: 0;
-}
-
-/* Shared home-page rhythm: one compact, continuous Bento system. */
-.home-bento-section {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(0.75rem, 1.5vw, 1.5rem);
-  border-bottom: 1px solid var(--color-ink);
-}
-
-.home-bento-grid {
-  position: relative;
-  z-index: var(--z-content);
-  display: grid;
-  gap: clamp(0.75rem, 1.15vw, 1.125rem);
-  grid-auto-flow: dense;
-}
-
-.home-bento-panel {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid currentColor;
-}
-
-/* ================================================================
-   HERO — brutalist tech-poster composition. Anton condensed display type,
-   hard rectangular cut blocks, halftone/hatch texture. 80% typography,
-   20% system chrome.
-   ================================================================ */
-
-/* Thin technical index strip, flush under the nav border — a row of small
-   labelled cells rather than a heavy banner, so it reads as a poster
-   index line rather than another UI toolbar. */
-.hero-tech-strip {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-wrap: wrap;
-  border-bottom: 1px solid var(--color-ink);
-}
-
-.hero-tech-strip-cell {
-  border-right: 1px solid color-mix(in srgb, var(--color-ink) 35%, transparent);
-  padding: 0.3rem 0.55rem;
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.hero-tech-strip-cell:last-child {
-  border-right: 0;
-}
-
-@media (max-width: 767px) {
-  .hero-tech-strip-cell:nth-child(n + 4) {
-    display: none;
+/* Deck mode: desktop fine-pointer viewports without reduced motion.
+   The home behaves as full-viewport pages with animated transitions;
+   everything else (mobile, touch, reduced motion) keeps normal scroll. */
+@custom-variant deck {
+  @media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    @slot;
   }
 }
 
-.hero-poster {
-  height: auto;
-  min-height: calc(100dvh - 2.5rem);
-}
+/* ───────────────────────── base ───────────────────────── */
 
-@media (min-width: 768px) {
-  .hero-poster {
-    /* Size to content rather than a fixed viewport-based height — a fixed
-       cap combined with overflow:hidden silently clips content (the tag
-       list) whenever the type scale changes. min-height keeps it feeling
-       like a full opening screen without ever hard-cropping content.
-       No 44rem ceiling: on tall viewports that cap left the next section's
-       full-bleed blue background peeking in above the fold, which read as
-       part of the hero itself instead of a clean scroll transition.
-       Trimmed further (was -2.75rem) — the bento's now-taller "window" cells
-       (title bar + beveled body) fill more of the section on their own, so
-       the old ceiling was pooling more empty cream above ALAN than needed. */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --frame-x: clamp(1.25rem, 4vw, 4.5rem);
+    --ease-editorial: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* html is the scroll container — clip the x-axis here so transient
+       animation offsets and full-bleed decorations never create a
+       horizontal scrollbar on mobile (body clip alone is not enough). */
+    overflow-x: clip;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-acid);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-acid);
+    outline-offset: 3px;
+  }
+
+  img {
+    max-width: 100%;
     height: auto;
-    min-height: calc(100dvh - 8rem);
   }
 }
 
-/* The composition stage — ALAN and BUENDÍA share this coordinate space so
-   the connecting mass block and both words' cut regions can line up.
-   The stage always grows to fill leftover height (hero-poster forces a
-   full-viewport min-height on every breakpoint so the next section's
-   full-bleed color never peeks in above the fold). Anchoring to the bottom
-   (not centering) pools any extra space above the name instead of between
-   the name and the badges below it — the poster reads as compact and
-   bottom-heavy like the reference, not centered-with-a-gap. */
-.hero-stage {
-  position: relative;
-  isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-/* ALAN stays fully solid ink — the reference reads as "blue type on cream"
-   here. A decorative block was tried behind the letters at one point but it
-   visually cut a confusing notch into "N" (an unrecognizable step-shape, not
-   a letter) — removed rather than repositioned again, since ALAN's
-   legibility is not worth trading for one more graphic flourish. */
-
-/* Shared display-type base. */
-.hero-name {
-  display: block;
-  width: max-content;
-  font-family: var(--font-archivo);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 0.68;
-}
-
-.hero-name-alan {
-  position: relative;
-  z-index: 3;
-  color: var(--color-ink);
-  font-size: clamp(8rem, 22vw, 23rem);
-  letter-spacing: -0.04em;
-}
-
-/* BUENDÍA as one solid ink block with white text — not a split word with a
-   JS-measured cutout half sitting on its own clip-path plate (that broke in
-   a new way almost every pass: torn edges, skew drift, checkerboard bleed).
-   `background-color` on the text itself needs zero measurement and can't
-   drift out of alignment, ever. Padding is in `em` so it scales with the
-   clamp()'d font-size instead of needing a fixed value per breakpoint. */
-.hero-name-buendia {
-  position: relative;
-  z-index: 3;
-  font-size: clamp(7rem, 18vw, 20rem);
-  letter-spacing: -0.035em;
-  color: var(--color-paper);
-  background-color: var(--color-ink);
-  padding: 0.04em 0.1em;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-
-.hero-name-group {
-  position: relative;
-  isolation: isolate;
-  /* A block-level div defaults to full container width; without this every
-     percentage-based child positions itself against the stage's width
-     instead of the word's actual rendered width. */
-  width: max-content;
-}
-
-.hero-name-group--alan {
-  z-index: 3;
-}
-
-.hero-name-group--buendia {
-  z-index: 4;
-  margin-left: clamp(0.25rem, 1.5vw, 1.5rem);
-}
-
-/* Bento row — Swiss grid discipline (strict column tracks) carrying a
-   Windows-95-error-dialog reference: each cell is its own beveled "system
-   window" with a blue title bar, instead of one fused hairline grid. The
-   slight independent rotation + stacked z-index on three of the five reads
-   as "too many dialogs open at once" (maximalist, punk) while the grid
-   underneath keeps everything on a strict Swiss track. Blue and white only. */
-.hero-bento {
-  position: relative;
-  z-index: 10;
-  display: grid;
-  grid-template-columns: 1.35fr 1fr 0.9fr 1fr;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-    "quote quote stamp panel"
-    "desc  tags  stamp panel";
-  gap: 0.65rem;
-  padding: 0.65rem;
-  border-top: 1px solid var(--color-ink);
-}
-
-.hero-bento-cell {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  /* Grid items default to min-width:auto, which refuses to shrink below
-     the content's intrinsic width — on the mobile 2-column layout that
-     pushed long words (e.g. "ENCANTADORAMENTE") past the cell's own edge,
-     visibly cut off by overflow:hidden instead of wrapping. */
-  min-width: 0;
-  border: 2px solid var(--color-ink);
-  background: var(--color-paper);
-  /* A beveled "raised window" edge built from two blue tones (lighter
-     inset highlight, darker outset shadow) instead of the usual system
-     gray, so the Windows-dialog reference stays strictly blue/white. */
-  box-shadow:
-    inset 1px 1px 0 color-mix(in srgb, var(--color-ink) 18%, white 82%),
-    3px 3px 0 color-mix(in srgb, var(--color-ink) 78%, black 20%);
-}
-
-.hero-bento-cell--quote { grid-area: quote; z-index: 3; transform: rotate(-0.6deg); }
-.hero-bento-cell--desc { grid-area: desc; }
-.hero-bento-cell--tags { grid-area: tags; }
-.hero-bento-cell--stamp { grid-area: stamp; z-index: 4; transform: rotate(1deg); }
-.hero-bento-cell--panel { grid-area: panel; z-index: 2; transform: rotate(-0.8deg); }
-
-/* Title bar — the literal Windows-error reference: a solid ink strip
-   naming the cell's real content like a filename, plus the three stock
-   window-control glyphs. Decorative as chrome, but the label itself is
-   never invented (see Hero.tsx for what each cell actually is). */
-.win-titlebar {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  padding: 0.3rem 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.win-titlebar-controls {
-  display: flex;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.win-titlebar-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 0.95em;
-  height: 0.95em;
-  border: 1px solid var(--color-paper);
-  font-size: 7px;
-  line-height: 1;
-}
-
-/* The close glyph is the only one wired up (see Hero.tsx's refuseToClose) —
-   it rattles the window instead of closing it, so it needs to read as
-   clickable even though the rest of the title bar stays decorative chrome. */
-.win-titlebar-btn:last-child {
-  cursor: pointer;
-}
-.win-titlebar-btn:last-child:hover {
-  background: var(--color-paper);
-  color: var(--color-ink);
-}
-
-/* WIN-WINDOW — the same beveled system-dialog card used in the hero's bento
-   grid, generalized for reuse across every bordered block on the site
-   (project records, stat tiles, stack items, case-study blocks, etc). Pair
-   with WinTitleBar + .win-body. --ink for cells on a paper background,
-   --paper for cells sitting on an ink background. */
-.win-window {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.win-window--ink {
-  border: 2px solid var(--color-ink);
-  box-shadow:
-    inset 1px 1px 0 color-mix(in srgb, var(--color-ink) 18%, white 82%),
-    3px 3px 0 color-mix(in srgb, var(--color-ink) 78%, black 20%);
-}
-
-.win-window--paper {
-  border: 2px solid var(--color-paper);
-  box-shadow:
-    inset 1px 1px 0 color-mix(in srgb, var(--color-paper) 18%, black 82%),
-    3px 3px 0 color-mix(in srgb, var(--color-paper) 78%, white 20%);
-}
-
-.win-body {
-  flex: 1;
-  padding: 0.75rem 0.85rem;
-}
-
-.hero-bento-cell--panel .win-body {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Cells whose content already manages its own inner padding per-cell (a
-   grid of sub-cells, a card that already has media/footer padding baked
-   in) — zero out win-body's own padding so it doesn't add a second ring. */
-.archive-heading-meta .win-body,
-.experience-primary .win-body,
-.field-meta .win-body,
-.style-rules .win-body,
-.manifesto-notice .win-body,
-.archive-page-data .win-body,
-.archive-index-record .win-body,
-.lab-card-body {
-  padding: 0;
-}
-
-.hero-bento-quote {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-}
-
-.hero-bento-barcode {
-  height: 0.65rem;
-  width: 3.5rem;
-  margin-top: 0.5rem;
-  opacity: 0.7;
-}
-
-.hero-bento-desc-text {
-  margin-top: 0.5rem;
-  font-size: clamp(0.95rem, 1.7vw, 1.15rem);
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  overflow-wrap: break-word;
-}
-
-.hero-bento-meta {
-  margin-top: 0.85rem;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-@media (max-width: 767px) {
-  .hero-bento {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: none;
-    grid-template-areas:
-      "quote quote"
-      "stamp stamp"
-      "desc  tags"
-      "panel panel";
-  }
-  /* No overlapping "scattered windows" on small screens — rotated,
-     stacked cells would just crowd and clip in a single narrow column. */
-  .hero-bento-cell--quote,
-  .hero-bento-cell--stamp,
-  .hero-bento-cell--panel {
-    transform: none;
-  }
-}
-
-/* Status readout — no longer a floating panel with its own border; it's
-   a bento cell, so the parent .hero-bento-cell supplies the frame. */
-.hero-panel {
-  position: relative;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  background: var(--color-paper);
-}
-
-.hero-panel-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--color-ink);
-  padding: 0.45rem 0.65rem;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: inherit;
-  text-decoration: none;
-}
-
-a.hero-panel-row:hover,
-a.hero-panel-row:focus-visible {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-
-.hero-panel-row:last-child {
-  border-bottom: 0;
-}
-
-.hero-panel-row--ink {
-  background: var(--color-ink);
-  color: var(--color-paper);
-}
-
-/* Tech tags — hard rectangles, borders only, no pill radius. */
-.hero-tag {
-  border: 1px solid color-mix(in srgb, var(--color-ink) 50%, transparent);
-  padding: 0.25rem 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Reusable masking-tape strip — diagonal stripes, a hard drop shadow, and a
-   slight rotation, pinning a corner of the stamp cell like a torn-and-taped
-   zine collage piece. Pure CSS gradient, no image asset, blue-only. */
-.tape-strip {
-  position: absolute;
-  z-index: 5;
-  width: 3.4rem;
-  height: 1.1rem;
-  background: repeating-linear-gradient(
-    45deg,
-    color-mix(in srgb, var(--color-ink) 55%, transparent) 0 3px,
-    color-mix(in srgb, var(--color-ink) 30%, transparent) 3px 6px
-  );
-  background-color: color-mix(in srgb, var(--color-paper) 82%, var(--color-ink) 18%);
-  box-shadow: 0 2px 3px rgba(6, 71, 255, 0.25);
-  pointer-events: none;
-}
-
-/* The availability stamp — a rotated, dashed-ring badge. Real, actionable
-   content (status + email + location), just wearing a stamp instead of a
-   clean Swiss card, to match the collage register of this redesign. */
-.hero-stamp {
-  position: relative;
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  text-align: center;
-  text-decoration: none;
-  color: var(--color-ink);
-}
-
-.hero-stamp-ring {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.15rem;
-  width: clamp(6rem, 13vw, 8rem);
-  aspect-ratio: 1;
-  padding: 0.9rem;
-  border: 2px dashed var(--color-ink);
-  border-radius: 50%;
-  transform: rotate(-8deg);
-  transition: transform 200ms ease, background-color 200ms ease;
-}
-
-.hero-stamp:hover .hero-stamp-ring,
-.hero-stamp:focus-visible .hero-stamp-ring {
-  transform: rotate(0deg);
-  background-color: var(--color-ink);
-}
-
-.hero-stamp:hover .hero-stamp-status,
-.hero-stamp:hover .hero-stamp-email,
-.hero-stamp:focus-visible .hero-stamp-status,
-.hero-stamp:focus-visible .hero-stamp-email {
-  color: var(--color-paper);
-}
-
-.hero-stamp-status {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  transition: color 200ms ease;
-}
-
-.hero-stamp-email {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  max-width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  transition: color 200ms ease;
-}
-
-.hero-stamp-location {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-
-/* A handful of static, low-opacity scratch marks — offset-print wear on
-   top of the sitewide grain. Static (no animation cost), never enough to
-   threaten legibility. */
-.hero-scratch {
-  position: absolute;
-  background: linear-gradient(90deg, transparent, currentColor 40%, currentColor 60%, transparent);
-  opacity: 0.1;
-  color: var(--color-ink);
-}
-
-.hero-scratch-a {
-  left: 8%;
-  top: 18%;
-  width: 34%;
-  height: 1px;
-  transform: rotate(-3deg);
-}
-
-.hero-scratch-b {
-  left: 55%;
-  top: 62%;
-  width: 22%;
-  height: 1px;
-  transform: rotate(2deg);
-}
-
-.hero-scratch-c {
-  left: 20%;
-  top: 80%;
-  width: 40%;
-  height: 1px;
-  transform: rotate(-1deg);
-}
-
-.hero-scratch-d {
-  left: 68%;
-  top: 40%;
-  width: 18%;
-  height: 1px;
-  transform: rotate(4deg);
-}
-
-.hero-scratch-e {
-  left: 5%;
-  top: 48%;
-  width: 16%;
-  height: 1px;
-  transform: rotate(-5deg);
-}
-
-/* Light ink stains — soft, irregular radial blotches at very low opacity.
-   Reads as uneven print pressure, not dirt: kept subtle so it never muddies
-   the flat color fields or competes with the type. */
-.hero-blotch {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--color-ink) 0%, transparent 70%);
-  opacity: 0.08;
-  filter: blur(2px);
-}
-
-.hero-blotch-a {
-  left: 12%;
-  top: 55%;
-  width: 14%;
-  aspect-ratio: 1;
-  transform: scaleX(1.6) rotate(-8deg);
-}
-
-.hero-blotch-b {
-  left: 78%;
-  top: 15%;
-  width: 10%;
-  aspect-ratio: 1;
-  transform: scaleX(1.3) rotate(12deg);
-}
-
-.hero-blotch-c {
-  left: 45%;
-  top: 68%;
-  width: 12%;
-  aspect-ratio: 1;
-  transform: scaleX(1.4) rotate(-15deg);
-}
-
-@media (max-width: 767px) {
-  .hero-name-alan {
-    font-size: clamp(3.6rem, 17vw, 5.5rem);
-  }
-  .hero-name-buendia {
-    font-size: clamp(3.2rem, 15.5vw, 4.75rem);
-  }
-}
-
-@media (min-width: 768px) {
-  .hero-panel-row {
-    padding: 0.55rem 0.85rem;
-    font-size: 10px;
-  }
-}
-
-.manifesto-poster {
-  --grid-line: rgba(247, 246, 239, 0.16);
-}
-
-.archive-heading-mosaic {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "title"
-    "count"
-    "meta"
-    "vertical";
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.archive-heading-title { grid-area: title; min-height: 17rem; }
-.archive-heading-count { grid-area: count; min-height: 11rem; }
-.archive-heading-meta { grid-area: meta; }
-.archive-heading-vertical { grid-area: vertical; min-height: 5rem; }
-
-@media (max-width: 767px) {
-  .archive-heading-vertical .u-label,
-  .archive-page-vertical .u-label {
-    writing-mode: horizontal-tb;
-    text-align: center;
-  }
-}
-
-.project-archive-mosaic {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.project-record-feature,
-.project-record-medium-a,
-.project-record-blue,
-.project-record-medium-b {
-  grid-column: 1 / -1;
-}
-
-/* These min-heights only exist to give each record a sane stacked height
-   on mobile, where there's no grid-row span to size it — the desktop rule
-   below resets every one of them to 0 once the explicit row-spans take
-   over. The old values (24-42rem) were sized for desktop proportions and
-   left a huge blank gap under short mobile content; these are sized to
-   what a mobile card (image + one caption row) actually needs. */
-.project-record-feature { min-height: 20rem; }
-.project-record-medium-a { min-height: 16rem; }
-.project-record-blue { min-height: 14rem; }
-.project-record-medium-b { min-height: 16rem; }
-.project-record-frame,
-.project-record-vertical {
-  grid-column: 1 / -1;
-  min-height: 12rem;
-}
-
-@media (min-width: 768px) {
-  .archive-heading-mosaic {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-areas:
-      "title title title title title title title count count count vertical vertical"
-      "title title title title title title title count count count vertical vertical"
-      "title title title title title title title meta meta meta vertical vertical";
-  }
-
-  .archive-heading-title { min-height: 25rem; }
-  .archive-heading-count,
-  .archive-heading-vertical { min-height: 0; }
-
-  .project-archive-mosaic {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(9, 8rem);
-  }
-
-  .project-record-feature {
-    grid-column: 1 / span 7;
-    grid-row: 1 / span 5;
-    min-height: 0;
-  }
-
-  .project-record-medium-a {
-    grid-column: 8 / span 5;
-    grid-row: 1 / span 3;
-    min-height: 0;
-    transform: translateY(0.6rem);
-    z-index: 2;
-  }
-
-  .project-record-blue {
-    grid-column: 8 / span 5;
-    grid-row: 4 / span 3;
-    min-height: 0;
-    transform: translate(-0.45rem, -0.2rem);
-    z-index: 3;
-  }
-
-  .project-record-medium-b {
-    grid-column: 1 / span 5;
-    grid-row: 6 / span 4;
-    min-height: 0;
-    transform: translate(0.35rem, -0.4rem);
-    z-index: 2;
-  }
-
-  .project-record-frame {
-    grid-column: 6 / span 3;
-    grid-row: 6 / span 4;
-    min-height: 0;
-  }
-
-  .project-record-vertical {
-    grid-column: 9 / span 4;
-    grid-row: 7 / span 3;
-    min-width: 0;
-    min-height: 0;
-    transform: translateY(0.4rem);
-  }
-}
-
-.archive-page-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "title"
-    "count"
-    "data"
-    "vertical";
-  gap: 0.5rem;
-}
-
-.archive-page-title { grid-area: title; min-height: 17rem; }
-.archive-page-count { grid-area: count; min-height: 11rem; }
-.archive-page-data { grid-area: data; }
-.archive-page-vertical { grid-area: vertical; min-height: 5rem; }
-
-.archive-index-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.archive-index-record {
-  min-height: 14rem;
-}
-
-.archive-index-record-1,
-.archive-index-record-2,
-.archive-index-record-3,
-.archive-index-record-6 {
-  grid-column: 1 / -1;
-}
-
-/* Same fix as .project-record-* above: mobile-stack heights, not desktop
-   proportions (reset to 0 once the desktop grid-row spans apply). */
-.archive-index-record-1 { min-height: 20rem; }
-.archive-index-record-2 { min-height: 16rem; }
-.archive-index-record-3 { min-height: 14rem; }
-
-.stack-heading,
-.process-heading {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-areas:
-    "title title"
-    "count vertical";
-  gap: 0.5rem;
-}
-
-.stack-heading-title,
-.process-heading-title { grid-area: title; min-height: 18rem; }
-.stack-heading-count,
-.process-heading-number { grid-area: count; min-height: 13rem; }
-.stack-heading-vertical,
-.process-heading-vertical { grid-area: vertical; }
-
-.stack-chaos-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.stack-asset,
-.stack-typescript,
-.stack-react,
-.stack-gsap,
-.stack-three,
-.stack-empty {
-  grid-column: 1 / -1;
-}
-
-.stack-asset { min-height: 24rem; }
-.stack-react,
-.stack-typescript,
-.stack-gsap,
-.stack-three { min-height: 13rem; }
-.stack-next,
-.stack-node,
-.stack-angular,
-.stack-spring,
-.stack-postgres,
-.stack-mysql,
-.stack-supabase,
-.stack-git { min-height: 10rem; }
-.stack-empty { min-height: 5rem; }
-
-.process-heading-number {
-  grid-area: count;
-}
-
-.process-diagram {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.process-node { min-height: 15rem; }
-.process-loop { min-height: 15rem; }
-.process-connector { display: none; }
-
-.experience-grid,
-.field-note-grid,
-.style-file-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.experience-title,
-.experience-primary,
-.field-title,
-.field-asset,
-.field-copy,
-.field-meta,
-.style-title,
-.style-type,
-.style-asset,
-.style-rules,
-.style-tokens {
-  grid-column: 1 / -1;
-}
-
-.experience-title,
-.field-title,
-.style-title { min-height: 18rem; }
-.experience-count,
-.experience-vertical,
-.field-status,
-.field-vertical,
-.style-blue,
-.style-paper,
-.style-vertical { min-height: 12rem; }
-.experience-secondary,
-.experience-asset {
-  grid-column: 1 / -1;
-  min-height: 16rem;
-}
-
-.field-copy { min-height: 12rem; }
-.field-meta { min-height: 12rem; }
-.style-type { min-height: 12rem; }
-.style-rules,
-.style-tokens { min-height: 14rem; }
-
-.transmission-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.transmission-title,
-.transmission-asset,
-.transmission-contact,
-.transmission-status {
-  grid-column: 1 / -1;
-}
-
-.transmission-title { min-height: 16rem; }
-.transmission-contact,
-.transmission-status { min-height: 12rem; }
-.transmission-qr,
-.transmission-vertical { min-height: 13rem; }
-
-.metric-mosaic {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.metric-years,
-.metric-language {
-  grid-column: 1 / -1;
-}
-
-.metric-years { min-height: 17rem; }
-.metric-projects,
-.metric-clients { min-height: 13rem; }
-.metric-language { min-height: 12rem; }
-.metric-vertical { min-height: 10rem; }
-
-@media (min-width: 768px) {
-  .archive-page-header {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-areas:
-      "title title title title title title title count count count vertical vertical"
-      "title title title title title title title count count count vertical vertical"
-      "title title title title title title title data data data vertical vertical";
-  }
-
-  .archive-page-title { min-height: 25rem; }
-  .archive-page-count,
-  .archive-page-vertical { min-height: 0; }
-
-  .archive-index-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(9, 8rem);
-  }
-
-  .archive-index-record-1 {
-    grid-column: 1 / span 7;
-    grid-row: 1 / span 5;
-    min-height: 0;
-  }
-
-  .archive-index-record-2 {
-    grid-column: 8 / span 5;
-    grid-row: 1 / span 3;
-    min-height: 0;
-    transform: translateY(0.55rem);
-  }
-
-  .archive-index-record-3 {
-    grid-column: 8 / span 5;
-    grid-row: 4 / span 3;
-    min-height: 0;
-    transform: translate(-0.4rem, -0.2rem);
-    z-index: 3;
-  }
-
-  .archive-index-record-4 {
-    grid-column: 1 / span 5;
-    grid-row: 6 / span 4;
-    min-height: 0;
-    transform: translate(0.35rem, -0.35rem);
-  }
-
-  .archive-index-record-5 {
-    grid-column: 6 / span 4;
-    grid-row: 6 / span 4;
-    min-height: 0;
-  }
-
-  .archive-index-record-6 {
-    grid-column: 10 / span 3;
-    grid-row: 7 / span 3;
-    min-height: 0;
-    transform: translateY(0.35rem);
-  }
-
-  .stack-heading,
-  .process-heading {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-areas:
-      "title title title title title title title title count count vertical vertical"
-      "title title title title title title title title count count vertical vertical";
-  }
-
-  .stack-heading-title,
-  .process-heading-title { min-height: 24rem; }
-  .stack-heading-count,
-  .process-heading-number,
-  .stack-heading-vertical,
-  .process-heading-vertical { min-height: 0; }
-
-  .stack-chaos-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    /* 6.5rem fit the tool tiles before the win-titlebar chrome was added on
-       top of their existing content; bumped to give that ~1.4rem back. */
-    grid-template-rows: repeat(8, 7.75rem);
-  }
-
-  .stack-asset { grid-column: 1 / span 5; grid-row: 1 / span 4; min-height: 0; }
-  .stack-react { grid-column: 6 / span 4; grid-row: 1 / span 2; min-height: 0; }
-  .stack-next { grid-column: 10 / span 3; grid-row: 1 / span 2; min-height: 0; }
-  .stack-typescript { grid-column: 6 / span 7; grid-row: 3 / span 2; min-height: 0; }
-  .stack-node { grid-column: 1 / span 3; grid-row: 5 / span 2; min-height: 0; }
-  .stack-angular { grid-column: 4 / span 3; grid-row: 5; min-height: 0; }
-  .stack-spring { grid-column: 4 / span 3; grid-row: 6; min-height: 0; }
-  .stack-postgres { grid-column: 7 / span 3; grid-row: 5; min-height: 0; }
-  .stack-mysql { grid-column: 10 / span 3; grid-row: 5; min-height: 0; }
-  .stack-supabase { grid-column: 7 / span 3; grid-row: 6; min-height: 0; }
-  .stack-git { grid-column: 10 / span 3; grid-row: 6; min-height: 0; }
-  .stack-gsap { grid-column: 1 / span 4; grid-row: 7 / span 2; min-height: 0; }
-  .stack-three { grid-column: 5 / span 4; grid-row: 7 / span 2; min-height: 0; }
-  .stack-empty { grid-column: 9 / span 4; grid-row: 7 / span 2; min-height: 0; }
-
-  .process-diagram {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(8, 7rem);
-  }
-
-  .process-step-1 { grid-column: 1 / span 5; grid-row: 1 / span 3; }
-  .process-step-2 { grid-column: 8 / span 5; grid-row: 1 / span 3; }
-  .process-loop { grid-column: 5 / span 4; grid-row: 4 / span 2; min-height: 0; }
-  .process-step-3 { grid-column: 1 / span 5; grid-row: 6 / span 3; }
-  .process-step-4 { grid-column: 8 / span 5; grid-row: 6 / span 3; }
-  .process-node { min-height: 0; }
-
-  .process-connector {
-    position: absolute;
-    display: block;
-    z-index: 5;
-    font-family: var(--font-display);
-    font-size: 2rem;
-    line-height: 1;
-  }
-  .process-connector-top { left: 48%; top: 16%; }
-  .process-connector-left { left: 21%; top: 47%; }
-  .process-connector-right { right: 21%; top: 47%; }
-  .process-connector-bottom { left: 48%; bottom: 16%; }
-
-  .experience-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    /* 8 rows (was 7) at a taller unit — the single-row asset tile had no
-       spare room left once the win-titlebar sat on top of its own content. */
-    grid-template-rows: repeat(8, 7.75rem);
-  }
-  .experience-title { grid-column: 1 / span 8; grid-row: 1 / span 3; min-height: 0; }
-  .experience-count { grid-column: 9 / span 2; grid-row: 1 / span 3; min-height: 0; }
-  .experience-vertical { grid-column: 11 / span 2; grid-row: 1 / span 3; min-height: 0; }
-  .experience-primary { grid-column: 1 / span 8; grid-row: 4 / span 5; min-height: 0; }
-  .experience-secondary { grid-column: 9 / span 4; grid-row: 4 / span 3; min-height: 0; }
-  .experience-asset { grid-column: 9 / span 4; grid-row: 7 / span 2; min-height: 0; }
-
-  .field-note-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(7, 7rem);
-  }
-  .field-title { grid-column: 1 / span 8; grid-row: 1 / span 4; min-height: 0; }
-  .field-asset { grid-column: 9 / span 4; grid-row: 1 / span 4; min-height: 0; }
-  .field-status { grid-column: 1 / span 2; grid-row: 5 / span 3; min-height: 0; }
-  .field-copy { grid-column: 3 / span 5; grid-row: 5 / span 3; min-height: 0; }
-  .field-meta { grid-column: 8 / span 4; grid-row: 5 / span 3; min-height: 0; }
-  .field-vertical { grid-column: 12; grid-row: 5 / span 3; min-height: 0; }
-
-  .style-file-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(7, 7rem);
-  }
-  .style-title { grid-column: 1 / span 8; grid-row: 1 / span 3; min-height: 0; }
-  .style-blue { grid-column: 9 / span 3; grid-row: 1 / span 2; min-height: 0; }
-  .style-paper { grid-column: 9 / span 3; grid-row: 3; min-height: 0; }
-  .style-vertical { grid-column: 12; grid-row: 1 / span 3; min-height: 0; }
-  .style-type { grid-column: 1 / span 5; grid-row: 4 / span 2; min-height: 0; }
-  .style-asset { grid-column: 6 / span 3; grid-row: 4 / span 4; min-height: 0; }
-  .style-rules { grid-column: 9 / span 4; grid-row: 4 / span 4; min-height: 0; }
-  .style-tokens { grid-column: 1 / span 5; grid-row: 6 / span 2; min-height: 0; }
-
-  /* Compressed from repeat(7, 7rem) (49rem/784px total, taller than most
-     viewports and forcing a scroll to see the whole section) to a shorter
-     row unit and fewer rows for the headline block — the section should
-     read as one screen, not require scrolling to reach the QR/status row. */
-  .transmission-grid {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(6, 4.5rem);
-  }
-  .transmission-title { grid-column: 1 / span 8; grid-row: 1 / span 3; min-height: 0; }
-  .transmission-asset { grid-column: 9 / span 4; grid-row: 1 / span 3; min-height: 0; }
-  .transmission-contact { grid-column: 1 / span 8; grid-row: 4 / span 2; min-height: 0; }
-  .transmission-qr { grid-column: 9 / span 4; grid-row: 4 / span 2; min-height: 0; }
-  .transmission-status { grid-column: 1 / span 10; grid-row: 6; min-height: 0; }
-  .transmission-vertical { grid-column: 11 / span 2; grid-row: 6; min-height: 0; }
-
-  .metric-mosaic {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: repeat(2, 11.25rem);
-  }
-  .metric-years { grid-column: 1 / span 4; grid-row: 1 / span 2; min-height: 0; }
-  .metric-projects { grid-column: 5 / span 4; grid-row: 1; min-height: 0; }
-  .metric-language { grid-column: 5 / span 4; grid-row: 2; min-height: 0; }
-  .metric-clients { grid-column: 9 / span 3; grid-row: 1 / span 2; min-height: 0; }
-  .metric-vertical { grid-column: 12; grid-row: 1 / span 2; min-height: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .chaos-piece,
-  .chaos-piece-top,
-  .chaos-piece-title,
-  .chaos-piece-panel,
-  .chaos-piece-rest,
-  .chaos-piece-bottom,
-  .manifesto-piece {
-    opacity: 1 !important;
-    transform: none !important;
-    clip-path: none !important;
-  }
-
-  .boot-line,
-  .boot-word,
-  .boot-enter,
-  .boot-panel {
-    opacity: 1 !important;
-    transform: none !important;
-    clip-path: none !important;
-  }
-}
-
-.home-bento-panel-interactive {
-  transition:
-    transform var(--duration-fast) var(--ease-expo),
-    background-color var(--duration-fast) ease,
-    color var(--duration-fast) ease;
-}
-
-@media (hover: hover) {
-  .home-bento-panel-interactive:hover {
-    transform: translateY(-2px);
-  }
-}
-
-/* Pointer-reactive print bloom: a restrained light pass, not glass. */
-.bento-reactive {
-  --spot-x: 50%;
-  --spot-y: 50%;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-
-.bento-reactive::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  pointer-events: none;
-  background: radial-gradient(
-    320px circle at var(--spot-x) var(--spot-y),
-    color-mix(in srgb, currentColor 11%, transparent),
-    transparent 68%
-  );
-  opacity: 0;
-  transition: opacity 280ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .bento-reactive:hover::after {
-    opacity: 1;
-  }
-}
-
-.project-media {
-  clip-path: inset(0);
-  transition: clip-path 700ms var(--ease-expo);
-}
-
-.archive-card:hover .project-media {
-  clip-path: inset(0.4rem);
-}
-
-.archive-card h3,
-.tool-cell .display,
-.process-record h3 {
-  transition:
-    letter-spacing 420ms var(--ease-expo),
-    transform 420ms var(--ease-expo);
-}
-
-.archive-card:hover h3,
-.tool-cell:hover .display,
-.process-record:hover h3 {
-  letter-spacing: -0.025em;
-  transform: translateX(0.2rem);
-}
-
-::selection {
-  background: var(--color-blue);
-  color: var(--color-paper);
-}
-
-:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
-}
-
-/* Custom cursor active → hide the native one */
-@media (pointer: fine) {
-  html.has-custom-cursor,
-  html.has-custom-cursor * {
-    cursor: none !important;
-  }
+/* When the custom cursor is confirmed active (fine pointer, mounted),
+   hide the system cursor. Touch devices never get this class. */
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor [role="button"] {
+  cursor: none;
 }
 
 @layer components {
-  /* Tiny tracked caps label used everywhere */
-  .u-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    overflow-wrap: break-word;
-  }
+  /* ───────────────────── type utilities ───────────────────── */
 
-  /* Display headline base */
   .display {
     font-family: var(--font-display);
+    font-weight: 400;
     text-transform: uppercase;
-    line-height: 0.86;
-    letter-spacing: -0.04em;
-    font-weight: 850;
-    text-wrap: balance;
-    overflow-wrap: break-word;
+    line-height: 0.84;
+    letter-spacing: 0.005em;
   }
 
-  h1,
-  h2,
-  h3 {
-    text-wrap: balance;
+  .u-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.5;
   }
 
-  p {
-    text-wrap: pretty;
-    overflow-wrap: break-word;
+  .u-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
   }
 
-  /* Outline (stroke-only) display type — editorial poster device */
-  .text-outline {
+  /* Giant outline numeral used on project compositions */
+  .num-outline {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 2px var(--color-ink);
-  }
-  @media (min-width: 768px) {
-    .text-outline { -webkit-text-stroke-width: 3px; }
-  }
-  .text-outline-accent {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--color-accent);
-  }
-  .text-outline-paper {
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--color-paper);
+    -webkit-text-stroke: 1.5px currentColor;
   }
 
-  /* Underline sweep for links */
-  .link-line {
-    position: relative;
-    display: inline-block;
+  /* ───────────────────── layout helpers ───────────────────── */
+
+  .frame {
+    padding-inline: var(--frame-x);
   }
-  .link-line::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -0.15em;
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  }
+
+  .rule {
     height: 1px;
-    width: 100%;
     background: currentColor;
-    transform: scaleX(0);
-    transform-origin: right center;
-    transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  .link-line:hover::after,
-  .link-line:focus-visible::after {
-    transform: scaleX(1);
-    transform-origin: left center;
+    opacity: 0.18;
   }
 
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 1px solid var(--color-line);
-    border-radius: 999px;
-    padding: 0.35rem 0.9rem;
+  .rule-v {
+    width: 1px;
+    background: currentColor;
+    opacity: 0.18;
   }
 
-  /* Stack section rows — ink fill rises on hover */
-  .stack-row {
+  /* ─────────────────────── textures ─────────────────────── */
+
+  .halftone {
+    background-image: radial-gradient(currentColor 1px, transparent 1.4px);
+    background-size: 9px 9px;
+  }
+
+  .diag-lines {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      currentColor 0,
+      currentColor 1px,
+      transparent 1px,
+      transparent 9px
+    );
+  }
+
+  .v-bars {
+    background-image: repeating-linear-gradient(
+      90deg,
+      currentColor 0,
+      currentColor 3px,
+      transparent 3px,
+      transparent 14px
+    );
+  }
+
+  .conc-rings {
+    background-image: repeating-radial-gradient(
+      circle at 30% 50%,
+      currentColor 0,
+      currentColor 1px,
+      transparent 1px,
+      transparent 12px
+    );
+  }
+
+  /* Editorial plate: a real screenshot framed as printed matter.
+     Crisp — desaturated but never washed out. */
+  .plate {
     position: relative;
-    isolation: isolate;
+    border: 1px solid rgb(232 228 218 / 0.35);
+    background: var(--color-paper);
     overflow: hidden;
   }
-  .stack-row::before {
+
+  .plate img {
+    filter: grayscale(1) contrast(1.06);
+  }
+
+  /* Legacy soft treatment (archive hover preview) */
+  .img-ink {
+    filter: grayscale(1) contrast(1.12) brightness(0.94);
+  }
+
+  /* Print grain for display type. Designed for mix-blend-mode: multiply:
+     over the near-black background it vanishes, over the paper/acid
+     letters it prints a fine halftone + horizontal risograph grain. */
+  .type-grain {
+    background-image:
+      radial-gradient(rgb(11 11 10 / 0.5) 0.5px, transparent 0.9px),
+      repeating-linear-gradient(
+        0deg,
+        rgb(11 11 10 / 0.16) 0,
+        rgb(11 11 10 / 0.16) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    background-size:
+      4px 4px,
+      100% 3px;
+    mix-blend-mode: multiply;
+  }
+
+  /* Vertical blinds inside the acid shape — dense where it meets the
+     letters, fanning open toward the far edge. */
+  .blinds {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(11 11 10 / 0.62) 0,
+      rgb(11 11 10 / 0.62) 3px,
+      transparent 3px,
+      transparent 13px
+    );
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 40%, transparent 94%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 40%, transparent 94%);
+  }
+
+  /* ─────────────────── interactive pieces ─────────────────── */
+
+  .btn-editorial {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      color 0.3s var(--ease-editorial),
+      border-color 0.3s var(--ease-editorial);
+  }
+
+  .btn-editorial::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: var(--color-ink);
-    transform: scaleY(0);
-    transform-origin: bottom center;
-    transition: transform 0.45s cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  .stack-row:hover::before {
-    transform: scaleY(1);
-    transform-origin: top center;
-  }
-  .stack-row > * {
-    transition: color 0.35s ease, transform 0.45s cubic-bezier(0.77, 0, 0.18, 1);
-  }
-  .stack-row:hover > * {
-    color: var(--color-paper);
-  }
-  .stack-row:hover .stack-name {
-    transform: translateX(1.5rem);
-  }
-  .stack-row:hover .stack-meta {
-    color: var(--color-accent);
+    background: var(--color-acid);
+    transform: translateX(-101%);
+    transition: transform 0.35s var(--ease-editorial);
   }
 
-  /* === Dot grid background (Aceternity UI-inspired) === */
-  .dot-grid {
-    background-image: radial-gradient(
-      circle, rgba(24, 21, 17, 0.16) 1px, transparent 1px
-    );
-    background-size: 26px 26px;
+  .btn-editorial:hover::before,
+  .btn-editorial:focus-visible::before {
+    transform: translateX(0);
   }
 
-  /* === Gradient sweep on section headings (Magic UI-inspired) === */
-  .heading-sweep {
-    background: linear-gradient(
-      90deg,
-      var(--color-ink) 0%,
-      var(--color-ink) calc(var(--gradient-pos) - 12%),
-      var(--color-accent) var(--gradient-pos),
-      var(--color-ink) calc(var(--gradient-pos) + 12%),
-      var(--color-ink) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: heading-sweep-anim 2.4s cubic-bezier(0.4, 0, 0.2, 1) 1 forwards;
-    animation-play-state: paused;
+  .btn-editorial:hover,
+  .btn-editorial:focus-visible {
+    color: var(--color-ink);
+    border-color: var(--color-acid);
   }
-  .heading-sweep.is-visible {
-    animation-play-state: running;
+
+  .btn-editorial--acid {
+    background: var(--color-acid);
+    color: var(--color-ink);
+    border-color: var(--color-acid);
   }
-}
 
-/* Swiss Technical Noise foundation */
-.technical-grid {
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: clamp(44px, 5vw, 72px) clamp(44px, 5vw, 72px);
-}
-
-.technical-grid::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, transparent calc(50% - 0.5px), var(--grid-line) 50%, transparent calc(50% + 0.5px)),
-    linear-gradient(to bottom, transparent calc(50% - 0.5px), var(--grid-line) 50%, transparent calc(50% + 0.5px));
-  pointer-events: none;
-}
-
-.technical-noise {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  opacity: var(--noise-opacity);
-}
-
-.marquee-track {
-  animation: marquee-loop linear infinite;
-  transform: translate3d(0, 0, 0);
-}
-
-.archive-card {
-  content-visibility: auto;
-  contain-intrinsic-size: 720px;
-}
-
-.scroll-progress {
-  animation: scroll-progress linear both;
-  animation-timeline: scroll(root block);
-}
-
-@keyframes marquee-loop {
-  to {
-    transform: translate3d(-50%, 0, 0);
+  .btn-editorial--acid::before {
+    background: var(--color-paper);
   }
-}
 
-@keyframes scroll-progress {
-  to {
+  .btn-editorial--acid:hover,
+  .btn-editorial--acid:focus-visible {
+    color: var(--color-ink);
+    border-color: var(--color-paper);
+  }
+
+  .arrow-x {
+    display: inline-block;
+    position: relative;
+    width: 1.6em;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s var(--ease-editorial);
+    vertical-align: middle;
+  }
+
+  .arrow-x::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0.5em;
+    height: 0.5em;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: translateY(-50%) rotate(45deg);
+    transform-origin: center;
+  }
+
+  a:hover .arrow-x,
+  a:focus-visible .arrow-x,
+  button:hover .arrow-x,
+  .group:hover .arrow-x {
+    width: 2.6em;
+  }
+
+  .link-nav {
+    position: relative;
+    transition: color 0.25s ease;
+  }
+
+  .link-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.35em;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--ease-editorial);
+  }
+
+  .link-nav:hover::after,
+  .link-nav:focus-visible::after,
+  .link-nav.is-active::after {
     transform: scaleX(1);
   }
-}
 
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-
-/* === Editorial art layer (custom SVG illustration system) =============== */
-.art-spin-slow {
-  animation: art-spin 60s linear infinite;
-}
-.art-spin-rev {
-  animation: art-spin 40s linear infinite reverse;
-}
-@keyframes art-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Topographic contours gently breathe in place */
-.art-breathe {
-  animation: art-breathe 14s ease-in-out infinite alternate;
-}
-@keyframes art-breathe {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
-}
-
-/* A thin guide line that draws itself in when revealed */
-.art-rule {
-  transform-origin: left center;
-  animation: art-rule-draw 1.1s cubic-bezier(0.77, 0, 0.18, 1) both;
-}
-@keyframes art-rule-draw {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
+  .link-nav.is-active {
+    color: var(--color-acid);
   }
-  .art-spin-slow,
-  .art-spin-rev,
-  .art-breathe,
-  .art-rule {
-    animation: none !important;
+
+  .link-line {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .link-line:hover::after {
+    animation: link-redraw 0.6s var(--ease-editorial);
   }
 }
 
-@keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(0.55); opacity: 0.6; }
+/* ─────────────────── deck (fullpage) mode ─────────────────── */
+
+/* While the home deck is mounted, the document must not scroll and
+   the global footer disappears (the contact slide carries the © line). */
+html[data-deck] body {
+  overflow: hidden;
+  height: 100svh;
 }
 
-/* Signal-source readout — replaces a stock radio-tower photo with a real
-   ping animation around the actual coordinates/status text next to it.
-   Pure CSS rings expanding outward, no image asset. Sized much bigger than
-   the first pass: this cell is a tall, narrow desktop column (a photo with
-   object-cover used to fill it automatically) and a small ring cluster
-   floating in the middle of it just left a huge empty white void top and
-   bottom — this needs to dominate the column, not sit inside it. */
-.signal-rings {
-  position: relative;
-  width: min(60%, 8rem);
-  aspect-ratio: 1;
+html[data-deck] .site-footer {
+  display: none;
 }
 
-.signal-ring {
-  position: absolute;
+/* Pre-JS paint: only the first slide is visible. Once the deck boots
+   it manages visibility inline. */
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .deck-slide:not(:first-child) {
+    visibility: hidden;
+  }
+}
+
+/* ─────────────────────── grain ─────────────────────── */
+
+.grain-overlay {
+  position: fixed;
   inset: 0;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  animation: signal-ring-pulse 3s ease-out infinite;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
 
-.signal-ring--2 {
-  animation-delay: 1s;
-}
-
-.signal-ring--3 {
-  animation-delay: 2s;
-}
-
-.signal-rings-core {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes signal-ring-pulse {
+@keyframes link-redraw {
   0% {
-    transform: scale(0.25);
-    opacity: 0.9;
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  49.9% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  50% {
+    transform: scaleX(0);
+    transform-origin: left;
   }
   100% {
-    transform: scale(1);
-    opacity: 0;
+    transform: scaleX(1);
+    transform-origin: left;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .signal-ring {
-    animation: none;
-    opacity: 0.35;
-  }
+/* ─────────────────── custom cursor ─────────────────── */
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+  border-radius: 999px;
+  will-change: transform;
 }
 
-/* Nested-square system diagram — replaces a stock "exploded layers" photo
-   with a real architecture motif (nested squares = layered systems),
-   built from borders only, no image asset. */
-.stack-nest {
-  position: relative;
-  width: clamp(7rem, 15vw, 11rem);
-  aspect-ratio: 1;
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-acid);
 }
 
-.stack-nest-ring {
-  position: absolute;
-  border: 1px solid var(--color-ink);
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-acid);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.stack-nest-ring--1 {
+.cursor-ring .cursor-arrow {
+  width: 9px;
+  height: 9px;
+  border-top: 1px solid var(--color-acid);
+  border-right: 1px solid var(--color-acid);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.cursor-is-link .cursor-ring {
+  opacity: 1;
+}
+
+.cursor-is-project .cursor-ring {
+  opacity: 1;
+}
+
+.cursor-is-project .cursor-ring .cursor-arrow {
+  opacity: 1;
+}
+
+/* ─────────────────── route curtain ─────────────────── */
+
+.route-curtain {
+  position: fixed;
   inset: 0;
-  transform: rotate(-4deg);
+  z-index: 150;
+  display: none;
+  pointer-events: none;
 }
 
-.stack-nest-ring--2 {
-  inset: 18%;
-  opacity: 0.7;
-  transform: rotate(5deg);
+.route-curtain__acid,
+.route-curtain__ink {
+  position: absolute;
+  inset: 0;
+  transform: translateY(101%);
 }
 
-.stack-nest-ring--3 {
-  inset: 36%;
-  opacity: 0.45;
-  transform: rotate(-6deg);
+.route-curtain__acid {
+  background: var(--color-acid);
 }
 
-@keyframes eq-bar {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
+.route-curtain__ink {
+  background: var(--color-ink);
 }
 
-@keyframes heading-sweep-anim {
-  from { --gradient-pos: -30%; }
-  to   { --gradient-pos: 130%; }
-}
+/* ─────────────────── circular stamp ─────────────────── */
 
-/* Permanent subtle glow on ◆ accent glyphs inside headings (cult-ui inspired) */
-h1 .text-accent,
-h2 .text-accent {
-  text-shadow: 0 0 14px rgba(6, 71, 255, 0.32);
-}
-
-/* === Editorial collage pass: notched-corner cards (clip-path, not border-radius) === */
-.card-notched {
-  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
-}
-.card-notched-sm {
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
-}
-
-/* === Editorial collage pass: layered "pegado" shadow depth === */
-.shadow-stack {
-  box-shadow:
-    0 1px 0 rgba(24, 21, 17, 0.9),
-    3px 4px 0 rgba(24, 21, 17, 0.14),
-    7px 9px 0 rgba(24, 21, 17, 0.08),
-    0 16px 32px rgba(24, 21, 17, 0.12);
-}
-
-/* Remove texture on mobile to avoid an unnecessary compositor layer */
-@media (max-width: 767px) {
-  .technical-noise {
-    display: none;
-  }
-  .aurora-blob {
-    display: none;
+@keyframes stamp-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
+
+.stamp-spin {
+  animation: stamp-spin 18s linear infinite;
+  transform-origin: center;
+}
+
+/* ─────────────────── scroll indicator ─────────────────── */
+
+@keyframes scroll-drip {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.scroll-drip {
+  animation: scroll-drip 2.4s var(--ease-editorial) infinite;
+}
+
+/* ─────────────────── reduced motion ─────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .heading-sweep {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    color: inherit;
-    animation: none;
-  }
-  /* stop all looping CSS animations (pulse dots, eq bars, stamp spin, bounce) —
-     !important also overrides the inline animation shorthands */
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

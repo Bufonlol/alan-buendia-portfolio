@@ -15,4 +15,11 @@ export const prefersReducedMotion = () =>
 export const isFinePointer = () =>
   typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches;
 
+/** True when the home runs as a fullpage deck (must mirror the CSS
+ *  `deck` custom variant in globals.css exactly). */
+export const isDeckCapable = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches &&
+  !prefersReducedMotion();
+
 export { gsap, useGSAP, ScrollTrigger };

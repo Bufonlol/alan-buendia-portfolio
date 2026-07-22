@@ -1,208 +1,209 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { Check, Copy } from "lucide-react";
-import { gsap, prefersReducedMotion, useGSAP } from "@/lib/gsap";
+import { useRef, useState } from "react";
+import { gsap, useGSAP, prefersReducedMotion, isDeckCapable } from "@/lib/gsap";
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
-import Signature from "@/components/art/Signature";
-import { VerticalText } from "@/components/modular/VerticalText";
-import { Barcode, PulseDot, SignalBars, SystemLabel, TechnicalGrid } from "@/components/system/TechnicalLayer";
-import { WinTitleBar } from "@/components/system/WinTitleBar";
+import Reveal from "@/components/motion/Reveal";
 
+/** Final CTA — black spread, giant type, rotating stamp.
+ *  Section transition: an acid band sweeps diagonally across
+ *  the section as it enters. */
 export default function Contact() {
-  const { t } = useLang();
-  const sectionRef = useRef<HTMLElement>(null);
-  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { t, lang } = useLang();
+  const root = useRef<HTMLElement>(null);
   const [copied, setCopied] = useState(false);
 
   useGSAP(
     () => {
-      const section = sectionRef.current;
-      if (!section) return;
-      const pieces = gsap.utils.toArray<HTMLElement>(".transmission-piece", section);
-      if (prefersReducedMotion()) {
-        gsap.set(pieces, { x: 0, y: 0, clipPath: "inset(0%)" });
+      const el = root.current;
+      if (!el) return;
+      const band = el.querySelector(".acid-sweep");
+      if (!band) return;
+      if (prefersReducedMotion() || isDeckCapable()) {
+        gsap.set(band, { display: "none" });
         return;
       }
+      /* scrubbed: the acid band crosses the section with the scroll */
       gsap.fromTo(
-        pieces,
+        band,
+        { xPercent: -180 },
         {
-          x: (index) => (index % 2 ? 20 : -20),
-          y: (index) => (index % 3 ? 10 : 24),
-          clipPath: (index) => (index % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)"),
-        },
-        {
-          x: 0,
-          y: 0,
-          clipPath: "inset(0%)",
-          duration: 0.78,
-          stagger: 0.065,
-          ease: "power3.out",
-          scrollTrigger: { trigger: section, start: "top 70%", once: true },
+          xPercent: 500,
+          ease: "none",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            end: "top 10%",
+            scrub: 0.4,
+          },
         }
       );
     },
-    { scope: sectionRef }
-  );
-
-  useEffect(
-    () => () => {
-      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
-    },
-    []
+    { scope: root }
   );
 
   const copyEmail = async () => {
-    let didCopy = false;
     try {
       await navigator.clipboard.writeText(SITE.email);
-      didCopy = true;
-    } catch {
-      const input = document.createElement("textarea");
-      input.value = SITE.email;
-      input.setAttribute("readonly", "");
-      input.style.position = "fixed";
-      input.style.opacity = "0";
-      document.body.appendChild(input);
-      input.select();
-      didCopy = document.execCommand("copy");
-      input.remove();
-    }
-
-    if (didCopy) {
       setCopied(true);
-      if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
-      copiedTimerRef.current = setTimeout(() => setCopied(false), 2000);
-    } else {
-      window.location.href = `mailto:${SITE.email}`;
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable — the mailto link still works */
     }
   };
 
+  const stampText =
+    lang === "es"
+      ? "ESCRÍBEME · HABLEMOS · NUEVOS PROYECTOS · "
+      : "WRITE ME · LET'S TALK · NEW PROJECTS · ";
+
   return (
-    <section ref={sectionRef} id="contact" className="relative overflow-hidden bg-ink p-3 text-paper md:p-4">
-      <TechnicalGrid className="opacity-20" />
+    <section
+      ref={root}
+      id="contact"
+      className="relative overflow-hidden bg-ink pb-24 pt-28 text-paper md:pt-36 deck:flex deck:h-full deck:flex-col deck:justify-center deck:pb-0 deck:pt-0"
+    >
+      {/* diagonal acid band that sweeps across on entry */}
+      <div
+        aria-hidden="true"
+        className="acid-sweep pointer-events-none absolute left-0 top-[-20%] z-0 h-[140%] w-[28%] rotate-[14deg] bg-acid"
+      />
+      {/* halftone corner texture */}
+      <div
+        aria-hidden="true"
+        className="halftone absolute bottom-0 left-0 h-40 w-72 text-paper opacity-10"
+      />
 
-      <div className="transmission-grid relative z-10">
-        <div className="transmission-piece transmission-title win-window win-window--paper">
-          <WinTitleBar label="CONTACT.SYS" />
-          <div className="win-body flex flex-1 flex-col justify-center">
-            <h2 className="display text-[clamp(2rem,5.5vw,4.2rem)] leading-[0.86]">
-              {t({ es: "Construyamos algo real", en: "Let's build something real" })}
-            </h2>
-          </div>
-        </div>
-
-        <div className="transmission-piece transmission-asset win-window win-window--paper bg-paper text-ink">
-          <WinTitleBar label="SIGNAL.DAT" />
-          <div className="win-body relative flex flex-1 flex-col justify-between overflow-hidden">
-            <TechnicalGrid className="opacity-40" />
-            <SystemLabel className="relative border border-ink bg-paper px-2 py-1 self-start">SIGNAL / SOURCE</SystemLabel>
-            <div className="relative flex flex-1 items-center justify-center">
-              <div className="signal-rings">
-                <span className="signal-ring signal-ring--1" />
-                <span className="signal-ring signal-ring--2" />
-                <span className="signal-ring signal-ring--3" />
-                <PulseDot className="signal-rings-core" />
-              </div>
-            </div>
-            <div className="relative flex items-end justify-between bg-paper">
-              <SystemLabel>{SITE.coords}</SystemLabel>
-              <SignalBars className="text-ink" />
-            </div>
-          </div>
-        </div>
-
-        {/* One contact block instead of three separate CTAs (the email
-            link, a "copy email" button, and a duplicate "send signal"
-            mailto) all doing the same job. The email itself is the primary
-            action; copy is a small secondary affordance beside it. */}
-        <div className="transmission-piece transmission-contact win-window win-window--paper">
-          <WinTitleBar label="DIRECT.TXT" />
-          <div className="win-body flex flex-1 flex-col justify-center gap-3">
-            <SystemLabel className="opacity-85">DIRECT LINE</SystemLabel>
-            <div className="flex items-end justify-between gap-4">
-              <a
-                href={`mailto:${SITE.email}`}
-                className="block min-w-0 break-all text-[clamp(1rem,2.2vw,1.7rem)] font-bold underline decoration-1 underline-offset-4"
-              >
-                {SITE.email}
-              </a>
-              <button
-                onClick={copyEmail}
-                aria-label={t({ es: "Copiar correo", en: "Copy email" })}
-                className="flex shrink-0 items-center gap-2 border border-paper px-3 py-2 transition-colors hover:bg-paper hover:text-ink"
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-                <span className="u-label">
-                  {copied ? t({ es: "COPIADO", en: "COPIED" }) : t({ es: "COPIAR", en: "COPY" })}
+      <div className="frame relative z-10">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 deck:gap-8">
+          {/* giant question */}
+          <div className="lg:col-span-8">
+            <h2 className="display text-[clamp(3rem,10vw,9rem)] deck:text-[clamp(3rem,7.5vw,6.5rem)]">
+              <Reveal type="mask-up">
+                <span className="block text-acid">
+                  {t({ es: "¿Tienes un", en: "Got a" })}
                 </span>
-              </button>
+              </Reveal>
+              <Reveal type="mask-up" delay={0.08}>
+                <span className="block text-acid">
+                  {t({ es: "proyecto en", en: "project in" })}
+                </span>
+              </Reveal>
+              <Reveal type="mask-up" delay={0.16}>
+                <span className="block text-paper">
+                  {t({ es: "mente?", en: "mind?" })}
+                </span>
+              </Reveal>
+            </h2>
+
+            {/* big arrow that stretches on hover */}
+            <a
+              href={`mailto:${SITE.email}`}
+              className="group mt-14 block deck:mt-8"
+              aria-label={t({ es: "Enviar correo", en: "Send email" })}
+            >
+              <div className="flex items-center gap-4">
+                <span className="u-label text-mute transition-colors group-hover:text-acid">
+                  {t({ es: "Escríbeme", en: "Write me" })}
+                </span>
+                <span className="relative h-px flex-1 bg-paper/25 transition-colors duration-500 group-hover:bg-acid">
+                  <span
+                    aria-hidden="true"
+                    className="absolute right-0 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-paper/60 transition-all duration-500 group-hover:border-acid"
+                  />
+                </span>
+              </div>
+            </a>
+          </div>
+
+          {/* contact data + stamp */}
+          <div className="flex flex-col justify-between gap-12 lg:col-span-4">
+            <Reveal type="rise" delay={0.2}>
+              <dl className="grid grid-cols-1 gap-7 deck:grid-cols-2 deck:gap-6">
+                <div>
+                  <dt className="u-label text-mute">Email</dt>
+                  <dd className="mt-2 flex flex-wrap items-center gap-4">
+                    <a href={`mailto:${SITE.email}`} className="link-line text-sm">
+                      {SITE.email}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={copyEmail}
+                      className="u-label border border-paper/30 px-2.5 py-1.5 transition-colors hover:border-acid hover:text-acid"
+                    >
+                      {copied
+                        ? t({ es: "Copiado", en: "Copied" })
+                        : t({ es: "Copiar", en: "Copy" })}
+                    </button>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="u-label text-mute">
+                    {t({ es: "Ubicación", en: "Location" })}
+                  </dt>
+                  <dd className="mt-2 text-sm">{SITE.location}</dd>
+                </div>
+                <div>
+                  <dt className="u-label text-mute">
+                    {t({ es: "Disponibilidad", en: "Availability" })}
+                  </dt>
+                  <dd className="mt-2 flex items-center gap-2 text-sm">
+                    <span className="h-2 w-2 rounded-full bg-acid" aria-hidden="true" />
+                    {t({
+                      es: "Abierto a nuevos proyectos",
+                      en: "Open to new projects",
+                    })}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="u-label text-mute">GitHub</dt>
+                  <dd className="mt-2">
+                    <a
+                      href={SITE.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-line text-sm"
+                    >
+                      github.com/Bufonlol
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </Reveal>
+
+            {/* rotating circular stamp */}
+            <div className="relative ml-auto h-36 w-36 md:h-44 md:w-44" aria-hidden="true">
+              <svg viewBox="0 0 100 100" className="stamp-spin h-full w-full">
+                <defs>
+                  <path
+                    id="stamp-circle"
+                    d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"
+                  />
+                </defs>
+                <text className="fill-paper font-mono text-[8.2px] uppercase tracking-[0.18em]">
+                  <textPath href="#stamp-circle">{stampText}</textPath>
+                </text>
+              </svg>
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-acid">
+                +
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Real reachability facts consolidated into one cell instead of
-            spread across three ("CHANNEL/OPEN", "STATUS/LIVE", and a
-            separate meta row) that were all saying some version of
-            "available now". */}
-        <div className="transmission-piece transmission-status win-window win-window--paper">
-          <WinTitleBar label="STATUS.DAT" />
-          <div className="win-body flex flex-1 flex-col flex-wrap items-start justify-center gap-2 md:flex-row md:items-center md:justify-between md:gap-6">
-            <span className="flex items-center gap-2">
-              <PulseDot />
-              <SystemLabel>{t({ es: "DISPONIBLE PARA TRABAJAR", en: "AVAILABLE FOR WORK" })}</SystemLabel>
-            </span>
-            <span className="u-label opacity-85">{SITE.locationShort} / UTC−6</span>
-            <span className="u-label opacity-85">{t({ es: "RESPUESTA / 24–48H", en: "RESPONSE / 24–48H" })}</span>
-          </div>
-        </div>
-
-        <div className="transmission-piece transmission-qr win-window win-window--paper bg-paper text-ink">
-          <WinTitleBar label="QRCODE.SVG" />
-          <div className="win-body flex flex-1 flex-col items-center justify-center gap-2">
-            <Image
-              src="/qr-alanbuendia.svg"
-              alt={t({ es: "Código QR de alanbuendia.dev", en: "alanbuendia.dev QR code" })}
-              width={64}
-              height={64}
-            />
-            <SystemLabel>SCAN / OPEN</SystemLabel>
-          </div>
-        </div>
-
-        <div className="transmission-piece transmission-vertical flex items-center justify-center border border-paper">
-          <VerticalText>DIRECT LINE / OPEN CHANNEL</VerticalText>
+        {/* deck mode has no global footer — this bottom bar closes the page */}
+        <div className="mt-14 hidden items-center justify-between border-t border-paper/15 pt-5 deck:flex">
+          <p className="u-label text-mute">
+            © 2026 {SITE.name.toUpperCase()}.{" "}
+            {t({
+              es: "Todos los derechos reservados.",
+              en: "All rights reserved.",
+            })}
+          </p>
+          <p className="u-num text-[0.6875rem] text-mute">{SITE.coords}</p>
         </div>
       </div>
-
-      <footer className="relative z-10 mt-2 grid gap-3 border border-paper px-4 py-3 md:grid-cols-[1fr_auto_1fr] md:items-end">
-        <div>
-          <Signature className="text-paper" size="text-2xl" shadowColor="var(--color-paper)" />
-          <p className="u-label mt-2 opacity-85">© 2026 {SITE.fullName}</p>
-        </div>
-        <Barcode className="hidden text-paper md:block" />
-        <div className="u-label flex flex-wrap gap-5 md:justify-end">
-          <a href={SITE.cvUrl} target="_blank" rel="noreferrer" className="link-line">CV ↗</a>
-          <a href={SITE.github} target="_blank" rel="noreferrer" className="link-line">GITHUB ↗</a>
-          <button
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: prefersReducedMotion() ? "auto" : "smooth",
-              })
-            }
-            className="link-line min-h-11"
-          >
-            {t({ es: "ARRIBA ↑", en: "BACK TO TOP ↑" })}
-          </button>
-        </div>
-      </footer>
-
-      <p className="sr-only" aria-live="polite">
-        {copied ? t({ es: "Correo copiado", en: "Email copied" }) : ""}
-      </p>
     </section>
   );
 }

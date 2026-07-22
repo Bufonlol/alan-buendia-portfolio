@@ -1,3 +1,3 @@
 export default function GrainOverlay() {
-  return <div aria-hidden="true" className="technical-noise select-none" />;
+  return <div aria-hidden="true" className="grain-overlay select-none" />;
 }

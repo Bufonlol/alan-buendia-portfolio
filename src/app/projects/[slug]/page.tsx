@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SITE } from "@/data/site";
 import { PROJECTS, getNextProject, getProject } from "@/data/projects";
-import CaseStudy from "@/components/case/CaseStudy";
+import CaseStudy from "@/components/project/CaseStudy";
 
 type Props = { params: Promise<{ slug: string }> };
 

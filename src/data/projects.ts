@@ -5,6 +5,10 @@ export type Project = {
   index: string;
   title: L;
   tagline: L;
+  /** CH-02 game-box-cover slogan — exaggerated 90s-commercial copy, mapped
+   *  1:1 to a real feature (per spec: humor, not filler). Shown on the
+   *  home mosaic card instead of the sober case-study tagline. */
+  adSlogan: L;
   year: string;
   role: L;
   status: L;
@@ -31,6 +35,10 @@ export const PROJECTS: Project[] = [
     tagline: {
       es: "Cada mesa se convierte en un dato.",
       en: "Every table becomes a data point.",
+    },
+    adSlogan: {
+      es: "escanea. califica. listo. cero apps. cero excusas.",
+      en: "scan it. rate it. done. zero apps. zero excuses.",
     },
     year: "2025",
     role: { es: "Desarrollador Full-Stack", en: "Full-Stack Developer" },
@@ -126,6 +134,10 @@ export const PROJECTS: Project[] = [
     tagline: {
       es: "Una sola fuente de verdad para una joyería multisucursal.",
       en: "One source of truth for a multi-branch jewelry chain.",
+    },
+    adSlogan: {
+      es: "4 sucursales. oro en vivo. cero hojas de cálculo.",
+      en: "4 branches. live gold price. zero spreadsheets.",
     },
     year: "2024",
     role: {
@@ -225,6 +237,10 @@ export const PROJECTS: Project[] = [
       es: "Citas médicas sin llamadas telefónicas.",
       en: "Medical appointments without phone calls.",
     },
+    adSlogan: {
+      es: "agenda 24/7. WhatsApp-powered. cero llamadas.",
+      en: "24/7 booking. WhatsApp-powered. zero phone calls.",
+    },
     year: "2026",
     role: { es: "Desarrollador Full-Stack", en: "Full-Stack Developer" },
     status: { es: "En producción", en: "In production" },
@@ -312,6 +328,10 @@ export const PROJECTS: Project[] = [
     tagline: {
       es: "Una plataforma, cualquier tipo de negocio.",
       en: "One platform, every kind of business.",
+    },
+    adSlogan: {
+      es: "multi-tenant. cualquier negocio. cero excusas.",
+      en: "multi-tenant. any business. zero excuses.",
     },
     year: "2024",
     role: {
@@ -402,6 +422,10 @@ export const PROJECTS: Project[] = [
     tagline: {
       es: "Un sistema de diseño para el software que cuida los números.",
       en: "A design system for software you trust with the numbers.",
+    },
+    adSlogan: {
+      es: "~50 componentes. cero modo oscuro. cero disculpas.",
+      en: "~50 components. zero dark mode. zero apologies.",
     },
     year: "2026",
     role: {
@@ -500,6 +524,10 @@ export const PROJECTS: Project[] = [
     tagline: {
       es: "Cotiza. Muestra en 3D. Cierra la venta.",
       en: "Quote it. Show it in 3D. Close the sale.",
+    },
+    adSlogan: {
+      es: "3D en vivo. precio blindado por pruebas. venta cerrada.",
+      en: "live 3D. test-covered pricing. deal closed.",
     },
     year: "2026",
     role: { es: "Desarrollador Full-Stack", en: "Full-Stack Developer" },

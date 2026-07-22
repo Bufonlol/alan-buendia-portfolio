@@ -1,27 +1,24 @@
 import type { Metadata } from "next";
+import HomeDeck from "@/components/home/HomeDeck";
 import Hero from "@/components/home/Hero";
-import Manifesto from "@/components/home/Manifesto";
 import FeaturedProjects from "@/components/home/FeaturedProjects";
-import Stats from "@/components/home/Stats";
-import Stack from "@/components/home/Stack";
-import Process from "@/components/home/Process";
-import Experience from "@/components/home/Experience";
+import ExperienceManifesto from "@/components/home/ExperienceManifesto";
+import Capabilities from "@/components/home/Capabilities";
 import About from "@/components/home/About";
-import Fun from "@/components/home/Fun";
 import Contact from "@/components/home/Contact";
 import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
+  title: `${SITE.name} — Desarrollador Web / Frontend`,
   description:
-    "Frontend developer from Orizaba, México / desarrollador frontend de Orizaba, México. I build interfaces that feel inevitable — fast, accessible, and a little bit playful.",
+    "Desarrollador web frontend en Orizaba, México. Creo experiencias digitales rápidas, accesibles y con atención a los detalles. / Frontend developer from Orizaba, México.",
   alternates: {
     canonical: SITE.url,
   },
   openGraph: {
-    title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
+    title: `${SITE.name} — Desarrollador Web / Frontend`,
     description:
-      "Interfaces that feel inevitable / interfaces que se sienten inevitables.",
+      "Creo experiencias digitales rápidas, accesibles y con atención a los detalles.",
     url: SITE.url,
     siteName: SITE.name,
     locale: "es_MX",
@@ -30,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
+    title: `${SITE.name} — Desarrollador Web / Frontend`,
     description:
-      "Interfaces that feel inevitable / interfaces que se sienten inevitables.",
+      "Creo experiencias digitales rápidas, accesibles y con atención a los detalles.",
     images: [`${SITE.url}/og-home.png`],
   },
 };
@@ -40,16 +37,15 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      <Hero />
-      <Manifesto />
-      <FeaturedProjects />
-      <Stats />
-      <Stack />
-      <Process />
-      <Experience />
-      <About />
-      <Fun />
-      <Contact />
+      {/* Slide order must match SECTIONS in data/site.ts */}
+      <HomeDeck>
+        <Hero />
+        <FeaturedProjects />
+        <ExperienceManifesto />
+        <Capabilities />
+        <About />
+        <Contact />
+      </HomeDeck>
     </main>
   );
 }
