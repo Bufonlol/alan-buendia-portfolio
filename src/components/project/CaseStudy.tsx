@@ -347,8 +347,8 @@ function SectionHeading({
         {num}
       </span>
       <Reveal type="mask-up">
-        <div className="flex items-baseline gap-4">
-          <span className="u-num text-acid">{num}</span>
+        <div className="flex items-center gap-4">
+          <span className="idx-box text-acid text-[0.6875rem]">{num}</span>
           <h2 className="display text-[clamp(2rem,4.8vw,3.8rem)]">{t(title)}</h2>
         </div>
       </Reveal>

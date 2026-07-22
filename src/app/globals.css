@@ -362,6 +362,92 @@
   .link-line:hover::after {
     animation: link-redraw 0.6s var(--ease-editorial);
   }
+
+  /* Boxed index numeral — raw structural tag used on section headings. */
+  .idx-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.9em;
+    padding: 0.15em 0.4em;
+    border: 1px solid currentColor;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+}
+
+/* ─────────────────── technical viewport frame ─────────────────── */
+
+/* Persistent registration frame. mix-blend-difference keeps every part
+   visible over ink OR paper slides, so the frame holds while the pages
+   transition inside it — a raw, brutalist structural device. */
+.tech-frame {
+  position: fixed;
+  inset: 9px;
+  z-index: 95;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+.tech-frame__c {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 0 solid #fff;
+}
+.tech-frame__c--tl {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+.tech-frame__c--tr {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+.tech-frame__c--bl {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+.tech-frame__c--br {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+
+.tech-frame__edge {
+  position: absolute;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tech-frame__edge--l {
+  left: -0.35rem;
+  top: 50%;
+  transform: rotate(-90deg) translateX(50%);
+  transform-origin: left center;
+}
+.tech-frame__edge--r {
+  right: -0.35rem;
+  top: 50%;
+  transform: rotate(90deg) translateX(-50%);
+  transform-origin: right center;
+}
+
+/* the edge labels crowd the compact mobile viewport — corners only there */
+@media (max-width: 640px) {
+  .tech-frame__edge {
+    display: none;
+  }
 }
 
 /* ─────────────────── deck (fullpage) mode ─────────────────── */

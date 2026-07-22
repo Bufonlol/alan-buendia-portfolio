@@ -316,7 +316,7 @@ function CardMeta({
       <div className="rule" />
       <div className="mt-4 flex items-start justify-between gap-4">
         <div className="flex items-baseline gap-4">
-          <span className="u-num text-[0.6875rem] text-ink/50">{num}</span>
+          <span className="idx-box text-[0.6875rem] text-ink/60">{num}</span>
           <div>
             <h3 className="display text-[clamp(1.6rem,3vw,2.4rem)] transition-transform duration-300 group-hover:translate-x-1 deck:text-2xl">
               {title}

@@ -13,6 +13,7 @@ import { LangProvider } from "@/lib/i18n";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GrainOverlay from "@/components/GrainOverlay";
+import TechFrame from "@/components/TechFrame";
 import Cursor from "@/components/Cursor";
 
 type AppContextType = {
@@ -166,6 +167,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     <LangProvider>
       <AppContext.Provider value={{ navigate }}>
         <GrainOverlay />
+        <TechFrame />
         <Cursor />
         <Header />
         <div id="page-root">{children}</div>
