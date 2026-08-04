@@ -6,15 +6,19 @@ import { SITE } from "@/data/site";
 
 type Status = "idle" | "sending" | "success" | "error";
 
+/** Web3Forms access key. Public by design (it only allows sending mail to
+ *  the site owner), so it ships to the browser regardless. The env var
+ *  overrides this default when set. */
+const WEB3FORMS_KEY = "17508351-5e19-4548-b04d-32d13b33ba1a";
+
 /**
- * Contact form. Posts to Web3Forms (no backend / no database) when
- * NEXT_PUBLIC_WEB3FORMS_KEY is set; otherwise it degrades gracefully to
- * a mailto link so the section is never broken before the key exists.
- * Get a free access key at https://web3forms.com and add it to the env.
+ * Contact form. Posts to Web3Forms (no backend / no database). Falls back
+ * to a mailto link if no access key is available, so the section is never
+ * broken. Get a free key at https://web3forms.com.
  */
 export default function ContactForm() {
   const { t } = useLang();
-  const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+  const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || WEB3FORMS_KEY;
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
 
