@@ -166,31 +166,10 @@ export const TESTIMONIALS: {
 }[] = [
   {
     quote: {
-      es: "Por primera vez tengo datos reales de cada sucursal. Dejé de decidir por corazonadas — ahora las conversaciones con los meseros son sobre números concretos.",
-      en: "For the first time I have real data from every branch. I stopped deciding on gut feeling — now the conversations with waiters are about concrete numbers.",
+      es: "Muy buen trabajo. Cuando pedimos un cambio, se hizo rápido y sin quejas. Quedamos muy satisfechos con la plataforma.",
+      en: "Great work. When we asked for a change, it was done quickly and without complaints. We're very satisfied with the platform.",
     },
-    author: { es: "Dueño · Cadena de mariscos", en: "Owner · Seafood chain" },
-    context: {
-      es: "Sistema de encuestas por QR",
-      en: "QR survey system",
-    },
-    project: "restaurant-surveys",
-  },
-  {
-    quote: {
-      es: "Unificó cuatro sucursales que vivían en hojas de cálculo desconectadas. Los precios se actualizan solos con el oro y por fin sé quién movió cada pieza.",
-      en: "It unified four branches that lived in disconnected spreadsheets. Prices update themselves with the gold rate and I finally know who moved every piece.",
-    },
-    author: { es: "Gerencia · Joyería multisucursal", en: "Management · Multi-branch jewelry" },
-    context: { es: "ERP + Punto de venta", en: "ERP + Point of sale" },
-    project: "inventory-management",
-  },
-  {
-    quote: {
-      es: "Los pacientes agendan solos a cualquier hora y los recordatorios salen por WhatsApp sin que nadie los mande. Recepción por fin se enfoca en quien está en el consultorio.",
-      en: "Patients book on their own at any hour and reminders go out over WhatsApp with nobody sending them. Reception finally focuses on whoever is in the room.",
-    },
-    author: { es: "Recepción · Clínica dental", en: "Reception · Dental clinic" },
+    author: { es: "Dentista · Dental Family", en: "Dentist · Dental Family" },
     context: { es: "Plataforma de citas", en: "Booking platform" },
     project: "dental-family",
   },

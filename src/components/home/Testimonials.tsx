@@ -67,30 +67,57 @@ export default function Testimonials() {
 
         <Reveal type="line" className="rule mt-10 text-paper deck:mt-5" />
 
-        <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden border border-paper/12 bg-paper/12 md:grid-cols-3 deck:mt-8">
-          {TESTIMONIALS.map((item, i) => (
-            <figure
-              key={i}
-              className="voice-card flex flex-col justify-between gap-8 bg-ink p-8 deck:p-6"
+        {TESTIMONIALS.length === 1 ? (
+          /* single voice — a large featured quote */
+          <figure className="voice-card mt-14 max-w-[46ch] deck:mt-10">
+            <span
+              aria-hidden="true"
+              className="display block text-[5rem] leading-none text-acid"
             >
-              <div>
-                <span
-                  aria-hidden="true"
-                  className="display block text-[3.5rem] leading-none text-acid"
-                >
-                  &ldquo;
+              &ldquo;
+            </span>
+            <blockquote className="mt-2 text-[clamp(1.5rem,3.2vw,2.4rem)] leading-[1.2] text-paper">
+              {t(TESTIMONIALS[0].quote)}
+            </blockquote>
+            <figcaption className="mt-8 flex items-center gap-4 border-t border-paper/12 pt-5">
+              <span className="h-2 w-2 shrink-0 bg-acid" aria-hidden="true" />
+              <span>
+                <span className="block text-sm font-medium">
+                  {t(TESTIMONIALS[0].author)}
                 </span>
-                <blockquote className="mt-3 text-[clamp(1rem,1.4vw,1.15rem)] leading-relaxed text-paper/90">
-                  {t(item.quote)}
-                </blockquote>
-              </div>
-              <figcaption className="border-t border-paper/12 pt-5">
-                <p className="text-sm font-medium">{t(item.author)}</p>
-                <p className="u-label mt-1.5 text-mute">{t(item.context)}</p>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+                <span className="u-label mt-1 block text-mute">
+                  {t(TESTIMONIALS[0].context)}
+                </span>
+              </span>
+            </figcaption>
+          </figure>
+        ) : (
+          /* multiple voices — an editorial grid */
+          <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden border border-paper/12 bg-paper/12 md:grid-cols-3 deck:mt-8">
+            {TESTIMONIALS.map((item, i) => (
+              <figure
+                key={i}
+                className="voice-card flex flex-col justify-between gap-8 bg-ink p-8 deck:p-6"
+              >
+                <div>
+                  <span
+                    aria-hidden="true"
+                    className="display block text-[3.5rem] leading-none text-acid"
+                  >
+                    &ldquo;
+                  </span>
+                  <blockquote className="mt-3 text-[clamp(1rem,1.4vw,1.15rem)] leading-relaxed text-paper/90">
+                    {t(item.quote)}
+                  </blockquote>
+                </div>
+                <figcaption className="border-t border-paper/12 pt-5">
+                  <p className="text-sm font-medium">{t(item.author)}</p>
+                  <p className="u-label mt-1.5 text-mute">{t(item.context)}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
