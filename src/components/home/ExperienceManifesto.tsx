@@ -93,8 +93,8 @@ export default function ExperienceManifesto() {
             <div>
               <p className="display max-w-[15ch] text-[clamp(1.7rem,2.8vw,2.5rem)] leading-[1.12]">
                 {t({
-                  es: "3+ años construyendo productos digitales para clientes reales en México.",
-                  en: "3+ years building digital products for real clients in México.",
+                  es: "1+ año construyendo productos digitales para clientes reales en México.",
+                  en: "1+ year building digital products for real clients in México.",
                 })}
               </p>
               <TLink
