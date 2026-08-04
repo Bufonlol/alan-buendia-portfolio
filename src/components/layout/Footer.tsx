@@ -2,6 +2,7 @@
 
 import { useLang } from "@/lib/i18n";
 import { SITE } from "@/data/site";
+import TLink from "@/components/ui/TLink";
 
 export default function Footer() {
   const { t } = useLang();
@@ -17,7 +18,10 @@ export default function Footer() {
               en: "All rights reserved.",
             })}
           </p>
-          <div className="flex items-center gap-8">
+          <div className="flex flex-wrap items-center gap-8">
+            <TLink href="/colophon" className="link-line u-label">
+              {t({ es: "Cómo está hecho", en: "Colophon" })}
+            </TLink>
             <a
               href={SITE.github}
               target="_blank"

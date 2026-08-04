@@ -20,6 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.6,
     },
+    {
+      url: `${SITE.url}/colophon`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
   ];
 
   const projectRoutes: MetadataRoute.Sitemap = PROJECTS.map((p) => ({
