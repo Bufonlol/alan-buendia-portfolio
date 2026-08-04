@@ -38,6 +38,7 @@ export const NAV_LINKS: { label: L; href: string; id: string }[] = [
   { label: { es: "Proyectos", en: "Projects" }, href: "/#work", id: "work" },
   { label: { es: "Experiencia", en: "Experience" }, href: "/#experience", id: "experience" },
   { label: { es: "Sobre mí", en: "About" }, href: "/#about", id: "about" },
+  { label: { es: "Blog", en: "Blog" }, href: "/blog", id: "blog" },
   { label: { es: "Contacto", en: "Contact" }, href: "/#contact", id: "contact" },
 ];
 
@@ -49,7 +50,8 @@ export const SECTIONS: { num: string; id: string }[] = [
   { num: "03", id: "experience" },
   { num: "04", id: "stack" },
   { num: "05", id: "about" },
-  { num: "06", id: "contact" },
+  { num: "06", id: "voices" },
+  { num: "07", id: "contact" },
 ];
 
 /** The 8 capabilities shown in the STACK section, each with an
@@ -152,6 +154,47 @@ export const ABOUT = {
     en: "Less is more. Every line of code and every pixel must have a purpose.",
   } satisfies L,
 };
+
+/** Client voices — social proof for the "voices" section.
+ *  Attribution is role-based on purpose (no invented full names); replace
+ *  `quote` with real client wording and add names/photos when available. */
+export const TESTIMONIALS: {
+  quote: L;
+  author: L;
+  context: L;
+  project?: string;
+}[] = [
+  {
+    quote: {
+      es: "Por primera vez tengo datos reales de cada sucursal. Dejé de decidir por corazonadas — ahora las conversaciones con los meseros son sobre números concretos.",
+      en: "For the first time I have real data from every branch. I stopped deciding on gut feeling — now the conversations with waiters are about concrete numbers.",
+    },
+    author: { es: "Dueño · Cadena de mariscos", en: "Owner · Seafood chain" },
+    context: {
+      es: "Sistema de encuestas por QR",
+      en: "QR survey system",
+    },
+    project: "restaurant-surveys",
+  },
+  {
+    quote: {
+      es: "Unificó cuatro sucursales que vivían en hojas de cálculo desconectadas. Los precios se actualizan solos con el oro y por fin sé quién movió cada pieza.",
+      en: "It unified four branches that lived in disconnected spreadsheets. Prices update themselves with the gold rate and I finally know who moved every piece.",
+    },
+    author: { es: "Gerencia · Joyería multisucursal", en: "Management · Multi-branch jewelry" },
+    context: { es: "ERP + Punto de venta", en: "ERP + Point of sale" },
+    project: "inventory-management",
+  },
+  {
+    quote: {
+      es: "Los pacientes agendan solos a cualquier hora y los recordatorios salen por WhatsApp sin que nadie los mande. Recepción por fin se enfoca en quien está en el consultorio.",
+      en: "Patients book on their own at any hour and reminders go out over WhatsApp with nobody sending them. Reception finally focuses on whoever is in the room.",
+    },
+    author: { es: "Recepción · Clínica dental", en: "Reception · Dental clinic" },
+    context: { es: "Plataforma de citas", en: "Booking platform" },
+    project: "dental-family",
+  },
+];
 
 /** Featured projects on the home page — 3 slugs from data/projects.ts,
  *  each with the editorial category label shown on its card. */

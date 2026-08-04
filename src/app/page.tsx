@@ -5,6 +5,7 @@ import FeaturedProjects from "@/components/home/FeaturedProjects";
 import ExperienceManifesto from "@/components/home/ExperienceManifesto";
 import Capabilities from "@/components/home/Capabilities";
 import About from "@/components/home/About";
+import Testimonials from "@/components/home/Testimonials";
 import Contact from "@/components/home/Contact";
 import { SITE } from "@/data/site";
 
@@ -44,6 +45,7 @@ export default function Home() {
         <ExperienceManifesto />
         <Capabilities />
         <About />
+        <Testimonials />
         <Contact />
       </HomeDeck>
     </main>
