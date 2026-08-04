@@ -42,6 +42,11 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
   },
   manifest: "/manifest.webmanifest",
+  alternates: {
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: `${SITE.name} — Blog` }],
+    },
+  },
   openGraph: {
     title: `${SITE.name} — Frontend Developer / Desarrollador Frontend`,
     description:

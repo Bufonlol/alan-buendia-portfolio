@@ -16,7 +16,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return {};
   const title = `${project.title.es} / ${project.title.en}`;
   const description = `${project.tagline.es} / ${project.tagline.en}`;
-  const image = new URL(project.cardImage ?? "/favicon.svg", SITE.url).toString();
   return {
     title,
     description,
@@ -28,14 +27,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       type: "article",
       locale: "es_MX",
-      images: [image],
       url: `${SITE.url}/projects/${slug}`,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [image],
     },
   };
 }

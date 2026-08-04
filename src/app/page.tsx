@@ -15,6 +15,9 @@ export const metadata: Metadata = {
     "Desarrollador web frontend en Orizaba, México. Creo experiencias digitales rápidas, accesibles y con atención a los detalles. / Frontend developer from Orizaba, México.",
   alternates: {
     canonical: SITE.url,
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: `${SITE.name} — Blog` }],
+    },
   },
   openGraph: {
     title: `${SITE.name} — Desarrollador Web / Frontend`,

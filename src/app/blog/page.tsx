@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     "Notas sobre rendimiento, sistemas de diseño y desarrollo frontend. / Notes on performance, design systems and frontend development.",
   alternates: {
     canonical: `${SITE.url}/blog`,
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: `${SITE.name} — Blog` }],
+    },
   },
   openGraph: {
     title: "Blog — Alan Buendía",

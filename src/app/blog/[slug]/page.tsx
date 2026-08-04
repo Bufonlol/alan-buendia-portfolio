@@ -30,13 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       tags: post.tags,
       url: `${SITE.url}/blog/${slug}`,
-      images: [`${SITE.url}/og-home.png`],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [`${SITE.url}/og-home.png`],
     },
   };
 }
